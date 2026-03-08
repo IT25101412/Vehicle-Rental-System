@@ -61,4 +61,20 @@ public class BookingService {
         return bookingList;
 
     }
+
+    private void overWriteBookingFile(List<Booking> updatedBookings){
+
+        try(FileWriter fileWriter = new FileWriter(FILE_NAME,false);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            PrintWriter out = new PrintWriter(bufferedWriter)){
+
+            for (Booking x : updatedBookings){
+                out.println(x.toString());
+            }
+        }catch (IOException e){
+            System.out.println("Error updating the bookings file");
+            e.printStackTrace();
+        }
+
+    }
 }
