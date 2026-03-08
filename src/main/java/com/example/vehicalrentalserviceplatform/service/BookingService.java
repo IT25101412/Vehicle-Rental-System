@@ -41,4 +41,24 @@ public class BookingService {
             e.printStackTrace();
         }
     }
+
+    public List<Booking> getAllBookings(){
+        List<Booking> bookingList = new ArrayList<>();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(FILE_NAME))){
+            String line;
+            while ((line = bufferedReader.readLine()) != null){
+                String[] data = line.split(",");
+
+                if(data.length == 6){
+                    Booking booking = new Booking(data[0],data[1],data[2],data[3],data[4],data[5]);
+                    bookingList.add(booking);
+                }
+            }
+        }catch (IOException e){
+            System.out.println("No existing bookings found or error reading file.");
+        }
+        return bookingList;
+
+    }
 }
