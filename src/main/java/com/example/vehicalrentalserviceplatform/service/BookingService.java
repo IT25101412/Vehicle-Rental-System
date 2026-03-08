@@ -77,4 +77,36 @@ public class BookingService {
         }
 
     }
+
+    public void updateBooking(String transactionId, String newStartDate, String newReturnDate, String newStatus){
+        List<Booking> allBookings = getAllBookings();
+        boolean isUpdated = false;
+
+        for (Booking x : allBookings){
+            if(x.getTransactionId().equals(transactionId)){
+                x.setStartDate(newStartDate);
+                x.setReturnDate(newReturnDate);
+                x.setBookingStatus(newStatus);
+                isUpdated = true;
+                break;
+            }
+        }
+
+        if (isUpdated){
+            overWriteBookingFile(allBookings);
+            System.out.println("Booking updated successfully");
+        }else {
+            System.out.println("Error: Booking updated failed");
+        }
+    }
+
+    public void deleteBooking(String transactionId){
+        List<Booking> allBookings = getAllBookings();
+
+        boolean isRemoved = allBookings.removeIf(x -> x.getTransactionId().equals(transactionId) && x.getBookingStatus().equals("Pending"));
+
+        if (isRemoved){
+            overWriteBookingFile(allBookings);
+        }
+    }
 }
