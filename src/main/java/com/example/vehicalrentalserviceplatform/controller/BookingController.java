@@ -10,8 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/createBooking")
-
 public class BookingController extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws  IOException {
 
