@@ -16,6 +16,7 @@
             <th>Status</th>
             <th>Start Date</th>
             <th>Return Date</th>
+
         </tr>
 
         <%
@@ -30,6 +31,9 @@
                 <td><%= x.getBookingStatus()%></td>
                 <td><%= x.getStartDate()%></td>
                 <td><%= x.getReturnDate()%></td>
+                <td><form action="deleteBooking" method="POST" style="display:inline;">
+                        <input type="hidden" name="transactionId" value="<%= x.getTransactionId() %>"> <button type="submit" style="color: red;">Cancel Booking</button>
+                </form></td>
             </tr>
         <%
             }
