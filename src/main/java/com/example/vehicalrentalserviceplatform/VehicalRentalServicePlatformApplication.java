@@ -2,6 +2,7 @@ package com.example.vehicalrentalserviceplatform;
 
 import com.example.vehicalrentalserviceplatform.controller.BookingController;
 import com.example.vehicalrentalserviceplatform.controller.DeleteBookingController;
+import com.example.vehicalrentalserviceplatform.controller.UpdateBookingController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -24,4 +25,8 @@ public class VehicalRentalServicePlatformApplication {
         return new ServletRegistrationBean<>(new DeleteBookingController(), "/deleteBooking");
     }
 
+    @Bean
+    public ServletRegistrationBean<UpdateBookingController> updateServletBean() {
+        return new ServletRegistrationBean<>(new UpdateBookingController(),"/updateBooking");
+    }
 }

@@ -33,6 +33,15 @@
                 <td><%= x.getReturnDate()%></td>
                 <td><form action="deleteBooking" method="POST" style="display:inline;">
                         <input type="hidden" name="transactionId" value="<%= x.getTransactionId() %>"> <button type="submit" style="color: red;">Cancel Booking</button>
+                </form>
+                <form action="editBooking.jsp" method="POST" style="display:inline;">
+                    <input type="hidden" name="transactionId" value="<%= x.getTransactionId() %>">
+                    <input type="hidden" name="vehicleId" value="<%= x.getVehicleId() %>">
+                    <input type="hidden" name="startDate" value="<%= x.getStartDate() %>">
+                    <input type="hidden" name="returnDate" value="<%= x.getReturnDate() %>">
+                    <input type="hidden" name="bookingStatus" value="<%= x.getBookingStatus() %>">
+
+                    <button type="submit" style="color: blue; margin-right: 10px;">Edit</button>
                 </form></td>
             </tr>
         <%
