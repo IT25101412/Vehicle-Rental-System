@@ -22,12 +22,12 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="e.g. Sanithu" required>
+                            <input type="text" class="form-control" name="username" placeholder="Enter your name" required>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Vehicle ID</label>
-                            <input type="text" class="form-control" name="vehicleId" placeholder="e.g. SUV-999" required>
+                            <input type="text" class="form-control" name="vehicleId" placeholder="Enter the Vehicle Id" required>
                         </div>
 
                         <div class="row">
