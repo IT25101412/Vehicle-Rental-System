@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | DriveEase Rentals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-navy:       #0D1B2A;
+      --brand-navy-soft:  #1A2E42;
+      --brand-gold:       #C9A84C;
+      --brand-gold-light: #E8C97A;
+      --brand-gold-muted: #F0DFA0;
+      --surface-white:    #FFFFFF;
+      --surface-light:    #F7F8FA;
+      --surface-mid:      #EEF0F3;
+      --border-color:     #D8DCE3;
+      --border-focus:     #C9A84C;
+      --text-primary:     #0D1B2A;
+      --text-secondary:   #4A5568;
+      --text-muted:       #8A95A3;
+      --text-on-dark:     #FFFFFF;
+      --text-on-gold:     #0D1B2A;
+      --state-success:    #1E7D4F;
+      --state-success-bg: #EAF6F0;
+      --state-error:      #C0392B;
+      --state-error-bg:   #FCECEA;
+      --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+      --space-5: 24px; --space-6: 32px; --space-7: 48px;
+      --radius-md: 8px; --radius-lg: 12px;
+      --shadow-md: 0 4px 12px rgba(13,27,42,0.10), 0 2px 4px rgba(13,27,42,0.06);
+      --shadow-focus: 0 0 0 3px rgba(201,168,76,0.30);
+      --transition-fast: 150ms ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--surface-white);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    input, button { font-family: inherit; }
+
+    /* Layout */
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 var(--space-5); }
+    main { flex: 1; }
+
+    /* Navigation */
+    .site-nav {
+      background: var(--brand-navy);
+      padding: var(--space-4) 0;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 16px rgba(13,27,42,0.3);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1120px; margin: 0 auto; padding: 0 var(--space-5);
+    }
+    .nav-logo { display: flex; align-items: center; gap: var(--space-3); }
+    .nav-logo-mark {
+      width: 36px; height: 36px;
+      background: var(--brand-gold); border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 700; color: var(--text-on-dark);
+    }
+    .nav-brand span { color: var(--brand-gold); }
+    .nav-links { display: flex; align-items: center; gap: var(--space-5); list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.75); font-size: 14px; font-weight: 500; transition: color var(--transition-fast); }
+    .nav-links a:hover { color: var(--brand-gold); }
+    .nav-links .nav-cta {
+      background: var(--brand-gold); color: var(--text-on-gold);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-md); font-weight: 600;
+    }
+    .nav-links .nav-cta:hover { background: var(--brand-gold-light); }
+
+    /* Page Hero */
+    .page-hero {
+      background: var(--brand-navy);
+      padding: var(--space-7) 0 var(--space-6);
+    }
+    .page-hero-eyebrow {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--brand-gold); margin-bottom: var(--space-3);
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .page-hero-eyebrow::before {
+      content: ''; width: 24px; height: 2px;
+      background: var(--brand-gold); display: block;
+    }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700; color: var(--text-on-dark);
+      line-height: 1.15; margin-bottom: var(--space-3);
+    }
+    .page-hero p { font-size: 16px; color: rgba(255,255,255,0.65); }
+
+    /* Content */
+    .content-section { padding: var(--space-7) 0; }
+    .form-wrapper { max-width: 440px; margin: 0 auto; }
+
+    /* Card */
+    .card {
+      background: var(--surface-white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md); overflow: hidden;
+    }
+    .card-header {
+      padding: var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--surface-mid);
+      display: flex; align-items: center; gap: var(--space-3);
+    }
+    .card-header-icon {
+      width: 40px; height: 40px;
+      background: var(--brand-gold-muted); border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 600; color: var(--text-primary);
+    }
+    .card-header p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+    .card-body { padding: var(--space-6); }
+
+    /* Form */
+    .form-group { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-4); }
+    .form-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+    .form-label .required { color: var(--state-error); margin-left: 2px; }
+    .input-wrapper { position: relative; }
+    .input-icon {
+      position: absolute; left: var(--space-4); top: 50%;
+      transform: translateY(-50%); color: var(--text-muted);
+      pointer-events: none; width: 16px; height: 16px;
+    }
+    .form-input {
+      width: 100%; height: 44px;
+      padding: 0 var(--space-4) 0 42px;
+      background: var(--surface-light);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 15px; color: var(--text-primary);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      outline: none;
+    }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-input:hover { border-color: #B8BEC8; background: var(--surface-white); }
+    .form-input:focus { border-color: var(--border-focus); background: var(--surface-white); box-shadow: var(--shadow-focus); }
+
+    /* Password toggle */
+    .password-wrapper { position: relative; }
+    .password-wrapper .form-input { padding-right: 48px; }
+    .toggle-password {
+      position: absolute; right: var(--space-3); top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); padding: var(--space-2);
+      display: flex; align-items: center;
+    }
+    .toggle-password:hover { color: var(--text-primary); }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex; align-items: center; gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+    .checkbox-group input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--brand-gold); cursor: pointer; }
+    .checkbox-group label { font-size: 14px; color: var(--text-secondary); cursor: pointer; }
+
+    /* Divider */
+    .form-divider {
+      display: flex; align-items: center; gap: var(--space-4); margin: var(--space-5) 0;
+    }
+    .form-divider::before, .form-divider::after { content: ''; flex: 1; height: 1px; background: var(--surface-mid); }
+    .form-divider span {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: var(--space-2); height: 46px; padding: 0 var(--space-6);
+      border: none; border-radius: var(--radius-md);
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: all var(--transition-fast); width: 100%;
+    }
+    .btn-primary { background: var(--brand-gold); color: var(--text-on-gold); }
+    .btn-primary:hover { background: var(--brand-gold-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn-outline {
+      background: transparent; color: var(--text-primary);
+      border: 1.5px solid var(--border-color); margin-top: var(--space-3);
+    }
+    .btn-outline:hover { border-color: var(--brand-gold); color: var(--brand-gold); background: var(--brand-gold-muted); }
+
+    /* Alert */
+    .alert {
+      display: flex; align-items: flex-start; gap: var(--space-3);
+      padding: var(--space-4) var(--space-5);
+      border-radius: var(--radius-md); font-size: 14px;
+      margin-bottom: var(--space-5); border: 1px solid transparent;
+    }
+    .alert-error { background: var(--state-error-bg); border-color: var(--state-error); color: var(--state-error); }
+    .alert-success { background: var(--state-success-bg); border-color: var(--state-success); color: var(--state-success); }
+
+    /* Footer */
+    .site-footer { background: var(--brand-navy); padding: var(--space-5) 0; margin-top: auto; }
+    .footer-inner {
+      max-width: 1120px; margin: 0 auto; padding: 0 var(--space-5);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.45); }
+    .footer-tagline { font-size: 13px; color: var(--brand-gold); opacity: 0.8; }
+
+    @media (max-width: 640px) {
+      .card-body { padding: var(--space-5); }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="var(--brand-navy)" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14l4 4v4a2 2 0 0 1-2 2h-2"/>
+          <circle cx="7" cy="17" r="2"/>
+          <circle cx="15" cy="17" r="2"/>
+        </svg>
+      </div>
+      <span class="nav-brand">Drive<span>Ease</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/login" class="nav-cta">Sign In</a></li>
+      <li><a href="/register">Get Started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="page-hero">
+  <div class="container">
+    <p class="page-hero-eyebrow">Welcome Back</p>
+    <h1>Sign In to Your Account</h1>
+    <p>Access your bookings, profile, and rental history.</p>
+  </div>
+</section>
+
+<!-- Main Content -->
+<main>
+  <section class="content-section">
+    <div class="container">
+      <div class="form-wrapper">
+
+        <!-- Error message — shows if login fails -->
+        <div class="alert alert-error" th:if="${error}">
+          <span th:text="${error}"></span>
+        </div>
+
+        <!-- Success message — shows after registration -->
+        <div class="alert alert-success" th:if="${message}">
+          <span th:text="${message}"></span>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                   stroke="var(--brand-navy)" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div>
+              <h2>Sign In</h2>
+              <p>Enter your credentials to continue</p>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Login form — posts to /login -->
+            <form th:action="@{/login}" method="post">
+
+              <!-- Username field -->
+              <div class="form-group">
+                <label class="form-label" for="username">
+                  Username <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <svg class="input-icon" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  <input class="form-input" type="text" id="username"
+                         name="username" placeholder="Enter your username" required />
+                </div>
+              </div>
+
+              <!-- Password field with show/hide toggle -->
+              <div class="form-group">
+                <label class="form-label" for="password">
+                  Password <span class="required">*</span>
+                </label>
+                <div class="password-wrapper">
+                  <svg class="input-icon" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2"
+                       stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  <input class="form-input" type="password" id="password"
+                         name="password" placeholder="Enter your password" required />
+                  <button type="button" class="toggle-password"
+                          onclick="togglePassword()">
+                    <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                      <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Remember me -->
+              <div class="checkbox-group">
+                <input type="checkbox" id="remember" name="remember" />
+                <label for="remember">Remember me</label>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary">
+                Sign In →
+              </button>
+
+              <!-- Divider -->
+              <div class="form-divider">
+                <span>New to DriveEase?</span>
+              </div>
+
+              <!-- Register link -->
+              <a href="/register">
+                <button type="button" class="btn btn-outline">
+                  Create an Account
+                </button>
+              </a>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-copy">&copy; 2025 DriveEase Rentals. All rights reserved.</p>
+    <p class="footer-tagline">Drive with confidence.</p>
+  </div>
+</footer>
+
+<script>
+  // Toggles password visibility
+  function togglePassword() {
+    const input = document.getElementById('password');
+    const icon = document.getElementById('eyeIcon');
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.innerHTML = `
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+          <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+          <line x1="1" y1="1" x2="23" y2="23"/>`;
+    } else {
+      input.type = 'password';
+      icon.innerHTML = `
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>`;
+    }
+  }
+</script>
+
+</body>
+</html>
