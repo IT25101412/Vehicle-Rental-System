@@ -3,7 +3,6 @@ package com.example.vehicalrentalserviceplatform.controller;
 import com.example.vehicalrentalserviceplatform.model.Booking;
 import com.example.vehicalrentalserviceplatform.service.BookingService;
 
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
