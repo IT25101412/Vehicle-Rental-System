@@ -1,10 +1,434 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile | DriveEase Rentals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-navy:       #0D1B2A;
+            --brand-navy-soft:  #1A2E42;
+            --brand-gold:       #C9A84C;
+            --brand-gold-light: #E8C97A;
+            --brand-gold-muted: #F0DFA0;
+            --surface-white:    #FFFFFF;
+            --surface-light:    #F7F8FA;
+            --surface-mid:      #EEF0F3;
+            --border-color:     #D8DCE3;
+            --border-focus:     #C9A84C;
+            --text-primary:     #0D1B2A;
+            --text-secondary:   #4A5568;
+            --text-muted:       #8A95A3;
+            --text-on-dark:     #FFFFFF;
+            --text-on-gold:     #0D1B2A;
+            --state-success:    #1E7D4F;
+            --state-success-bg: #EAF6F0;
+            --state-error:      #C0392B;
+            --state-error-bg:   #FCECEA;
+            --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+            --space-5: 24px; --space-6: 32px; --space-7: 48px;
+            --radius-md: 8px; --radius-lg: 12px; --radius-pill: 999px;
+            --shadow-md: 0 4px 12px rgba(13,27,42,0.10), 0 2px 4px rgba(13,27,42,0.06);
+            --shadow-focus: 0 0 0 3px rgba(201,168,76,0.30);
+            --transition-fast: 150ms ease;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 16px; scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--surface-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { color: inherit; text-decoration: none; }
+        input, button, textarea { font-family: inherit; }
+
+        /* Layout */
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 var(--space-5); }
+        main { flex: 1; }
+
+        /* Navigation */
+        .site-nav {
+            background: var(--brand-navy);
+            padding: var(--space-4) 0;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 16px rgba(13,27,42,0.3);
+        }
+        .nav-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1120px; margin: 0 auto; padding: 0 var(--space-5);
+        }
+        .nav-logo { display: flex; align-items: center; gap: var(--space-3); }
+        .nav-logo-mark {
+            width: 36px; height: 36px;
+            background: var(--brand-gold); border-radius: var(--radius-md);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 700; color: var(--text-on-dark);
+        }
+        .nav-brand span { color: var(--brand-gold); }
+        .nav-links { display: flex; align-items: center; gap: var(--space-5); list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.75); font-size: 14px; font-weight: 500; transition: color var(--transition-fast); }
+        .nav-links a:hover { color: var(--brand-gold); }
+        .nav-links .nav-cta {
+            background: var(--brand-gold); color: var(--text-on-gold);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-md); font-weight: 600;
+        }
+        .nav-links .nav-cta:hover { background: var(--brand-gold-light); }
+
+        /* Page Hero */
+        .page-hero {
+            background: var(--brand-navy);
+            padding: var(--space-7) 0 var(--space-6);
+        }
+        .page-hero-eyebrow {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--brand-gold); margin-bottom: var(--space-3);
+            display: flex; align-items: center; gap: var(--space-2);
+        }
+        .page-hero-eyebrow::before {
+            content: ''; width: 24px; height: 2px;
+            background: var(--brand-gold); display: block;
+        }
+        .page-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700; color: var(--text-on-dark);
+            line-height: 1.15; margin-bottom: var(--space-3);
+        }
+        .page-hero p { font-size: 16px; color: rgba(255,255,255,0.65); }
+
+        /* Content */
+        .content-section { padding: var(--space-7) 0; }
+
+        /* Two column layout */
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--space-6);
+            align-items: start;
+        }
+
+        /* Card */
+        .card {
+            background: var(--surface-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        .card-header {
+            padding: var(--space-5) var(--space-6);
+            border-bottom: 1px solid var(--surface-mid);
+            display: flex; align-items: center; gap: var(--space-3);
+        }
+        .card-header-icon {
+            width: 40px; height: 40px;
+            background: var(--brand-gold-muted); border-radius: var(--radius-md);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 600; color: var(--text-primary);
+        }
+        .card-header p { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+        .card-body { padding: var(--space-6); }
+
+        /* Avatar */
+        .avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: var(--brand-navy);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 30px; font-weight: 700; color: var(--brand-gold);
+            margin: 0 auto var(--space-4);
+            border: 3px solid var(--brand-gold-muted);
+        }
+
+        /* Summary card */
+        .summary-card .card-body { text-align: center; }
+        .summary-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 600; color: var(--text-primary);
+            margin-bottom: var(--space-2);
+        }
+        .summary-username {
+            font-size: 14px; color: var(--text-muted);
+            margin-bottom: var(--space-4);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex; align-items: center;
+            padding: 3px var(--space-3);
+            border-radius: var(--radius-pill);
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 0.04em; text-transform: uppercase;
+        }
+        .badge-gold { background: var(--brand-gold-muted); color: var(--brand-navy); }
+        .badge-navy { background: var(--brand-navy); color: var(--brand-gold); }
+
+        /* Info rows */
+        .info-divider { height: 1px; background: var(--surface-mid); margin: var(--space-4) 0; }
+        .info-row {
+            display: flex; align-items: center;
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--surface-mid);
+            gap: var(--space-4); text-align: left;
+        }
+        .info-row:last-child { border-bottom: none; }
+        .info-label {
+            width: 120px; flex-shrink: 0;
+            font-size: 11px; font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.06em;
+        }
+        .info-value { font-size: 14px; color: var(--text-primary); flex: 1; }
+
+        /* Form */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4) var(--space-5); }
+        .span-full { grid-column: 1 / -1; }
+        .form-group { display: flex; flex-direction: column; gap: var(--space-2); }
+        .form-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+        .form-input {
+            width: 100%; height: 44px;
+            padding: 0 var(--space-4);
+            background: var(--surface-light);
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 15px; color: var(--text-primary);
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+            outline: none;
+        }
+        .form-input::placeholder { color: var(--text-muted); }
+        .form-input:hover { border-color: #B8BEC8; background: var(--surface-white); }
+        .form-input:focus { border-color: var(--border-focus); background: var(--surface-white); box-shadow: var(--shadow-focus); }
+        textarea.form-input { height: 80px; padding: var(--space-3) var(--space-4); resize: none; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: var(--space-2); height: 46px; padding: 0 var(--space-6);
+            border: none; border-radius: var(--radius-md);
+            font-size: 15px; font-weight: 600; cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .btn-primary { background: var(--brand-gold); color: var(--text-on-gold); }
+        .btn-primary:hover { background: var(--brand-gold-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .btn-outline {
+            background: transparent; color: var(--text-secondary);
+            border: 1.5px solid var(--border-color);
+        }
+        .btn-outline:hover { border-color: var(--brand-gold); color: var(--brand-gold); }
+
+        /* Form actions */
+        .form-actions {
+            display: flex; align-items: center;
+            justify-content: flex-end; gap: var(--space-3);
+            margin-top: var(--space-5); grid-column: 1 / -1;
+        }
+
+        /* Alert */
+        .alert {
+            display: flex; align-items: flex-start; gap: var(--space-3);
+            padding: var(--space-4) var(--space-5);
+            border-radius: var(--radius-md); font-size: 14px;
+            margin-bottom: var(--space-5); border: 1px solid transparent;
+        }
+        .alert-success { background: var(--state-success-bg); border-color: var(--state-success); color: var(--state-success); }
+        .alert-error { background: var(--state-error-bg); border-color: var(--state-error); color: var(--state-error); }
+
+        /* Footer */
+        .site-footer { background: var(--brand-navy); padding: var(--space-5) 0; margin-top: auto; }
+        .footer-inner {
+            max-width: 1120px; margin: 0 auto; padding: 0 var(--space-5);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .footer-copy { font-size: 13px; color: rgba(255,255,255,0.45); }
+        .footer-tagline { font-size: 13px; color: var(--brand-gold); opacity: 0.8; }
+
+        @media (max-width: 768px) {
+            .profile-layout { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
 </head>
+
 <body>
-$END$
+
+<!-- Navigation -->
+<nav class="site-nav">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo">
+            <div class="nav-logo-mark">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                     stroke="var(--brand-navy)" stroke-width="2.5"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14l4 4v4a2 2 0 0 1-2 2h-2"/>
+                    <circle cx="7" cy="17" r="2"/>
+                    <circle cx="15" cy="17" r="2"/>
+                </svg>
+            </div>
+            <span class="nav-brand">Drive<span>Ease</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/login">Sign In</a></li>
+            <li><a href="/register" class="nav-cta">Get Started</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="page-hero">
+    <div class="container">
+        <p class="page-hero-eyebrow">My Account</p>
+        <h1>Your Profile</h1>
+        <p>Manage your personal information and preferences.</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main>
+    <section class="content-section">
+        <div class="container">
+
+            <!-- Success message -->
+            <div class="alert alert-success" th:if="${message}">
+                <span th:text="${message}"></span>
+            </div>
+
+            <!-- Error message -->
+            <div class="alert alert-error" th:if="${error}">
+                <span th:text="${error}"></span>
+            </div>
+
+            <div class="profile-layout">
+
+                <!-- Left — Account Summary -->
+                <div class="card summary-card">
+                    <div class="card-body">
+
+                        <!-- Avatar — shows first letter of username -->
+                        <div class="avatar">
+                            <span th:text="${#strings.substring(customer.username, 0, 1).toUpperCase()}">U</span>
+                        </div>
+
+                        <!-- Customer name and username -->
+                        <p class="summary-name" th:text="${customer.username}">Username</p>
+                        <p class="summary-username" th:text="'@' + ${customer.username}">@username</p>
+
+                        <!-- Badge — shows Regular or Premium -->
+                        <span class="badge badge-gold"
+                              th:text="${customer instanceof T(com.example.vehicalrentalserviceplatform.customer.model.PremiumCustomer)} ? 'Premium' : 'Regular'">
+                Regular
+              </span>
+
+                        <div class="info-divider"></div>
+
+                        <!-- Read-only info rows -->
+                        <div class="info-row">
+                            <span class="info-label">License ID</span>
+                            <span class="info-value" th:text="${customer.licenseId}">LIC-001</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Status</span>
+                            <span class="info-value">Active</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Right — Edit Details -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                 stroke="var(--brand-navy)" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2>Edit Information</h2>
+                            <p>Update your contact details below</p>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Update form — posts to /profile/update -->
+                        <form th:action="@{/profile/update}" method="post">
+
+                            <!-- Hidden field — sends username with the form -->
+                            <input type="hidden" name="username" th:value="${customer.username}" />
+
+                            <div class="form-grid">
+
+                                <!-- Email -->
+                                <div class="form-group">
+                                    <label class="form-label" for="email">Email Address</label>
+                                    <input class="form-input" type="email" id="email"
+                                           name="email" placeholder="your@email.com"
+                                           th:value="${customer.email}" />
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="form-group">
+                                    <label class="form-label" for="phone">Phone Number</label>
+                                    <input class="form-input" type="text" id="phone"
+                                           name="phone" placeholder="e.g. 0771234567"
+                                           th:value="${customer.phone}" />
+                                </div>
+
+                                <!-- Address -->
+                                <div class="form-group span-full">
+                                    <label class="form-label" for="address">Address</label>
+                                    <textarea class="form-input" id="address"
+                                              name="address" placeholder="Your full address"
+                                              th:text="${customer.address}"></textarea>
+                                </div>
+
+                                <!-- Form actions -->
+                                <div class="form-actions">
+                                    <a href="/login">
+                                        <button type="button" class="btn btn-outline">
+                                            Sign Out
+                                        </button>
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        Save Changes →
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p class="footer-copy">&copy; 2025 DriveEase Rentals. All rights reserved.</p>
+        <p class="footer-tagline">Drive with confidence.</p>
+    </div>
+</footer>
+
 </body>
 </html>
