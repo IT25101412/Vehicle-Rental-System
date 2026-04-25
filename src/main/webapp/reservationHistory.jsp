@@ -1,0 +1,52 @@
+<%@ page import="com.example.vehicalrentalserviceplatform.model.Booking" %>
+<%@ page import="com.example.vehicalrentalserviceplatform.service.BookingService" %>
+<%@ page import="java.util.List" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reservation History</title>
+</head>
+<body>
+    <h2>Active Bookings</h2>
+    <table border="1">
+        <tr>
+            <th>Transaction ID</th>
+            <th>Vehicle ID</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>Return Date</th>
+
+        </tr>
+
+        <%
+            BookingService service = new BookingService();
+            List<Booking> allBookings = service.getAllBookings();
+
+            for (Booking x: allBookings){
+        %>
+            <tr>
+                <td><%= x.getTransactionId()%></td>
+                <td><%= x.getVehicleId()%></td>
+                <td><%= x.getBookingStatus()%></td>
+                <td><%= x.getStartDate()%></td>
+                <td><%= x.getReturnDate()%></td>
+                <td><form action="deleteBooking" method="POST" style="display:inline;">
+                        <input type="hidden" name="transactionId" value="<%= x.getTransactionId() %>"> <button type="submit" style="color: red;">Cancel Booking</button>
+                </form>
+                <form action="editBooking.jsp" method="POST" style="display:inline;">
+                    <input type="hidden" name="transactionId" value="<%= x.getTransactionId() %>">
+                    <input type="hidden" name="vehicleId" value="<%= x.getVehicleId() %>">
+                    <input type="hidden" name="startDate" value="<%= x.getStartDate() %>">
+                    <input type="hidden" name="returnDate" value="<%= x.getReturnDate() %>">
+                    <input type="hidden" name="bookingStatus" value="<%= x.getBookingStatus() %>">
+
+                    <button type="submit" style="color: blue; margin-right: 10px;">Edit</button>
+                </form></td>
+            </tr>
+        <%
+            }
+        %>
+    </table>
+</body>
+</html>
