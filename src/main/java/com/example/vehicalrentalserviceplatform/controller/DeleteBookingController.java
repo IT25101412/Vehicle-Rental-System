@@ -15,6 +15,6 @@ public class DeleteBookingController extends HttpServlet {
         String targetID = request.getParameter("transactionId");
         BookingService service = new BookingService();
         service.deleteBooking(targetID);
-        response.sendRedirect("reservationHistory.jsp");
+        response.sendRedirect("reservationHistory.html");
     }
 }

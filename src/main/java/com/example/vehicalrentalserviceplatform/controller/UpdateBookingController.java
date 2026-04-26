@@ -20,6 +20,6 @@ public class UpdateBookingController extends HttpServlet {
         BookingService service = new BookingService();
         service.updateBooking(transactionId,newVehicleId,newStartDate, newReturnDate, status);
 
-        response.sendRedirect("reservationHistory.jsp");
+        response.sendRedirect("reservationHistory.html");
     }
 }

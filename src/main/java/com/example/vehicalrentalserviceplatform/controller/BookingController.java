@@ -22,6 +22,6 @@ public class BookingController extends HttpServlet{
         BookingService service = new BookingService();
         service.createBooking(newBooking);
 
-        response.sendRedirect("reservationHistory.jsp");
+        response.sendRedirect("/checkout.html?id=" +newBooking.getTransactionId());
     }
 }
