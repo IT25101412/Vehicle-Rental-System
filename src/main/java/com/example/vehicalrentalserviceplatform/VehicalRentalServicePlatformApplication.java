@@ -1,7 +1,9 @@
 package com.example.vehicalrentalserviceplatform;
 
 import com.example.vehicalrentalserviceplatform.controller.BookingController;
+import com.example.vehicalrentalserviceplatform.controller.DeleteAdminStaffController;
 import com.example.vehicalrentalserviceplatform.controller.DeleteBookingController;
+import com.example.vehicalrentalserviceplatform.controller.RegisterAdminStaffController;
 import com.example.vehicalrentalserviceplatform.controller.UpdateBookingController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,5 +30,15 @@ public class VehicalRentalServicePlatformApplication {
     @Bean
     public ServletRegistrationBean<UpdateBookingController> updateServletBean() {
         return new ServletRegistrationBean<>(new UpdateBookingController(),"/updateBooking");
+    }
+
+    @Bean
+    public ServletRegistrationBean<RegisterAdminStaffController> registerAdminStaffServletBean() {
+        return new ServletRegistrationBean<>(new RegisterAdminStaffController(), "/registerAdminStaff");
+    }
+
+    @Bean
+    public ServletRegistrationBean<DeleteAdminStaffController> deleteAdminStaffServletBean() {
+        return new ServletRegistrationBean<>(new DeleteAdminStaffController(), "/deleteAdminStaff");
     }
 }
