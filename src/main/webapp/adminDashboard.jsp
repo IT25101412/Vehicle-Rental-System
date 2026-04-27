@@ -81,6 +81,14 @@
                     <td><%= admin.getEmployeeType() %></td>
                     <td><%= admin.getMaskedPasswordHash() %></td>
                     <td>
+                        <form action="editAdminStaff.jsp" method="POST" style="display:inline;">
+                            <input type="hidden" name="userId" value="<%= admin.getUserId() %>">
+                            <input type="hidden" name="fullName" value="<%= admin.getFullName() %>">
+                            <input type="hidden" name="username" value="<%= admin.getUsername() %>">
+                            <input type="hidden" name="role" value="<%= admin.getRole() %>">
+                            <input type="hidden" name="employeeType" value="<%= admin.getEmployeeType() %>">
+                            <button type="submit" class="btn btn-sm btn-warning">Edit</button>
+                        </form>
                         <form action="deleteAdminStaff" method="POST" style="display:inline;">
                             <input type="hidden" name="userId" value="<%= admin.getUserId() %>">
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>

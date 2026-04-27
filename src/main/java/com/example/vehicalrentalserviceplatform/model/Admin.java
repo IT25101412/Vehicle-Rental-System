@@ -21,6 +21,10 @@ public class Admin extends User {
         return passwordHash.substring(0, 3) + "******";
     }
 
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
     public String toFileRecord() {
         return getUserId() + "," + getFullName() + "," + getUsername() + "," + getRole() + "," + employeeType + "," + passwordHash;
     }

@@ -85,6 +85,46 @@ public class AdminStaffService {
         return true;
     }
 
+    public boolean updateByUserId(String userId, String fullName, String username, String role, String employeeType, String rawPassword, String actor) {
+        List<Admin> admins = getAllAdmins();
+        boolean isUpdated = false;
+
+        for (Admin admin : admins) {
+            if (!admin.getUserId().equals(userId) && admin.getUsername().equalsIgnoreCase(username)) {
+                return false;
+            }
+        }
+
+        for (int i = 0; i < admins.size(); i++) {
+            Admin admin = admins.get(i);
+            if (admin.getUserId().equals(userId)) {
+                String passwordHash = rawPassword == null || rawPassword.trim().isEmpty()
+                        ? admin.getPasswordHash()
+                        : hashPassword(rawPassword);
+
+                Admin updatedAdmin = new Admin(
+                        admin.getUserId(),
+                        sanitize(fullName),
+                        sanitize(username),
+                        sanitize(role),
+                        sanitize(employeeType),
+                        passwordHash
+                );
+                admins.set(i, updatedAdmin);
+                isUpdated = true;
+                break;
+            }
+        }
+
+        if (!isUpdated) {
+            return false;
+        }
+
+        overwriteAdmins(admins);
+        logActivity(actor, "UPDATE", "Updated account userId: " + userId);
+        return true;
+    }
+
     public List<ActivityLogEntry> getAllActivityLogs() {
         List<ActivityLogEntry> logs = new ArrayList<>();
         File file = new File(ACTIVITY_FILE);
