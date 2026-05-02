@@ -24,11 +24,7 @@ public class Vehicle {
         this.rentalRate = rentalRate;
         this.mileage=mileage;
         this.isAvailable=true;
-        if (fuelType.equalsIgnoreCase("Diesel")) {
-            this.fuelType = "Diesel";
-        } else {
-            this.fuelType = "Petrol"; // Defaults to Petrol for any case combination of petrol or any invalid input to prevent errors
-        }
+        setFuelType(fuelType);
     }
 
     //Existing Vehicle constructor
@@ -42,11 +38,7 @@ public class Vehicle {
         this.rentalRate = rentalRate;
         this.mileage=mileage;
         this.isAvailable=isAvailable;
-        if (fuelType.equalsIgnoreCase("Diesel")) {
-            this.fuelType = "Diesel";
-        } else {
-            this.fuelType = "Petrol"; // Defaults to Petrol for any case combination of petrol or any invalid input to prevent errors
-        }
+        setFuelType(fuelType);
     }
 
     //Getters
