@@ -120,4 +120,8 @@ public class Vehicle {
             this.fuelType = "Petrol"; // Defaults to Petrol for any case combination of petrol or any invalid input to prevent errors
         }
     }
+    @Override
+    public String toString() {
+        return vehicleId + "," + year + "," + make + "," + model + "," + fuelType + "," + mileage + "," + vehicleImageFileName + "," + rentalRate + "," + isAvailable;
+    }
 }
