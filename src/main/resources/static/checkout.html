@@ -98,5 +98,41 @@
     </main>
 </div>
 <script src="/js/checkout.js"></script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetId = urlParams.get('id');
+
+    if (targetId) {
+
+        fetch('/api/bookings')
+            .then(response => response.json())
+            .then(bookings => {
+
+                const myBooking = bookings.find(b => b.transactionId === targetId);
+
+                if (myBooking) {
+
+                    document.getElementById('customerName').value = myBooking.customerName;
+                    document.getElementById('vehicleName').value = myBooking.vehicleId;
+
+
+                    const startDate = new Date(myBooking.startDate);
+                    const returnDate = new Date(myBooking.returnDate);
+
+
+                    const timeDifference = returnDate.getTime() - startDate.getTime();
+                    let daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+
+                    if (daysDifference <= 0) daysDifference = 1;
+
+
+                    document.getElementById('rentalDays').value = daysDifference;
+                }
+            })
+            .catch(error => console.error("Error loading booking for checkout:", error));
+    }
+</script>
 </body>
+
 </html>
