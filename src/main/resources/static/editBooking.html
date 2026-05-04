@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Booking</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="page-wrapper">
+    <header>
+        <h1>Update Your Reservation</h1>
+        <p class="text-muted">Modify the dates, vehicle, or status of this booking.</p>
+    </header>
+
+    <div class="form-card">
+        <form action="/updateBooking" method="POST">
+
+            <div class="form-section">
+                <div class="form-row">
+                    <div>
+                        <label>Transaction ID</label>
+                        <input type="text" id="transactionIdBox" name="transactionId" required readonly style="width: 100%; background-color: #f1f5f9;">
+                    </div>
+                    <div>
+                        <label>New Vehicle ID</label>
+                        <input type="text" name="vehicleId" required style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-row">
+                    <div>
+                        <label>New Start Date</label>
+                        <input type="date" name="startDate" required style="width: 100%;">
+                    </div>
+                    <div>
+                        <label>New Return Date</label>
+                        <input type="date" name="returnDate" required style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <label>Booking Status</label>
+                <select name="bookingStatus" style="width: 100%; margin-bottom: 24px;">
+                    <option value="Pending">Pending</option>
+                    <option value="Active">Active</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+
+            <button type="submit" class="button">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetId = urlParams.get('id');
+    if(targetId) {
+        document.getElementById('transactionIdBox').value = targetId;
+    }
+</script>
+</body>
+</html>

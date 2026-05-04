@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book a Vehicle</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="page-wrapper">
+    <header>
+        <h1>Create a New Booking</h1>
+        <p class="text-muted">Enter the details below to reserve a vehicle.</p>
+    </header>
+
+    <div class="form-card">
+        <form action="/createBooking" method="POST">
+
+            <div class="form-section">
+                <div class="form-row">
+                    <div>
+                        <label>Customer Name</label>
+                        <input type="text" name="customerUsername" required style="width: 100%;">
+                    </div>
+                    <div>
+                        <label>Vehicle ID</label>
+                        <input type="text" name="vehicleId" required style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-row">
+                    <div>
+                        <label>Start Date</label>
+                        <input type="date" name="startDate" required style="width: 100%;">
+                    </div>
+                    <div>
+                        <label>Return Date</label>
+                        <input type="date" name="returnDate" required style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons" style="margin-top: 24px;">
+                <a href="/reservationHistory.html" class="button secondary">View My History</a>
+
+                <button type="submit" class="button">Confirm & Pay</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

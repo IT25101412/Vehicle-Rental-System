@@ -78,12 +78,13 @@ public class BookingService {
 
     }
 
-    public void updateBooking(String transactionId, String newStartDate, String newReturnDate, String newStatus){
+    public void updateBooking(String transactionId,String newVehicleID, String newStartDate, String newReturnDate, String newStatus){
         List<Booking> allBookings = getAllBookings();
         boolean isUpdated = false;
 
         for (Booking x : allBookings){
             if(x.getTransactionId().equals(transactionId)){
+                x.setVehicleId(newVehicleID);
                 x.setStartDate(newStartDate);
                 x.setReturnDate(newReturnDate);
                 x.setBookingStatus(newStatus);
