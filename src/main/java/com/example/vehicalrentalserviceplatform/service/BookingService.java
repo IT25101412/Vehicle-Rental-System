@@ -72,6 +72,20 @@ public class BookingService {
 
     }
 
+    public List<Booking> getBookingsByCustomer(String customerName) {
+        List<Booking> allBookings = getAllBookings();
+
+        List<Booking> userBookings = new ArrayList<>();
+
+        for (Booking x : allBookings) {
+            if (x.getCustomerName().equalsIgnoreCase(customerName)) {
+                userBookings.add(x);
+            }
+        }
+
+        return userBookings;
+    }
+
     private void overWriteBookingFile(List<Booking> updatedBookings){
 
         try(FileWriter fileWriter = new FileWriter(FILE_NAME,false);
