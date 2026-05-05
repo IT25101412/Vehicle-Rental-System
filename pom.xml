@@ -20,10 +20,16 @@
     </properties>
 
     <dependencies>
-        <!-- Spring Web (Handles your API endpoints and static HTML/JS) -->
+        <!-- Spring Web (Handles your API endpoints) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Thymeleaf (Allows Spring to serve your HTML files) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
         <!-- Test -->
