@@ -114,6 +114,34 @@ public class CustomerFileService {
         return found;
     }
 
+    // UPDATE — changes password after verifying current password
+    public boolean changePassword(String username, String currentPassword, String newPassword) {
+        // Verify current password first
+        User customer = findCustomer(username);
+        if (customer == null) {
+            return false;
+        }
+        if (!customer.validatePassword(currentPassword)) {
+            return false;
+        }
+        // Current password correct — update it
+        List<String> lines = readAllLines();
+        boolean found = false;
+        for (int i = 0; i < lines.size(); i++) {
+            String[] fields = lines.get(i).split(",");
+            if (fields.length >= 6 && fields[1].equalsIgnoreCase(username)) {
+                fields[2] = newPassword; // password is index 2
+                lines.set(i, String.join(",", fields));
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            writeAllLines(lines);
+        }
+        return found;
+    }
+
     // LOGIN — checks username and password match
     public boolean loginCustomer(String username, String password) {
         User customer = findCustomer(username);

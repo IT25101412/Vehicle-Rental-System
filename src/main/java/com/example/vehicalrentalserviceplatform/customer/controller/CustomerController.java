@@ -95,4 +95,36 @@ public class CustomerController {
         }
         return "profile";
     }
+
+    // Handles password change form submission
+    @PostMapping("/profile/password")
+    public String handlePasswordChange(@RequestParam String username,
+                                       @RequestParam String currentPassword,
+                                       @RequestParam String newPassword,
+                                       @RequestParam String confirmPassword,
+                                       Model model) {
+        // Reload customer to show profile
+        User customer = customerFileService.findCustomer(username);
+        model.addAttribute("customer", customer);
+
+        // Check new password and confirm match
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("passwordError", "New passwords do not match.");
+            return "profile";
+        }
+
+        // Check minimum length
+        if (newPassword.length() < 6) {
+            model.addAttribute("passwordError", "Password must be at least 6 characters.");
+            return "profile";
+        }
+
+        boolean changed = customerFileService.changePassword(username, currentPassword, newPassword);
+        if (changed) {
+            model.addAttribute("passwordMessage", "Password changed successfully.");
+        } else {
+            model.addAttribute("passwordError", "Current password is incorrect.");
+        }
+        return "profile";
+    }
 }
