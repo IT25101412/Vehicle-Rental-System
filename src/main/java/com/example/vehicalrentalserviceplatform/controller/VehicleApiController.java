@@ -1,45 +1,70 @@
 package com.example.vehicalrentalserviceplatform.controller;
 
-import com.example.vehicalrentalserviceplatform.model.Vehicle;
+import com.example.vehicalrentalserviceplatform.model.*;
 import com.example.vehicalrentalserviceplatform.service.VehicleService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vehicles") // Base URL for JS fetch calls
+@RequestMapping("/api/vehicles")
 public class VehicleApiController {
 
     private final VehicleService vehicleService;
+    // Define where images will be stored physically on your PC
+    private final String UPLOAD_DIR = "src/main/resources/static/images/";
 
-    // Spring Boot automatically injects the singleton VehicleService here
     public VehicleApiController(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
 
-    // READ: Returns JSON list of vehicles for the JS catalogue
     @GetMapping
-    public List<Vehicle> getAllVehicles() {
+    public List<Vehicle> getAll() {
         return vehicleService.getAllVehicles();
     }
 
-    // CREATE: Adds a new vehicle from a JS JSON object
     @PostMapping("/add")
-    public String addVehicle(@RequestBody Vehicle vehicle) {
-        vehicleService.addVehicle(vehicle);
-        return "Vehicle added successfully!";
+    public String addVehicle(
+            @RequestParam("type") String type,
+            @RequestParam("vehicleId") String vehicleId,
+            @RequestParam("make") String make,
+            @RequestParam("model") String model,
+            @RequestParam("year") String year,
+            @RequestParam("regNo") String regNo,
+            @RequestParam("fuel") String fuel,
+            @RequestParam("rate") double rate,
+            @RequestParam("mileage") double mileage,
+            @RequestParam(value = "seats", required = false) Integer seats,
+            @RequestParam(value = "driveTrain", required = false) String driveTrain,
+            @RequestParam(value = "motoType", required = false) String motoType,
+            @RequestParam("image") MultipartFile imageFile) throws IOException {
+
+        // 1. Handle the Image Upload
+        String fileName = vehicleId + "_" + imageFile.getOriginalFilename();
+        Path path = Paths.get(UPLOAD_DIR + fileName);
+        Files.createDirectories(path.getParent());
+        Files.write(path, imageFile.getBytes());
+
+        // 2. Reconstruct the correct Subclass based on type
+        Vehicle v;
+        if (type.equals("CAR")) {
+            v = new Car(vehicleId, make, model, year, regNo, rate, fuel, mileage, true, seats, fileName);
+        } else if (type.equals("MOTORCYCLE")) {
+            v = new Motorcycle(vehicleId, make, model, year, regNo, rate, fuel, mileage, true, motoType);
+        } else if (type.equals("SUV")) {
+            v = new Suv(vehicleId, make, model, year, regNo, rate, fuel, mileage, true, seats, driveTrain);
+        } else {
+            v = new Van(vehicleId, make, model, year, regNo, rate, fuel, mileage, true, seats, driveTrain);
+        }
+
+        vehicleService.addVehicle(v);
+        return "Vehicle and image uploaded successfully!";
     }
 
-    // DELETE: Removes a vehicle using its ID from the URL
     @DeleteMapping("/delete/{id}")
-    public String deleteVehicle(@PathVariable String id) {
-        boolean success = vehicleService.deleteVehicle(id);
-        return success ? "Vehicle deleted!" : "Vehicle not found.";
-    }
-
-    // UPDATE: Updates an existing vehicle
-    @PutMapping("/update/{id}")
-    public String updateVehicle(@PathVariable String id, @RequestBody Vehicle vehicle) {
-        vehicleService.updateVehicle(id, vehicle);
-        return "Vehicle updated!";
+    public void delete(@PathVariable String id) {
+        vehicleService.deleteVehicle(id);
     }
 }
