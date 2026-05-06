@@ -3,19 +3,14 @@ package com.example.vehicalrentalserviceplatform.model;
 public class Motorcycle extends Vehicle{
     private String motorcycleType; // whether a standard or scooter
 
-    //Constructor for file loading
-
-    public Motorcycle(String vehicleId, String year, String make, String model, String fuelType, double mileage, String vehicleImageFileName, double rentalRate, boolean isAvailable, String motorcycleType) {
-        super(vehicleId, year, make, model, fuelType, mileage, vehicleImageFileName, rentalRate, isAvailable);
-        setMotorcycleType(motorcycleType);
+    // Updated for Controller Compatibility - No Registration Number, ID at end
+    public Motorcycle(String make, String model, String year, double rentalRate,
+                      String fuelType, double mileage, boolean isAvailable,
+                      String motorcycleType, String vehicleImageFileName, String vehicleId) {
+        super(make, model, year, rentalRate, fuelType, mileage, isAvailable, vehicleImageFileName, vehicleId);
+        this.motorcycleType = motorcycleType;
     }
 
-    //Constructor for new Motorcycle
-
-    public Motorcycle(String year, String make, String model, String fuelType, double mileage, String vehicleImageFileName, double rentalRate, String motorcycleType) {
-        super(year, make, model, fuelType, mileage, vehicleImageFileName, rentalRate);
-            setMotorcycleType(motorcycleType);
-    }
     //Getter
 
     public String getMotorcycleType() {

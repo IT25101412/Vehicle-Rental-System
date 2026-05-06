@@ -4,20 +4,13 @@ public class Van extends Vehicle{
     private int numberOfSeats;
     private String driveTrain; //whether van is awd 2wd or 4wd
 
-    //Constructor for file loading
-
-    public Van(String vehicleId, String year, String make, String model, String fuelType, double mileage, String vehicleImageFileName, double rentalRate, boolean isAvailable, int numberOfSeats, String driveTrain) {
-        super(vehicleId, year, make, model, fuelType, mileage, vehicleImageFileName, rentalRate, isAvailable);
-        this.numberOfSeats=numberOfSeats;
-        setDriveTrain(driveTrain);
-    }
-
-    //Constructor for new Van
-
-    public Van(String year, String make, String model, String fuelType, double mileage, String vehicleImageFileName, double rentalRate, int numberOfSeats, String driveTrain) {
-        super(year, make, model, fuelType, mileage, vehicleImageFileName, rentalRate);
-        this.numberOfSeats=numberOfSeats;
-        setDriveTrain(driveTrain);
+    // Updated for Controller Compatibility - No Registration Number, ID at end
+    public Van(String make, String model, String year, double rentalRate,
+               String fuelType, double mileage, boolean isAvailable,
+               int numberOfSeats, String driveTrain, String vehicleImageFileName, String vehicleId) {
+        super(make, model, year, rentalRate, fuelType, mileage, isAvailable, vehicleImageFileName, vehicleId);
+        this.numberOfSeats = numberOfSeats;
+        this.driveTrain = driveTrain;
     }
     //Getters
 

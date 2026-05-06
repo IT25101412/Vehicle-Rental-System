@@ -15,21 +15,9 @@ public class Vehicle {
 
     //New Vehicle constructor
 
-    public Vehicle(String year, String make, String model,String fuelType, double mileage, String vehicleImageFileName, double rentalRate) {
-        this.vehicleId = UUID.randomUUID().toString();
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.vehicleImageFileName = vehicleImageFileName;
-        this.rentalRate = rentalRate;
-        this.mileage=mileage;
-        this.isAvailable=true;
-        setFuelType(fuelType);
-    }
-
-    //Existing Vehicle constructor
-
-    public Vehicle(String vehicleId, String year, String make, String model,String fuelType, double mileage, String vehicleImageFileName, double rentalRate, boolean isAvailable) {
+    public Vehicle(String make, String model, String year, double rentalRate,
+                   String fuelType, double mileage, boolean isAvailable,
+                   String vehicleImageFileName, String vehicleId) {
         this.vehicleId = vehicleId;
         this.make = make;
         this.model = model;
@@ -120,8 +108,15 @@ public class Vehicle {
             this.fuelType = "Petrol"; // Defaults to Petrol for any case combination of petrol or any invalid input to prevent errors
         }
     }
+
+    public String getType() {
+        return this.getClass().getSimpleName().toUpperCase();
+    }
+
     @Override
     public String toString() {
-        return vehicleId + "," + year + "," + make + "," + model + "," + fuelType + "," + mileage + "," + vehicleImageFileName + "," + rentalRate + "," + isAvailable;
+        return vehicleId + "," + year + "," + make + "," + model + "," +
+                fuelType + "," + mileage + "," + vehicleImageFileName + "," +
+                rentalRate + "," + isAvailable;
     }
 }

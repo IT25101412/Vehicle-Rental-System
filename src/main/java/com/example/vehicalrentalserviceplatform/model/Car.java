@@ -4,21 +4,14 @@ public class Car extends Vehicle{
     private int numberOfSeats;
     private String carType; //whether a hatchback or a sedan
 
-    //Constructor for file loading
-
-    public Car(String vehicleId, String year, String make, String model, String fuelType, double mileage, String vehicleImageFileName, double rentalRate, boolean isAvailable, int numberOfSeats, String carType) {
-        super(vehicleId, year, make, model, fuelType, mileage, vehicleImageFileName, rentalRate, isAvailable);
-        this.numberOfSeats=numberOfSeats;
-        setCarType(carType);
+    // Updated for Controller Compatibility - No Registration Number, ID at end
+    public Car(String make, String model, String year, double rentalRate,
+               String fuelType, double mileage, boolean isAvailable,
+               int numberOfSeats, String vehicleImageFileName, String vehicleId) {
+        super(make, model, year, rentalRate, fuelType, mileage, isAvailable, vehicleImageFileName, vehicleId);
+        this.numberOfSeats = numberOfSeats;
     }
 
-    //Constructor for new car
-
-    public Car(String year, String make, String model, String fuelType, double mileage, String vehicleImageFileName, double rentalRate, int numberOfSeats, String carType) {
-        super(year, make, model, fuelType, mileage, vehicleImageFileName, rentalRate);
-        this.numberOfSeats=numberOfSeats;
-        setCarType(carType);
-    }
     //Getters
 
     public String getCarType() {

@@ -35,7 +35,8 @@ public class VehicleService {
     private void saveVehiclesToFile() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH))) {
             for (Vehicle v : vehicles) {
-                writer.println(v.toString()); // Ensure your model toString matches the load format
+                // IMPORTANT: Your model's toString() method determines exactly how this is saved!
+                writer.println(v.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,27 +53,39 @@ public class VehicleService {
                 String[] parts = line.split(",");
                 if (parts.length < 2) continue;
 
+                // 1. Read everything in the exact order of your super.toString()
                 String type = parts[0];
+                String id = parts[1];
+                String year = parts[2];
+                String make = parts[3];
+                String model = parts[4];
+                String fuel = parts[5];
+                double mileage = Double.parseDouble(parts[6]);
+                String image = parts[7];
+                double rate = Double.parseDouble(parts[8]);
+                boolean isAvailable = Boolean.parseBoolean(parts[9]);
+
+                // 2. Put them into the Constructors (which expect Make, Model, Year, Rate, Fuel, Mileage, Available, [Extras], Image, ID)
                 if (type.equals("CAR")) {
-                    vehicles.add(new Car(parts[1], parts[2], parts[3], parts[4], parts[5],
-                            Double.parseDouble(parts[6]), parts[7], Double.parseDouble(parts[8]),
-                            Boolean.parseBoolean(parts[9]), Integer.parseInt(parts[10]), parts[11]));
+                    int seats = Integer.parseInt(parts[10]);
+                    vehicles.add(new Car(make, model, year, rate, fuel, mileage, isAvailable, seats, image, id));
                 } else if (type.equals("MOTORCYCLE")) {
-                    vehicles.add(new Motorcycle(parts[1], parts[2], parts[3], parts[4], parts[5],
-                            Double.parseDouble(parts[6]), parts[7], Double.parseDouble(parts[8]),
-                            Boolean.parseBoolean(parts[9]), parts[10]));
+                    String motoType = parts[10];
+                    vehicles.add(new Motorcycle(make, model, year, rate, fuel, mileage, isAvailable, motoType, image, id));
                 } else if (type.equals("SUV")) {
-                    vehicles.add(new Suv(parts[1], parts[2], parts[3], parts[4], parts[5],
-                            Double.parseDouble(parts[6]), parts[7], Double.parseDouble(parts[8]),
-                            Boolean.parseBoolean(parts[9]), Integer.parseInt(parts[10]), parts[11]));
+                    int seats = Integer.parseInt(parts[10]);
+                    String driveTrain = parts[11];
+                    vehicles.add(new Suv(make, model, year, rate, fuel, mileage, isAvailable, seats, driveTrain, image, id));
                 } else if (type.equals("VAN")) {
-                    vehicles.add(new Van(parts[1], parts[2], parts[3], parts[4], parts[5],
-                            Double.parseDouble(parts[6]), parts[7], Double.parseDouble(parts[8]),
-                            Boolean.parseBoolean(parts[9]), Integer.parseInt(parts[10]), parts[11]));
+                    int seats = Integer.parseInt(parts[10]);
+                    String driveTrain = parts[11];
+                    vehicles.add(new Van(make, model, year, rate, fuel, mileage, isAvailable, seats, driveTrain, image, id));
                 }
             }
         } catch (IOException e) {
             System.out.println("Error loading inventory: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Data format error in text file. Ensure it matches the new super.toString() format: " + e.getMessage());
         }
     }
 }

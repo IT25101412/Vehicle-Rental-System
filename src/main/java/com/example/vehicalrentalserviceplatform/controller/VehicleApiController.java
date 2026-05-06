@@ -7,13 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleApiController {
 
     private final VehicleService vehicleService;
-    // Define where images will be stored physically on your PC
+    // Static path for image storage
     private final String UPLOAD_DIR = "src/main/resources/static/images/";
 
     public VehicleApiController(VehicleService vehicleService) {
@@ -28,39 +29,46 @@ public class VehicleApiController {
     @PostMapping("/add")
     public String addVehicle(
             @RequestParam("type") String type,
-            @RequestParam("vehicleId") String vehicleId,
             @RequestParam("make") String make,
             @RequestParam("model") String model,
             @RequestParam("year") String year,
-            @RequestParam("regNo") String regNo,
             @RequestParam("fuel") String fuel,
             @RequestParam("rate") double rate,
             @RequestParam("mileage") double mileage,
             @RequestParam(value = "seats", required = false) Integer seats,
             @RequestParam(value = "driveTrain", required = false) String driveTrain,
             @RequestParam(value = "motoType", required = false) String motoType,
-            @RequestParam("image") MultipartFile imageFile) throws IOException {
+            @RequestParam("image") MultipartFile imageFile) {
 
-        // 1. Handle the Image Upload
-        String fileName = vehicleId + "_" + imageFile.getOriginalFilename();
-        Path path = Paths.get(UPLOAD_DIR + fileName);
-        Files.createDirectories(path.getParent());
-        Files.write(path, imageFile.getBytes());
+        try {
+            // 1. Generate unique ID automatically
+            String vehicleId = UUID.randomUUID().toString();
 
-        // 2. Reconstruct the correct Subclass based on type
-        Vehicle v;
-        if (type.equals("CAR")) {
-            v = new Car(vehicleId, make, model, year, regNo, rate, fuel, mileage, true, seats, fileName);
-        } else if (type.equals("MOTORCYCLE")) {
-            v = new Motorcycle(vehicleId, make, model, year, regNo, rate, fuel, mileage, true, motoType);
-        } else if (type.equals("SUV")) {
-            v = new Suv(vehicleId, make, model, year, regNo, rate, fuel, mileage, true, seats, driveTrain);
-        } else {
-            v = new Van(vehicleId, make, model, year, regNo, rate, fuel, mileage, true, seats, driveTrain);
+            // 2. Handle the Image Upload using the vehicleId as a prefix
+            String fileName = vehicleId + "_" + imageFile.getOriginalFilename();
+            Path path = Paths.get(UPLOAD_DIR + fileName);
+            Files.createDirectories(path.getParent());
+            Files.write(path, imageFile.getBytes());
+
+            // 3. Reconstruct the correct Subclass
+            // ORDER: Make, Model, Year, Rate, Fuel, Mileage, Available, [Specifics], FileName, ID
+            Vehicle v;
+            if (type.equals("CAR")) {
+                v = new Car(make, model, year, rate, fuel, mileage, true, seats, fileName, vehicleId);
+            } else if (type.equals("MOTORCYCLE")) {
+                v = new Motorcycle(make, model, year, rate, fuel, mileage, true, motoType, fileName, vehicleId);
+            } else if (type.equals("SUV")) {
+                v = new Suv(make, model, year, rate, fuel, mileage, true, seats, driveTrain, fileName, vehicleId);
+            } else {
+                v = new Van(make, model, year, rate, fuel, mileage, true, seats, driveTrain, fileName, vehicleId);
+            }
+
+            vehicleService.addVehicle(v);
+            return "Vehicle and image uploaded successfully! ID: " + vehicleId;
+
+        } catch (IOException e) {
+            return "Error uploading image: " + e.getMessage();
         }
-
-        vehicleService.addVehicle(v);
-        return "Vehicle and image uploaded successfully!";
     }
 
     @DeleteMapping("/delete/{id}")
