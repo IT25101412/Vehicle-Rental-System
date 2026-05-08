@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Maintenance & Service Tracking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f4f8; }
+        .navbar { background-color: #1a1a2e; }
+        .navbar-brand, .nav-link { color: white !important; }
+        .card { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .badge-pending { background-color: #ffc107; color: black; }
+        .badge-completed { background-color: #198754; }
+        .badge-inprogress { background-color: #0d6efd; }
+        h2 { color: #1a1a2e; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg mb-4">
+    <div class="container">
+        <a class="navbar-brand fw-bold">🚗 Vehicle Rental Service</a>
+        <div>
+            <a class="nav-link d-inline" href="/maintenance">Maintenance</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- Page Title -->
+    <h2 class="mb-4">🔧 Maintenance & Service Tracking</h2>
+
+    <!-- FORM: Log New Service Record -->
+    <div class="card p-4 mb-5">
+        <h5 class="mb-3">Log New Service Record</h5>
+        <form action="/maintenance/add" method="post">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Vehicle ID</label>
+                    <input type="text" name="vehicleId" class="form-control" placeholder="e.g. VH-001" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Service Type</label>
+                    <select name="serviceType" class="form-select" required>
+                        <option value="">-- Select --</option>
+                        <option value="Engine">Engine</option>
+                        <option value="Tyre">Tyre</option>
+                        <option value="Oil Change">Oil Change</option>
+                        <option value="Brake">Brake</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Service Date</label>
+                    <input type="date" name="serviceDate" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Notes</label>
+                    <input type="text" name="notes" class="form-control" placeholder="Brief description">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-dark mt-3">➕ Add Record</button>
+        </form>
+    </div>
+
+    <!-- TABLE: Service History -->
+    <div class="card p-4">
+        <h5 class="mb-3">📋 Service History</h5>
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>Record ID</th>
+                <th>Vehicle ID</th>
+                <th>Service Type</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="record : ${records}">
+                <td th:text="${record.recordId}"></td>
+                <td th:text="${record.vehicleId}"></td>
+                <td th:text="${record.serviceType}"></td>
+                <td th:text="${record.serviceDate}"></td>
+                <td>
+                        <span th:classappend="${record.status == 'Completed'} ? 'badge-completed' : (${record.status == 'In Progress'} ? 'badge-inprogress' : 'badge-pending')"
+                              class="badge"
+                              th:text="${record.status}">
+                        </span>
+                </td>
+                <td th:text="${record.notes}"></td>
+                <td>
+                    <!-- UPDATE STATUS FORM -->
+                    <form action="/maintenance/update" method="post" class="d-inline">
+                        <input type="hidden" name="recordId" th:value="${record.recordId}">
+                        <select name="status" class="form-select form-select-sm d-inline w-auto">
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary ms-1">Update</button>
+                    </form>
+                    <!-- DELETE BUTTON -->
+                    <a th:href="@{/maintenance/delete/{id}(id=${record.recordId})}"
+                       class="btn btn-sm btn-danger ms-1"
+                       onclick="return confirm('Delete this record?')">Delete</a>
+                    <!-- ALERT BUTTON (Polymorphism demo) -->
+                    <a th:href="@{/maintenance/alert/{id}(id=${record.recordId})}"
+                       class="btn btn-sm btn-warning ms-1" target="_blank">Alert</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(records)}">
+                <td colspan="7" class="text-center text-muted">No maintenance records found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
