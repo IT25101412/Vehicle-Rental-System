@@ -11,7 +11,7 @@ import java.util.UUID;
 @RequestMapping("/maintenance")
 public class MaintenanceController {
 
-    // SHOW maintenance log entry form + history
+    // READ - Show maintenance log entry form and service history
     @GetMapping
     public String maintenancePage(Model model) {
         List<MaintenanceRecord> records = MaintenanceFileHandler.loadAllRecords();
@@ -19,45 +19,61 @@ public class MaintenanceController {
         return "maintenance";
     }
 
-    // CREATE — Submit new maintenance record
+    // CREATE - Add new maintenance record
     @PostMapping("/add")
     public String addRecord(@RequestParam String vehicleId,
+                            @RequestParam String vehicleType,
                             @RequestParam String serviceType,
                             @RequestParam String serviceDate,
                             @RequestParam String notes) {
+
         String recordId = "REC-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+
         MaintenanceRecord record = new MaintenanceRecord(
-                recordId, vehicleId, serviceType, serviceDate, "Pending", notes
+                recordId,
+                vehicleId,
+                vehicleType,
+                serviceType,
+                serviceDate,
+                "Pending",
+                notes
         );
+
         MaintenanceFileHandler.addRecord(record);
+
         return "redirect:/maintenance";
     }
 
-    // UPDATE — Change status of a record
+    // UPDATE - Change status of a maintenance record
     @PostMapping("/update")
     public String updateStatus(@RequestParam String recordId,
                                @RequestParam String status) {
+
         MaintenanceFileHandler.updateStatus(recordId, status);
+
         return "redirect:/maintenance";
     }
 
-    // DELETE — Remove a record
+    // DELETE - Remove a maintenance record
     @GetMapping("/delete/{recordId}")
     public String deleteRecord(@PathVariable String recordId) {
+
         MaintenanceFileHandler.deleteRecord(recordId);
+
         return "redirect:/maintenance";
     }
 
-    // SHOW alert for a specific record (Polymorphism demo)
+    // Polymorphism demonstration - Show vehicle type based maintenance alert
     @GetMapping("/alert/{recordId}")
     @ResponseBody
     public String getAlert(@PathVariable String recordId) {
-        List<MaintenanceRecord> records = MaintenanceFileHandler.loadAllRecords();
-        for (MaintenanceRecord r : records) {
-            if (r.getRecordId().equals(recordId)) {
-                return r.getMaintenanceAlert();
-            }
+
+        MaintenanceRecord record = MaintenanceFileHandler.findRecordById(recordId);
+
+        if (record != null) {
+            return record.getMaintenanceAlert();
         }
+
         return "Record not found.";
     }
 }
