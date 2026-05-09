@@ -102,32 +102,37 @@
     const urlParams = new URLSearchParams(window.location.search);
     const targetId = urlParams.get('id');
 
-    if (targetId) {
-
+    // THE BOUNCER: Check if the ID is missing
+    if (!targetId) {
+        // Kick them back to the admin report or home page
+        alert("Access Denied: No booking selected. Redirecting...");
+        window.location.href = "/bookVehicle.html";
+    }
+    // IF THE ID EXISTS: Proceed normally
+    else {
+        // Call your Java API to get the booking data
         fetch('/api/bookings')
             .then(response => response.json())
             .then(bookings => {
 
+                // Find the one specific booking that matches our ID
                 const myBooking = bookings.find(b => b.transactionId === targetId);
 
                 if (myBooking) {
-
                     document.getElementById('customerName').value = myBooking.customerName;
                     document.getElementById('vehicleName').value = myBooking.vehicleId;
 
-
                     const startDate = new Date(myBooking.startDate);
                     const returnDate = new Date(myBooking.returnDate);
-
-
                     const timeDifference = returnDate.getTime() - startDate.getTime();
                     let daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
-
-
                     if (daysDifference <= 0) daysDifference = 1;
 
-
                     document.getElementById('rentalDays').value = daysDifference;
+                } else {
+                    // SECOND BOUNCER: What if they typed a fake ID like ?id=12345?
+                    alert("Booking not found! Redirecting...");
+                    window.location.href = "/bookVehicle.html";
                 }
             })
             .catch(error => console.error("Error loading booking for checkout:", error));

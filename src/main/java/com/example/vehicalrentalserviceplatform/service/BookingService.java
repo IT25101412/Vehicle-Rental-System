@@ -4,28 +4,38 @@ import com.example.vehicalrentalserviceplatform.model.Booking;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 public class BookingService {
 
     private static final String FILE_NAME = "booking.txt";
 
-    public boolean isVehicleAvailable(String vehicleId, String StartDate){
+    public boolean isVehicleAvailable(String vehicleId, String requestedStartDate, String requestedReturnDate){
 
         List<Booking> activeBookings = getAllBookings();
 
-        for(Booking x : activeBookings){
+        LocalDate reqStart = LocalDate.parse(requestedStartDate);
+        LocalDate reqReturn = LocalDate.parse(requestedReturnDate);
 
-            if (x.getVehicleId().equals(vehicleId) && x.getBookingStatus().equals("Active")){
-                return false;
+        for(Booking x : activeBookings){
+            if (x.getVehicleId().equals(vehicleId) && !x.getBookingStatus().equals("Cancelled")){
+
+                LocalDate bookedStart = LocalDate.parse(x.getStartDate());
+                LocalDate bookedReturn = LocalDate.parse(x.getReturnDate());
+
+
+                if (!reqStart.isAfter(bookedReturn) && !reqReturn.isBefore(bookedStart)) {
+                    return false; // Car is taken during these dates
+                }
             }
         }
-        return true;
+        return true; // No overlaps found, car is yours!
     }
 
     public  void  createBooking(Booking newBooking){
 
-        if(!isVehicleAvailable(newBooking.getVehicleId(),newBooking.getStartDate())){
-            System.out.println("Error: Vehicle is already booked");
+        if(!isVehicleAvailable(newBooking.getVehicleId(),newBooking.getStartDate(),newBooking.getReturnDate())){
+            System.out.println("Error: Vehicle is already booked for those dates.");
             return;
         }
 
@@ -60,6 +70,20 @@ public class BookingService {
         }
         return bookingList;
 
+    }
+
+    public List<Booking> getBookingsByCustomer(String customerName) {
+        List<Booking> allBookings = getAllBookings();
+
+        List<Booking> userBookings = new ArrayList<>();
+
+        for (Booking x : allBookings) {
+            if (x.getCustomerName().equalsIgnoreCase(customerName)) {
+                userBookings.add(x);
+            }
+        }
+
+        return userBookings;
     }
 
     private void overWriteBookingFile(List<Booking> updatedBookings){

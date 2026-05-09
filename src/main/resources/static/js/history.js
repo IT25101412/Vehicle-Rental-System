@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function loadBookings() {
-    fetch('/api/bookings')
+    const currentUser = "John Doe"; // Replace with actual logged-in user data
+
+    fetch(`/api/bookings?customer=${currentUser}`)
         .then(response => response.json())
         .then(data => {
-
-
             const tableBody = document.getElementById("bookingTableBody");
             tableBody.innerHTML = "";
 
