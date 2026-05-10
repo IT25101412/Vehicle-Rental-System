@@ -22,9 +22,9 @@ public class UpdateAdminStaffController extends HttpServlet {
         boolean updated = service.updateByUserId(userId, fullName, username, role, employeeType, password, "system-admin");
 
         if (updated) {
-            response.sendRedirect("adminDashboard.jsp?message=Account%20updated%20successfully.");
+            response.sendRedirect("/admin-dashboard.html?message=Account%20updated%20successfully.");
         } else {
-            response.sendRedirect("adminDashboard.jsp?message=Account%20update%20failed.");
+            response.sendRedirect("/admin-dashboard.html?message=Account%20update%20failed.");
         }
     }
 }
