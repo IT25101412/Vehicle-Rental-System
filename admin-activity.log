@@ -16,3 +16,6 @@
 2026-05-11 14:15:32|system-admin|UPDATE|Updated account userId: 7f2b3be2-959c-4fc4-a5a8-3661c01ae495
 2026-05-11 19:11:47|system-admin|UPDATE|Updated account userId: 7f2b3be2-959c-4fc4-a5a8-3661c01ae495
 2026-05-11 19:12:12|system-admin|CREATE|Created ADMIN account for username: Sanithu
+2026-05-11 21:59:49|system-admin|DELETE|Deleted account userId: df450eb7-b431-448e-9c6f-021d0bb84744
+2026-05-11 22:00:03|system-admin|CREATE|Created ADMIN account for username: Sanithu
+2026-05-11 22:00:29|system-admin|CREATE|Created ADMIN account for username: Sanithu1
