@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function loadBookings() {
-    const currentUser = "John Doe"; // Replace with actual logged-in user data
+    const currentUser = "Sanithu"; // Replace with actual logged-in user data
 
     fetch(`/api/bookings?customer=${currentUser}`)
         .then(response => response.json())
