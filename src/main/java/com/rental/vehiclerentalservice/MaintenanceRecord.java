@@ -1,5 +1,6 @@
 package com.rental.vehiclerentalservice;
 
+// Encapsulation: all fields are private and accessed only through getters and setters
 public class MaintenanceRecord {
 
     private String recordId;
