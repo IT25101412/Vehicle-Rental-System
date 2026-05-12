@@ -71,11 +71,19 @@ public class CustomerController {
 
     // Shows the profile page
     @GetMapping("/profile")
-    public String showProfilePage(@RequestParam String username, Model model) {
-        User customer = customerFileService.findCustomer(username);
+    public String showProfilePage(HttpSession session, Model model) {
+
+        String currentUser = (String) session.getAttribute("loggedInUser");
+
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        User customer = customerFileService.findCustomer(currentUser);
+
         if (customer == null) {
             model.addAttribute("error", "Customer not found.");
-            return "login";
+            return "redirect:/login";
         }
         model.addAttribute("customer", customer);
         return "profile";
