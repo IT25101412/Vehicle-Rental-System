@@ -27,6 +27,11 @@ public class MaintenanceController {
                             @RequestParam String serviceDate,
                             @RequestParam String notes) {
 
+        // Input validation - reject empty fields
+        if (vehicleId.trim().isEmpty() || serviceType.trim().isEmpty() || serviceDate.trim().isEmpty()) {
+            return "redirect:/maintenance";
+        }
+
         String recordId = "REC-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
         MaintenanceRecord record = new MaintenanceRecord(
