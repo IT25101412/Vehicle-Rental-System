@@ -3,7 +3,13 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function loadBookings() {
-    const currentUser = "Sanithu"; // Replace with actual logged-in user data
+    const currentUser = document.getElementById("loggedInUsername").value; // Replace with actual logged-in user data
+
+    if (!currentUser) {
+            console.error("No user logged in!");
+            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='6'>Please log in to view history.</td></tr>";
+            return;
+    }
 
     fetch(`/api/bookings?customer=${currentUser}`)
         .then(response => response.json())
