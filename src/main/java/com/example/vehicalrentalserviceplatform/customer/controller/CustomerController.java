@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpSession;
 
 // Handles all customer page requests
 @Controller
@@ -53,12 +54,13 @@ public class CustomerController {
     @PostMapping("/login")
     public String handleLogin(@RequestParam String username,
                               @RequestParam String password,
+                              HttpSession session,
                               Model model) {
         boolean valid = customerFileService.loginCustomer(username, password);
         if (valid) {
-            User customer = customerFileService.findCustomer(username);
-            model.addAttribute("customer", customer);
-            return "profile";
+
+            session.setAttribute("loggedInUser", username);
+            return "redirect:/bookVehicle.html";
         } else {
             model.addAttribute("error", "Invalid username or password. Please try again.");
             return "login";

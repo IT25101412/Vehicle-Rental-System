@@ -1,0 +1,2 @@
+CUSTOMER,Sanithu,sanithu1,lic 1 ,sanithumsiriwardhana@gmail.com,0703887127
+CUSTOMER,Sanithu1,Sanithu,lic 12,sanithumsiriwardhana@gmail.com,0703887127
