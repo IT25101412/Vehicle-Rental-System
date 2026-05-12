@@ -88,4 +88,24 @@ public class VehicleService {
             System.out.println("Data format error in text file. Ensure it matches the new super.toString() format: " + e.getMessage());
         }
     }
+    public Vehicle getVehicleById(String id) {
+        return vehicles.stream()
+                .filter(v -> v.getVehicleId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean updateVehicle(Vehicle updatedVehicle) {
+        for (int i = 0; i < vehicles.size(); i++) {
+            // Find the vehicle that has the same ID
+            if (vehicles.get(i).getVehicleId().equals(updatedVehicle.getVehicleId())) {
+                // Replace the old vehicle with the newly updated one
+                vehicles.set(i, updatedVehicle);
+                // Save the whole list back to vehicles.txt
+                saveVehiclesToFile();
+                return true;
+            }
+        }
+        return false; // If the ID wasn't found
+    }
 }
