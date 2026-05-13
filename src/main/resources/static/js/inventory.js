@@ -22,7 +22,7 @@ async function fetchInventory() {
                 <td>${vehicle.make} ${vehicle.model} (${vehicle.year})</td>
                 <td>${vehicle.type || 'Vehicle'}</td> 
                 <td>${vehicle.rentalRate}</td>
-                <td>${vehicle.isAvailable ? 'Available' : 'Rented'}</td>
+                <td>${String(vehicle.available).toLowerCase() === 'true' ? 'Available' : 'Rented'}</td>
                 <td>
                     <!-- IMPORTANT: Keep the FULL vehicle.vehicleId for the buttons -->
                     <button onclick="editVehicle('${vehicle.vehicleId}')">Update</button>
@@ -38,7 +38,7 @@ async function fetchInventory() {
 
 // Redirects to the form with the full ID in the URL for "Update Mode"
 function editVehicle(id) {
-    window.location.href = `vehicleForm.html?id=${id}`;
+    window.location.href = `vehicleForm?id=${id}`;
 }
 
 // Calls your @DeleteMapping in the Controller with the full ID
