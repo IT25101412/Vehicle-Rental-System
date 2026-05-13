@@ -86,6 +86,57 @@
             </table>
         </div>
     </div>
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Customer Vehicle Bookings</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Vehicle ID</th>
+                    <th>Dates</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(allBookings)}">
+                    <td colspan="5" class="text-center py-3">No vehicle bookings found.</td>
+                </tr>
+                <tr th:each="booking : ${allBookings}">
+                    <td th:text="${booking.customerName}"></td>
+                    <td th:text="${booking.vehicleId}"></td>
+                    <td th:text="${booking.startDate + ' to ' + booking.returnDate}"></td>
+
+                    <td>
+                        <span class="badge"
+                              th:classappend="${booking.bookingStatus == 'Pending' ? 'bg-warning text-dark' : (booking.bookingStatus == 'Approved' ? 'bg-success' : 'bg-danger')}"
+                              th:text="${booking.bookingStatus}">
+                        </span>
+                    </td>
+
+                    <td>
+                        <div th:if="${booking.bookingStatus == 'Pending'}">
+                            <form action="/admin/approveBooking" method="POST" style="display:inline;">
+                                <input type="hidden" name="transactionId" th:value="${booking.transactionId}">
+                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                            </form>
+
+                            <form action="/admin/rejectBooking" method="POST" style="display:inline;">
+                                <input type="hidden" name="transactionId" th:value="${booking.transactionId}">
+                                <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                            </form>
+                        </div>
+                        <span th:if="${booking.bookingStatus != 'Pending'}" class="text-muted small">Processed</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

@@ -61,4 +61,18 @@ public class BookingFormController {
         // Redirect back to the history page after deleting
         return "redirect:/reservationHistory.html";
     }
+
+    @PostMapping("/admin/approveBooking")
+    public String approveBooking(@RequestParam("transactionId") String transactionId) {
+        bookingService.updateBookingStatus(transactionId, "Approved");
+        return "redirect:/admin/dashboard";
+    }
+
+    @PostMapping("/admin/rejectBooking")
+    public String rejectBooking(@RequestParam("transactionId") String transactionId) {
+        bookingService.updateBookingStatus(transactionId, "Rejected");
+        return "redirect:/admin/dashboard";
+    }
+
+
 }

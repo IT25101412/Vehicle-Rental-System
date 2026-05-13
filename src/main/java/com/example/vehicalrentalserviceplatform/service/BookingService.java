@@ -125,6 +125,26 @@ public class BookingService {
         }
     }
 
+    public void updateBookingStatus(String transactionId, String newStatus) {
+        List<Booking> allBookings = getAllBookings();
+        boolean isUpdated = false;
+
+        for (Booking x : allBookings) {
+            if (x.getTransactionId().equals(transactionId)) {
+                x.setBookingStatus(newStatus);
+                isUpdated = true;
+                break;
+            }
+        }
+
+        if (isUpdated) {
+            overWriteBookingFile(allBookings);
+            System.out.println("Booking " + transactionId + " status updated to: " + newStatus);
+        } else {
+            System.out.println("Error: Could not find booking to update status.");
+        }
+    }
+
     public void deleteBooking(String transactionId){
         List<Booking> allBookings = getAllBookings();
 
