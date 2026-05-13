@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.vehicalrentalserviceplatform.service.BookingService;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
@@ -15,35 +16,46 @@ public class AdminPageController {
     private final AdminStaffService adminStaffService = new AdminStaffService();
     private final BookingService bookingService = new BookingService();
 
+    private boolean isNotAuthorized(HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        return role == null || (!role.equals("ADMIN") && !role.equals("STAFF"));
+    }
+
     @GetMapping
     public String adminHome() {
         return "redirect:/admin/dashboard";
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(@RequestParam(required = false) String message, Model model) {
+    public String dashboard(HttpSession session, @RequestParam(required = false) String message, Model model) {
+        if(isNotAuthorized(session)) return "redirect:/admin-login";
+
         model.addAttribute("message", message);
         model.addAttribute("admins", adminStaffService.getAllAdmins());
         model.addAttribute("logs", adminStaffService.getAllActivityLogs());
-
         model.addAttribute("allBookings", bookingService.getAllBookings());
         return "admin-dashboard";
     }
 
     @GetMapping("/registration")
-    public String registration(@RequestParam(required = false) String message, Model model) {
+    public String registration(HttpSession session, @RequestParam(required = false) String message, Model model) {
+
+        if (isNotAuthorized(session)) return "redirect:/admin-login";
         model.addAttribute("message", message);
         return "admin-registration";
     }
 
     @GetMapping("/activity-log")
-    public String activityLog(Model model) {
+    public String activityLog(HttpSession session, Model model) {
+        if (isNotAuthorized(session)) return "redirect:/admin-login";
+
         model.addAttribute("logs", adminStaffService.getAllActivityLogs());
         return "admin-activity-log";
     }
 
     @GetMapping("/edit")
     public String editAdmin(
+            HttpSession session,
             @RequestParam String userId,
             @RequestParam String fullName,
             @RequestParam String username,
@@ -51,6 +63,8 @@ public class AdminPageController {
             @RequestParam String employeeType,
             Model model
     ) {
+        if (isNotAuthorized(session)) return "redirect:/admin-login";
+
         model.addAttribute("userId", userId);
         model.addAttribute("fullName", fullName);
         model.addAttribute("username", username);
