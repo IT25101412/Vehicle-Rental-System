@@ -5,7 +5,7 @@ public class Admin extends User {
     private String passwordHash;
 
     public Admin(String userId, String fullName, String username, String role, String employeeType, String passwordHash) {
-        super(userId, fullName, username, role);
+        super(userId, fullName, username, null, null, role);
         this.employeeType = employeeType;
         this.passwordHash = passwordHash;
     }
