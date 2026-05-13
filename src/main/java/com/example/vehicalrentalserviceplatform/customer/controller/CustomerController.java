@@ -1,7 +1,7 @@
 package com.example.vehicalrentalserviceplatform.customer.controller;
 
 import com.example.vehicalrentalserviceplatform.customer.model.RegularCustomer;
-import com.example.vehicalrentalserviceplatform.customer.model.User;
+import com.example.vehicalrentalserviceplatform.model.User;
 import com.example.vehicalrentalserviceplatform.customer.service.CustomerFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
