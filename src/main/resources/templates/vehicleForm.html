@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vehicle Management - Form</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h2 id="formTitle">Add New Vehicle</h2>
+    <form id="vehicleForm">
+        <div class="form-group">
+            <label>Vehicle Type:</label>
+            <select id="type" onchange="toggleFields()" required>
+                <option value="CAR">Car</option>
+                <option value="MOTORCYCLE">Motorcycle</option>
+                <option value="SUV">SUV</option>
+                <option value="VAN">Van</option>
+            </select>
+        </div>
+
+        <!-- ID Input Removed - Handled by UUID on Backend -->
+        <input type="text" id="make" placeholder="Make (e.g., Toyota)" required>
+        <input type="text" id="model" placeholder="Model (e.g., Corolla)" required>
+        <input type="text" id="year" placeholder="Year" required>
+        <!-- REMOVED: Registration Number input -->
+        <input type="number" id="rate" placeholder="Daily Rental Rate (LKR)" step="0.01" required>
+        <input type="text" id="fuel" placeholder="Fuel Type" required>
+        <input type="number" id="mileage" placeholder="Current Mileage" step="0.1" required>
+
+        <div class="form-group">
+            <label>Vehicle Photo:</label>
+            <input type="file" id="imageUpload" accept="image/*" required>
+        </div>
+
+        <div id="seatsGroup">
+            <input type="number" id="seats" placeholder="Number of Seats">
+        </div>
+
+        <div id="driveTrainGroup">
+            <input type="text" id="driveTrain" placeholder="Drive Train (e.g., 4WD/AWD)">
+        </div>
+
+        <div id="motoGroup" style="display:none;">
+            <input type="text" id="motoType" placeholder="Motorcycle Type (e.g., Sport/Cruiser)">
+        </div>
+
+        <div class="actions">
+            <button type="button" onclick="submitVehicleForm()">Save Vehicle</button>
+            <button type="button" onclick="window.location.href='inventory.html'">Cancel</button>
+        </div>
+    </form>
+</div>
+<script src="/js/vehicleForm.js"></script>
+</body>
+</html>

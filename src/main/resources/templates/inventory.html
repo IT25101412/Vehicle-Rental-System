@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Vehicle Inventory</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Your existing CSS -->
+</head>
+<body>
+<h1>Vehicle Inventory Management</h1>
+
+<!-- Button to lead to the Add Form -->
+<button onclick="window.location.href='vehicleForm'" style="margin-bottom: 20px;">
+    + Add New Vehicle
+</button>
+
+<table border="1" id="inventoryTable" style="width:100%; text-align: left;">
+    <thead>
+    <tr>
+        <th>Image</th>
+        <th>ID</th>
+        <th>Make/Model</th>
+        <th>Type</th>
+        <th>Rate (LKR)</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="inventoryBody">
+    <!-- Data will be injected here by JavaScript -->
+    </tbody>
+</table>
+
+<script src="/js/inventory.js"></script>
+</body>
+</html>
