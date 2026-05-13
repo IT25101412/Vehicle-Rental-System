@@ -1,7 +1,7 @@
 package com.example.vehicalrentalserviceplatform.customer.service;
 
 import com.example.vehicalrentalserviceplatform.customer.model.RegularCustomer;
-import com.example.vehicalrentalserviceplatform.customer.model.User;
+import com.example.vehicalrentalserviceplatform.model.User;
 import org.springframework.stereotype.Service;
 
 import java.io.*;

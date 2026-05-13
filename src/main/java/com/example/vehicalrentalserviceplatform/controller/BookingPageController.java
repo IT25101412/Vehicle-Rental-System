@@ -9,17 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class BookingPageController {
 
 
-    @GetMapping("/catalog")
-    public String showCatalog() {
-        return "catalog";
-    }
-
-    @GetMapping({"/checkout", "/checkout.html"})
-    public String showCheckout() {
-        return "checkout";
-    }
-
-
     @GetMapping("/reservationHistory.html")
     public String showReservationHistory(HttpSession session, Model model) {
         String currentUser = (String) session.getAttribute("loggedInUser");
