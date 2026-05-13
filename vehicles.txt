@@ -1,0 +1,2 @@
+MOTORCYCLE,a579963d-7e8b-4dc6-8a42-8fd05883f03c,1991,Honda,Jade,Petrol,65500.0,a579963d-7e8b-4dc6-8a42-8fd05883f03c_Untitled.jpg,2500.0,true,standard
+CAR,e815e7ef-8aca-4c60-b253-dbd1c3927362,1991,Toyota,Vista,Diesel,184000.0,e815e7ef-8aca-4c60-b253-dbd1c3927362_OIPfx.jpg,5000.0,true,5,null
