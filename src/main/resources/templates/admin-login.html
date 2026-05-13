@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | DriveEase Rentals</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy: #080F1A;
+            --gold: #BFA263;
+            --gold-light: #D4B87A;
+            --text-primary: #0D1B2A;
+            --input-bg: #FAFAFA;
+            --border-focus: #BFA263;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            /* Adds a subtle gold glow in the top right corner */
+            background-image: radial-gradient(circle at top right, rgba(191,162,99,0.15), transparent 40%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .admin-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid rgba(191,162,99,0.2);
+            /* Smooth slide-up animation on load */
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .admin-header {
+            background: var(--navy);
+            padding: 35px 20px 25px;
+            text-align: center;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .admin-header h4 {
+            font-family: 'Cormorant Garamond', serif;
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-header p {
+            color: var(--gold);
+            font-size: 12px;
+            margin-top: 5px;
+            margin-bottom: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .admin-body {
+            padding: 40px 35px;
+        }
+
+        .form-control {
+            background-color: var(--input-bg);
+            border: 1.5px solid #E2E5EA;
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 4px rgba(191,162,99,0.15);
+            background-color: white;
+            outline: none;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 12px;
+            color: #4A5568;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(191,162,99,0.35);
+            color: var(--navy);
+        }
+
+        .back-link {
+            text-align: center;
+            display: block;
+            margin-top: 25px;
+            color: #8A95A3;
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            color: var(--gold);
+        }
+
+        /* Custom styling for the Thymeleaf error alert */
+        .alert-custom {
+            background-color: #FDF0EF;
+            color: #C0392B;
+            border: 1px solid rgba(192,57,43,0.2);
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-card">
+    <div class="admin-header">
+        <h4>DriveEase</h4>
+        <p>Secure Staff Portal</p>
+    </div>
+
+    <div class="admin-body">
+
+        <div class="alert-custom" th:if="${error != null}">
+            <span th:text="${error}"></span>
+        </div>
+
+        <form th:action="@{/admin-login}" method="post">
+            <div class="mb-4">
+                <label class="form-label">Admin Username</label>
+                <input type="text" class="form-control" name="username" placeholder="e.g. system_admin" required autocomplete="off">
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Authorization Key</label>
+                <input type="password" class="form-control" name="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-gold w-100">Access Dashboard →</button>
+        </form>
+
+        <a href="/login" class="back-link">← Return to Customer Site</a>
+
+    </div>
+</div>
+
+</body>
+</html>

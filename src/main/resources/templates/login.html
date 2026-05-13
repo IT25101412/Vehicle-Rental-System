@@ -231,6 +231,18 @@
         }
         .btn-outline:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-muted); }
 
+        /* Admin Portal Button Style */
+        .btn-outline-gold {
+            background: transparent;
+            color: var(--gold);
+            border: 1.5px solid var(--gold-border);
+        }
+        .btn-outline-gold:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--gold-muted);
+        }
+
         /* Footer link */
         .card-footer-link {
             text-align: center; margin-top: 20px;
@@ -387,10 +399,22 @@
                             <button type="button" class="btn btn-outline">Create an Account</button>
                         </a>
 
-                        <p class="card-footer-link">
+                        <div class="or-divider" style="margin-top:22px;"><span>Staff & Administration</span></div>
+
+                        <a href="/admin-login">
+                            <button type="button" class="btn btn-outline-gold">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                </svg>
+                                Admin Portal
+                            </button>
+                        </a>
+
+                        <p class="card-footer-link" style="margin-top: 26px;">
                             Forgot your password? <a href="/login">Get help signing in</a>
                         </p>
-
                     </div>
                 </div>
             </div>

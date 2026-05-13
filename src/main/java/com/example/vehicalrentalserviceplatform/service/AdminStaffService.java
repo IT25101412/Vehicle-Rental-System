@@ -72,6 +72,19 @@ public class AdminStaffService {
         return admins;
     }
 
+    public Admin authenticate(String username, String rawPassword) {
+        List<Admin> admins = getAllAdmins();
+        String hashedInput = hashPassword(rawPassword);
+
+        for (Admin admin : admins) {
+            // Checks if the username matches and the password hashes are identical
+            if (admin.getUsername().equalsIgnoreCase(username) && admin.getPasswordHash().equals(hashedInput)) {
+                return admin; // Match found
+            }
+        }
+        return null; // No match found
+    }
+
     public boolean deleteByUserId(String userId, String actor) {
         List<Admin> admins = getAllAdmins();
         boolean removed = admins.removeIf(admin -> admin.getUserId().equals(userId));

@@ -3,7 +3,7 @@ package com.example.vehicalrentalserviceplatform.maintenance;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +13,14 @@ public class MaintenanceController {
 
     // READ - Show maintenance log entry form and service history
     @GetMapping
-    public String maintenancePage(Model model) {
+    public String maintenancePage(HttpSession session, Model model) {
+
+        String role = (String) session.getAttribute("role");
+        if (role == null || (!role.equals("ADMIN") && !role.equals("STAFF"))) {
+            return "redirect:/admin-login"; // Kick them out if not authorized
+        }
+
+
         List<MaintenanceRecord> records = MaintenanceFileHandler.loadAllRecords();
         model.addAttribute("records", records);
         return "maintenance";
