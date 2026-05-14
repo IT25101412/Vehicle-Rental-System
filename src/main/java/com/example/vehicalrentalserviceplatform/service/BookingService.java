@@ -2,13 +2,15 @@ package com.example.vehicalrentalserviceplatform.service;
 
 import com.example.vehicalrentalserviceplatform.model.Booking;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
 public class BookingService {
 
-    private static final String FILE_NAME = "booking.txt";
+    private static final Path FILE_PATH = Paths.get("booking.txt").toAbsolutePath();
 
     public boolean isVehicleAvailable(String vehicleId, String requestedStartDate, String requestedReturnDate){
 
@@ -39,7 +41,7 @@ public class BookingService {
             return;
         }
 
-        try(FileWriter fileWriter = new FileWriter(FILE_NAME, true);
+        try(FileWriter fileWriter = new FileWriter(FILE_PATH.toFile(), true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             PrintWriter out = new PrintWriter(bufferedWriter)){
 
@@ -55,7 +57,7 @@ public class BookingService {
     public List<Booking> getAllBookings(){
         List<Booking> bookingList = new ArrayList<>();
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(FILE_NAME))){
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(FILE_PATH.toFile()))){
             String line;
             while ((line = bufferedReader.readLine()) != null){
                 String[] data = line.split(",");
@@ -88,7 +90,7 @@ public class BookingService {
 
     private void overWriteBookingFile(List<Booking> updatedBookings){
 
-        try(FileWriter fileWriter = new FileWriter(FILE_NAME,false);
+        try(FileWriter fileWriter = new FileWriter(FILE_PATH.toFile(),false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             PrintWriter out = new PrintWriter(bufferedWriter)){
 
