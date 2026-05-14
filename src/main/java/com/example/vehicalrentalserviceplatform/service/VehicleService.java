@@ -108,4 +108,46 @@ public class VehicleService {
         }
         return false; // If the ID wasn't found
     }
+    public String generateNextId(String type) {
+        //Determine the correct prefix
+        String prefix;
+        if (type.equals("CAR")) {
+            prefix = "CAR-";
+        } else if (type.equals("MOTORCYCLE")) {
+            prefix = "MOT-";
+        } else if (type.equals("SUV")) {
+            prefix = "SUV-";
+        } else {
+            prefix = "VAN-";
+        }
+
+        //Find the highest number currently in use for that prefix
+        int highestNumber = 0;
+
+        for (Vehicle v : vehicles) {
+            String currentId = v.getVehicleId();
+
+            // Only look at vehicles that start with this specific prefix
+            if (currentId != null && currentId.startsWith(prefix)) {
+                try {
+                    // Chop off the prefix (e.g., "CAR-12" becomes "12")
+                    String numberPart = currentId.substring(prefix.length());
+                    int number = Integer.parseInt(numberPart);
+
+                    if (number > highestNumber) {
+                        highestNumber = number;
+                    }
+                } catch (NumberFormatException e) {
+                    // If a manual edit in vehicles.txt breaks the number format, skip it
+                    System.out.println("Skipping invalid ID format: " + currentId);
+                }
+            }
+        }
+
+        //Add 1 to the highest number found
+        int nextNumber = highestNumber + 1;
+
+        //Return the combined string (e.g., "CAR-1")
+        return prefix + String.format("%04d", nextNumber);
+    }
 }
