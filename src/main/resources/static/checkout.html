@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - Vehicle Rental Billing</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="page-wrapper">
+    <header>
+        <h1>Checkout Page</h1>
+        <p>Generate invoices for completed rentals and collect payment details.</p>
+    </header>
+
+    <main>
+        <div class="page-grid">
+            <aside class="sidebar-card">
+                <div class="section-title">
+                    <h2>Billing Overview</h2>
+                    <p>Complete rental data and payment details in a structured workflow. The form below creates a new invoice and stores the payment method securely.</p>
+                </div>
+                <div class="sidebar-list">
+                    <div>
+                        <strong>Step 1</strong>
+                        <p>Fill rental details with customer and vehicle information.</p>
+                    </div>
+                    <div>
+                        <strong>Step 2</strong>
+                        <p>Select a payment type and enter the required fields.</p>
+                    </div>
+                    <div>
+                        <strong>Step 3</strong>
+                        <p>Submit the invoice to store the billing and payment record.</p>
+                    </div>
+                </div>
+            </aside>
+            <form id="checkout-form" class="form-card">
+                <div class="section-title">
+                    <h2>Checkout</h2>
+                    <p>Generate invoices for completed rentals and collect payment details.</p>
+                </div>
+                <div class="form-section">
+                    <h3>Rental Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerName">Customer Name</label>
+                            <input id="customerName" name="customerName" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicleId">Vehicle ID</label>
+                            <input id="vehicleId" name="vehicleId" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vehicleName">Vehicle Model</label>
+                            <input id="vehicleName" name="vehicleName" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rentalDays">Rental Days</label>
+                            <input id="rentalDays" name="rentalDays" type="number" min="1" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="amountPerDay">Amount Per Day</label>
+                            <input id="amountPerDay" name="amountPerDay" type="number" min="0" step="0.01" value="100.00" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3>Fee Summary</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="discount">Discount</label>
+                            <input id="discount" name="discount" type="number" min="0" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="lateFee">Late Fee</label>
+                            <input id="lateFee" name="lateFee" type="number" min="0" step="0.01" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3>Payment Method</h3>
+                    <div class="form-group">
+                        <label for="paymentType">Payment Type</label>
+                        <select id="paymentType" name="paymentType" required>
+                            <option value="creditCard">Credit Card</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="cash">Cash</option>
+                        </select>
+                    </div>
+                    <div id="payment-details" class="payment-details"></div>
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" class="button">Create Invoice</button>
+                </div>
+                <div id="message" class="message"></div>
+            </form>
+        </div>
+    </main>
+</div>
+<script src="/js/checkout.js?v=20260505-2"></script>
+</body>
+</html>
