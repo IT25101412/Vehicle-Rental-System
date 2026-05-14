@@ -60,7 +60,7 @@ public class CustomerController {
         if (valid) {
 
             session.setAttribute("loggedInUser", username);
-            return "redirect:/bookVehicle.html";
+            return "redirect:/catalog";
         } else {
             model.addAttribute("error", "Invalid username or password. Please try again.");
             return "login";

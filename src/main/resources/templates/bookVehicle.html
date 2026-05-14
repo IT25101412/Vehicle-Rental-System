@@ -19,11 +19,11 @@
                 <div class="form-row">
                     <div>
                         <label>Customer Name</label>
-                        <input type="text" name="customerUsername" th:value="${username}" readonly required style="width: 100%; background-color: #f1f5f9;">
+                        <input type="text" name="customerUsername" th:value="${username}" readonly required style="width: 100%;">
                     </div>
                     <div>
                         <label>Vehicle ID</label>
-                        <input type="text" name="vehicleId" required style="width: 100%;">
+                        <input type="text" name="vehicleId" th:value="${vehicleId}" readonly required style="width: 100%;">
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
             </div>
 
             <div class="action-buttons" style="margin-top: 24px;">
-                <a href="/reservationHistory.html" class="button secondary">View My History</a>
+                <a href="/reservationHistory" class="button secondary">View My History</a>
 
                 <button type="submit" class="button">Confirm & Pay</button>
             </div>
