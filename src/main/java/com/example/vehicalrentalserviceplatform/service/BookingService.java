@@ -7,7 +7,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BookingService {
 
     private static final Path FILE_PATH = Paths.get("booking.txt").toAbsolutePath();
