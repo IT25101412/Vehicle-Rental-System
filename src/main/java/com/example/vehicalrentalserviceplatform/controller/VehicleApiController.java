@@ -46,17 +46,16 @@ public class VehicleApiController {
             @RequestParam("image") MultipartFile imageFile) {
 
         try {
-            // 1. Generate unique ID automatically
-            String vehicleId = UUID.randomUUID().toString();
+            // 1. Ask the service to generate the next sequential ID
+            String vehicleId = vehicleService.generateNextId(type);
 
-            // 2. Handle the Image Upload using the vehicleId as a prefix
+            // 2. Handle the Image Upload using the new vehicleId
             String fileName = vehicleId + "_" + imageFile.getOriginalFilename();
             Path path = Paths.get(UPLOAD_DIR + fileName);
             Files.createDirectories(path.getParent());
             Files.write(path, imageFile.getBytes());
 
             // 3. Reconstruct the correct Subclass
-            // ORDER: Make, Model, Year, Rate, Fuel, Mileage, Available, [Specifics], FileName, ID
             Vehicle v;
             if (type.equals("CAR")) {
                 v = new Car(make, model, year, rate, fuel, mileage, true, seats, fileName, vehicleId);
