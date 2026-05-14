@@ -43,6 +43,8 @@ public class CheckoutPageController {
         String customerName = (String) session.getAttribute("loggedInUser");
         model.addAttribute("customerName", customerName);
 
+        model.addAttribute("transactionId", transactionId);
+
         // 3. THE DOUBLE LOOKUP
         if (transactionId != null && !transactionId.isEmpty()) {
 

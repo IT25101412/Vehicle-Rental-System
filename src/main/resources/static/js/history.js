@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function loadBookings() {
-    const currentUser = document.getElementById("loggedInUsername").value; // Replace with actual logged-in user data
+    const currentUser = document.getElementById("loggedInUsername").value;
 
     if (!currentUser) {
             console.error("No user logged in!");
-            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='6'>Please log in to view history.</td></tr>";
+            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='7'>Please log in to view history.</td></tr>";
             return;
     }
 
@@ -19,6 +19,39 @@ function loadBookings() {
 
             data.forEach(booking => {
 
+                // --- THE SMART BUTTON LOGIC ---
+                let actionHtml = '';
+
+                if (booking.bookingStatus === 'Pending') {
+                    // Show a waiting message, plus let them Edit or Delete while they wait
+                    actionHtml = `
+                        <span style="color: #ffc107; font-weight: bold; display: block; margin-bottom: 5px;">⏳ Awaiting Approval</span>
+                        <div class="action-buttons">
+                            <a href="/editBooking?id=${booking.transactionId}" class="button" style="padding: 4px 8px; font-size: 0.85em;">Edit</a>
+                            <button onclick="submitDelete('${booking.transactionId}')" class="button secondary" style="padding: 4px 8px; font-size: 0.85em; background-color: #dc3545; border-color: #dc3545;">Delete</button>
+                        </div>
+                    `;
+                } else if (booking.bookingStatus === 'Approved') {
+                    // The Admin approved it! Give them the Pay Now button
+                    actionHtml = `
+                        <a href="/checkout?transactionId=${booking.transactionId}" class="button" style="background-color: #28a745; border-color: #28a745; font-weight: bold;">💳 Pay Now</a>
+                    `;
+                } else if (booking.bookingStatus === 'Paid') {
+                    // They paid successfully
+                    actionHtml = `
+                        <span style="color: #28a745; font-weight: bold;">✅ Payment Complete</span>
+                    `;
+                } else if (booking.bookingStatus === 'Rejected') {
+                    // The Admin rejected the booking
+                    actionHtml = `
+                        <span style="color: #dc3545; font-weight: bold;">❌ Booking Declined</span>
+                    `;
+                } else {
+                    // Fallback for any other status (like 'Cancelled')
+                    actionHtml = `<strong>${booking.bookingStatus}</strong>`;
+                }
+
+                // --- BUILD THE ROW ---
                 const row = `
                     <tr>
                         <td>${booking.transactionId}</td>
@@ -26,13 +59,9 @@ function loadBookings() {
                         <td>${booking.vehicleId}</td>
                         <td>${booking.startDate}</td>
                         <td>${booking.returnDate}</td>
-                        <td>${booking.bookingStatus}</td>
+                        <td><strong>${booking.bookingStatus}</strong></td>
                         <td>
-                            <div class="action-buttons">
-                                <a href="/editBooking.html?id=${booking.transactionId}" class="button">Edit</a>
-
-                                <button onclick="submitDelete('${booking.transactionId}')" class="button secondary">Delete</button>
-                            </div>
+                            ${actionHtml}
                         </td>
                     </tr>
                 `;
@@ -43,12 +72,13 @@ function loadBookings() {
         })
         .catch(error => {
             console.error("Error fetching the bookings:", error);
+            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='7'>Error loading bookings. Please try again later.</td></tr>";
         });
 }
 
-// This creates an invisible form submits it to Java Controller and deletes
+// This creates an invisible form, submits it to the Java Controller, and deletes
 function submitDelete(transactionId) {
-    if (confirm("Are you sure you want to delete this booking?")) {
+    if (confirm("Are you sure you want to cancel this booking?")) {
 
         const form = document.createElement('form');
         form.method = 'POST';

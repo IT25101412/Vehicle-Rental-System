@@ -166,7 +166,19 @@ checkoutForm.addEventListener('submit', async (event) => {
         }
 
         const invoice = await response.json();
-        showMessage(`Invoice #${invoice.id} created successfully. Total amount: $${invoice.totalAmount.toFixed(2)}`);
+
+        const transactionId = document.getElementById('transactionId').value;
+
+        if (transactionId && transactionId !== "Unknown") {
+            await fetch(`/markAsPaid?transactionId=${transactionId}`, { method: 'POST' });
+        }
+
+        showMessage(`Payment successful! Invoice #${invoice.id} created. Redirecting...`, 'success')
+
+        setTimeout(() => {
+                    window.location.href = '/reservationHistory';
+        }, 2000);
+
         checkoutForm.reset();
         renderPaymentFields(paymentType.value);
     } catch (error) {

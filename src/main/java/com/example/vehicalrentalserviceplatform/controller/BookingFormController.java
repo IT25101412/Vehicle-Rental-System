@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class BookingFormController {
@@ -24,9 +25,7 @@ public class BookingFormController {
         Booking newBooking = new Booking(name, vehicleId, startDate, returnDate, "Pending");
         bookingService.createBooking(newBooking);
 
-        // Redirects the user to the checkout page with their new ID
-        // Note: Make sure your PageController has a @GetMapping("/checkout.html") or just ("/checkout")
-        return "redirect:/checkout?transactionId=" + newBooking.getTransactionId();
+        return "redirect:/reservationHistory";
     }
 
     // 2. Replaces your old UpdateBookingController
@@ -47,7 +46,7 @@ public class BookingFormController {
         bookingService.updateBooking(transactionId, newVehicleId, newStartDate, newReturnDate, secureStatus);
 
         // Redirect back to the history page after saving
-        return "redirect:/reservationHistory.html";
+        return "redirect:/reservationHistory";
     }
 
     // 3. Replaces your old DeleteBookingController
@@ -57,7 +56,7 @@ public class BookingFormController {
         bookingService.deleteBooking(targetID);
 
         // Redirect back to the history page after deleting
-        return "redirect:/reservationHistory.html";
+        return "redirect:/reservationHistory";
     }
 
     @PostMapping("/admin/approveBooking")
@@ -70,6 +69,15 @@ public class BookingFormController {
     public String rejectBooking(@RequestParam("transactionId") String transactionId) {
         bookingService.updateBookingStatus(transactionId, "Rejected");
         return "redirect:/admin/dashboard";
+    }
+
+    @PostMapping("/markAsPaid")
+    @ResponseBody // This tells Spring Boot not to look for an HTML file, just return a success string
+    public String markAsPaid(@RequestParam("transactionId") String transactionId) {
+        if (transactionId != null && !transactionId.isEmpty()) {
+            bookingService.updateBookingStatus(transactionId, "Paid");
+        }
+        return "Success";
     }
 
 
