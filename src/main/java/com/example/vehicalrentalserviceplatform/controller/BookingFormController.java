@@ -2,6 +2,7 @@ package com.example.vehicalrentalserviceplatform.controller;
 
 import com.example.vehicalrentalserviceplatform.model.Booking;
 import com.example.vehicalrentalserviceplatform.service.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,11 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class BookingFormController {
 
-    private final BookingService bookingService;
-
-    public BookingFormController() {
-        this.bookingService = new BookingService();
-    }
+    @Autowired
+    private BookingService bookingService;
 
     // 1. Replaces your old BookingController (Create)
     @PostMapping("/createBooking")
@@ -28,7 +26,7 @@ public class BookingFormController {
 
         // Redirects the user to the checkout page with their new ID
         // Note: Make sure your PageController has a @GetMapping("/checkout.html") or just ("/checkout")
-        return "redirect:/checkout.html?id=" + newBooking.getTransactionId();
+        return "redirect:/checkout?transactionId=" + newBooking.getTransactionId();
     }
 
     // 2. Replaces your old UpdateBookingController
