@@ -1,476 +1,686 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" class="light" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Maintenance & Service Tracking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoRent - Maintenance and Service Tracking</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts and Icons used by the Stitch design -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00236f",
+                        "primary-container": "#1e3a8a",
+                        secondary: "#555f6f",
+                        surface: "#f8f9fa",
+                        background: "#f8f9fa",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "surface-container": "#edeeef",
+                        "surface-variant": "#e1e3e4",
+                        "inverse-surface": "#2e3132",
+                        outline: "#757682",
+                        "outline-variant": "#c5c5d3",
+                        "on-surface": "#191c1d",
+                        "on-surface-variant": "#444651",
+                        "on-primary": "#ffffff",
+                        error: "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#adc6ff",
+                        "tertiary-fixed": "#d8e2ff",
+                        "secondary-fixed-dim": "#bdc7d9",
+                        "on-secondary-fixed-variant": "#3d4756"
+                    },
+                    spacing: {
+                        gutter: "1.5rem",
+                        md: "1.5rem",
+                        lg: "2rem",
+                        xl: "3rem",
+                        "sidebar-width": "260px"
+                    },
+                    fontFamily: {
+                        headline: ["Manrope", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
         body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 45%, #e0f2fe 100%);
-            font-family: "Segoe UI", Arial, sans-serif;
-            color: #1e293b;
+            font-family: Inter, Arial, sans-serif;
         }
 
-        .navbar {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
-        }
-
-        .navbar-brand,
-        .nav-link {
-            color: #ffffff !important;
-        }
-
-        .page-header {
-            background: linear-gradient(135deg, #1e293b, #2563eb);
-            color: white;
-            border-radius: 24px;
-            padding: 34px;
-            box-shadow: 0 18px 40px rgba(37, 99, 235, 0.25);
-            margin-bottom: 30px;
-        }
-
-        .page-header h2 {
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .page-header p {
-            margin-bottom: 0;
-            color: #dbeafe;
-        }
-
-        .stat-card {
-            border: none;
-            border-radius: 20px;
-            background: white;
-            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
-            transition: 0.25s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: flex;
+        .status-badge {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            background: #eff6ff;
-        }
-
-        .main-card {
-            border: none;
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.94);
-            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.10);
-            overflow: hidden;
-        }
-
-        .card-title-custom {
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            font-size: 11px;
             font-weight: 700;
-            color: #0f172a;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: #334155;
-            font-size: 14px;
-        }
-
-        .form-control,
-        .form-select {
-            border-radius: 12px;
-            border: 1px solid #cbd5e1;
-            padding: 10px 12px;
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 0.18rem rgba(37, 99, 235, 0.18);
-        }
-
-        .btn {
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        .btn-add {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: white;
-            border: none;
-            padding: 11px 22px;
-        }
-
-        .btn-add:hover {
-            background: linear-gradient(135deg, #1d4ed8, #1e40af);
-            color: white;
-        }
-
-        .table {
-            margin-bottom: 0;
-        }
-
-        .table thead th {
-            background: #0f172a;
-            color: white;
-            padding: 14px;
-            font-size: 14px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
             white-space: nowrap;
         }
 
-        .table tbody td {
-            padding: 14px;
-            vertical-align: middle;
-            font-size: 14px;
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
         }
 
-        .table tbody tr {
-            transition: 0.2s ease;
+        .status-in-progress {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
         }
 
-        .table tbody tr:hover {
-            background: #f1f5f9;
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
         }
 
-        .record-id {
-            font-weight: 700;
-            color: #2563eb;
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
         }
 
-        .vehicle-pill {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: #e0f2fe;
-            color: #0369a1;
-            font-weight: 700;
-            font-size: 13px;
-        }
-
-        .type-pill {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: #f1f5f9;
-            color: #334155;
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        .badge-pending {
-            background-color: #facc15;
-            color: #422006;
-            padding: 8px 11px;
-            border-radius: 999px;
-        }
-
-        .badge-completed {
-            background-color: #16a34a;
-            color: white;
-            padding: 8px 11px;
-            border-radius: 999px;
-        }
-
-        .badge-inprogress {
-            background-color: #2563eb;
-            color: white;
-            padding: 8px 11px;
-            border-radius: 999px;
-        }
-
-        .action-form {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .action-select {
-            min-width: 120px;
-        }
-
-        .empty-box {
-            padding: 45px;
-            text-align: center;
-            color: #64748b;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 18px;
-        }
-
-        .section-subtitle {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 0;
-        }
-
-        .footer-note {
-            text-align: center;
-            color: #64748b;
-            font-size: 13px;
-            padding: 24px 0;
-        }
-
-        @media (max-width: 992px) {
-            .action-form {
-                display: block;
+        @media (max-width: 1024px) {
+            .desktop-sidebar {
+                display: none;
             }
 
-            .action-form select,
-            .action-form button {
-                margin-top: 5px;
+            .main-layout {
+                padding-left: 0 !important;
             }
 
-            .page-header {
-                padding: 24px;
+            .top-bar {
+                left: 0 !important;
+                width: 100% !important;
+            }
+
+            .footer-layout {
+                margin-left: 0 !important;
+                width: 100% !important;
             }
         }
     </style>
 </head>
 
-<body>
+<body class="bg-background text-on-surface min-h-screen">
 
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg mb-4">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/maintenance">🚗 Vehicle Rental Service</a>
-
-        <div>
-            <a class="nav-link d-inline fw-semibold" href="/maintenance">Maintenance</a>
+<!-- Top Navigation -->
+<header class="top-bar fixed top-0 right-0 left-[260px] z-40 bg-surface border-b border-outline-variant shadow-sm flex justify-between items-center h-16 px-gutter">
+    <div class="flex items-center gap-4">
+        <span class="font-headline text-2xl font-bold text-primary">AutoRent</span>
+        <div class="relative hidden md:block">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-[20px]">search</span>
+            <input id="globalSearch"
+                   class="pl-10 pr-4 py-2 border border-outline-variant rounded-md bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors w-64 text-sm"
+                   placeholder="Search records..."
+                   type="text">
         </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+        <button class="text-secondary hover:bg-surface-container-low transition-colors p-2 rounded-full">
+            <span class="material-symbols-outlined">notifications</span>
+        </button>
+        <button class="text-secondary hover:bg-surface-container-low transition-colors p-2 rounded-full">
+            <span class="material-symbols-outlined">help_outline</span>
+        </button>
+        <div class="w-9 h-9 rounded-full bg-primary-container text-white flex items-center justify-center font-bold">
+            FM
+        </div>
+    </div>
+</header>
+
+<!-- Sidebar -->
+<nav class="desktop-sidebar fixed left-0 top-0 h-screen w-[260px] z-50 bg-inverse-surface shadow-lg flex flex-col py-md">
+    <div class="px-6 mb-8">
+        <h1 class="font-headline text-2xl font-bold text-white">AutoRent</h1>
+        <p class="text-xs uppercase tracking-wider text-secondary-fixed-dim mt-1 opacity-70">Fleet Management</p>
+    </div>
+
+    <div class="flex-1 overflow-y-auto">
+        <ul class="space-y-1">
+            <li>
+                <a class="text-secondary-fixed-dim hover:text-white py-3 px-6 flex items-center gap-3 hover:bg-on-secondary-fixed-variant/50 transition-all" href="#">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="text-xs font-bold uppercase tracking-wider">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a class="text-secondary-fixed-dim hover:text-white py-3 px-6 flex items-center gap-3 hover:bg-on-secondary-fixed-variant/50 transition-all" href="#">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="text-xs font-bold uppercase tracking-wider">Customers</span>
+                </a>
+            </li>
+            <li>
+                <a class="text-secondary-fixed-dim hover:text-white py-3 px-6 flex items-center gap-3 hover:bg-on-secondary-fixed-variant/50 transition-all" href="#">
+                    <span class="material-symbols-outlined">directions_car</span>
+                    <span class="text-xs font-bold uppercase tracking-wider">Inventory</span>
+                </a>
+            </li>
+            <li>
+                <a class="text-secondary-fixed-dim hover:text-white py-3 px-6 flex items-center gap-3 hover:bg-on-secondary-fixed-variant/50 transition-all" href="#">
+                    <span class="material-symbols-outlined">calendar_today</span>
+                    <span class="text-xs font-bold uppercase tracking-wider">Bookings</span>
+                </a>
+            </li>
+            <li>
+                <a class="text-secondary-fixed-dim hover:text-white py-3 px-6 flex items-center gap-3 hover:bg-on-secondary-fixed-variant/50 transition-all" href="#">
+                    <span class="material-symbols-outlined">badge</span>
+                    <span class="text-xs font-bold uppercase tracking-wider">Admin & Staff</span>
+                </a>
+            </li>
+            <li>
+                <a class="border-l-4 border-tertiary-fixed-dim bg-on-secondary-fixed-variant text-tertiary-fixed-dim font-bold py-3 px-6 flex items-center gap-3" href="/maintenance">
+                    <span class="material-symbols-outlined">build</span>
+                    <span class="text-xs font-bold uppercase tracking-wider">Maintenance</span>
+                </a>
+            </li>
+            <li>
+                <a class="text-secondary-fixed-dim hover:text-white py-3 px-6 flex items-center gap-3 hover:bg-on-secondary-fixed-variant/50 transition-all" href="#">
+                    <span class="material-symbols-outlined">payments</span>
+                    <span class="text-xs font-bold uppercase tracking-wider">Payments</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="mt-auto px-6 pt-4 border-t border-on-surface-variant/30">
+        <a class="text-secondary-fixed-dim hover:text-white py-3 flex items-center gap-3 hover:bg-on-secondary-fixed-variant/50 transition-all rounded-md px-4 -ml-4" href="#">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="text-xs font-bold uppercase tracking-wider">Logout</span>
+        </a>
     </div>
 </nav>
 
-<div class="container">
+<!-- Main Content -->
+<main class="main-layout pt-16 pl-[260px] min-h-screen">
+    <div class="p-gutter max-w-7xl mx-auto">
 
-    <!-- Header -->
-    <div class="page-header">
-        <h2>🔧 Maintenance & Service Tracking</h2>
-        <p>Log vehicle service records, track repair status, and manage maintenance history.</p>
-    </div>
-
-    <!-- Summary Cards -->
-    <div class="row g-4 mb-4">
-        <div class="col-md-4">
-            <div class="card stat-card p-4">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="stat-icon">📋</div>
-                    <div>
-                        <h6 class="text-muted mb-1">Total Records</h6>
-                        <h3 class="mb-0" th:text="${#lists.size(records)}">0</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card stat-card p-4">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="stat-icon">🚘</div>
-                    <div>
-                        <h6 class="text-muted mb-1">Vehicle Types</h6>
-                        <h3 class="mb-0">Car / Bike / Van</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card stat-card p-4">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="stat-icon">⚙️</div>
-                    <div>
-                        <h6 class="text-muted mb-1">Operations</h6>
-                        <h3 class="mb-0">CRUD</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- FORM: Log New Service Record -->
-    <div class="main-card p-4 mb-5">
-        <div class="section-header">
+        <!-- Header -->
+        <section class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
             <div>
-                <h5 class="card-title-custom mb-1">➕ Log New Service Record (All fields are required)</h5>
-                <p class="section-subtitle">Enter the vehicle maintenance details below.</p>
-            </div>
-        </div>
-
-        <form action="/maintenance/add" method="post">
-            <div class="row g-3">
-
-                <div class="col-md-2">
-                    <label class="form-label">Vehicle ID</label>
-                    <input type="text"
-                           name="vehicleId"
-                           class="form-control"
-                           placeholder="VH-001"
-                           required>
-                </div>
-
-                <div class="col-md-2">
-                    <label class="form-label">Vehicle Type</label>
-                    <select name="vehicleType" class="form-select" required>
-                        <option value="">Select</option>
-                        <option value="Car">Car</option>
-                        <option value="Bike">Bike</option>
-                        <option value="Van">Van</option>
-                    </select>
-                </div>
-
-                <div class="col-md-2">
-                    <label class="form-label">Service Type</label>
-                    <select name="serviceType" class="form-select" required>
-                        <option value="">Select</option>
-                        <option value="Engine">Engine</option>
-                        <option value="Tyre">Tyre</option>
-                        <option value="Oil Change">Oil Change</option>
-                        <option value="Brake">Brake</option>
-                        <option value="General">General</option>
-                    </select>
-                </div>
-
-                <div class="col-md-2">
-                    <label class="form-label">Service Date</label>
-                    <input type="date"
-                           name="serviceDate"
-                           class="form-control"
-                           required>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Notes</label>
-                    <input type="text"
-                           name="notes"
-                           class="form-control"
-                           placeholder="Brief maintenance description">
-                </div>
-
+                <h2 class="font-headline text-4xl font-bold text-on-surface tracking-tight">Maintenance and Service Tracking</h2>
+                <p class="text-base text-secondary mt-2">Manage vehicle service records, maintenance status, and vehicle type alerts.</p>
             </div>
 
-            <button type="submit" class="btn btn-add mt-4">
-                Add Maintenance Record
-            </button>
-        </form>
-    </div>
+            <a href="#addRecordForm"
+               class="bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-md shadow-sm transition-colors flex items-center gap-2 whitespace-nowrap self-start md:self-auto">
+                <span class="material-symbols-outlined text-[20px]">add</span>
+                Add New Maintenance Record
+            </a>
+        </section>
 
-    <!-- TABLE: Service History -->
-    <div class="main-card">
-        <div class="p-4 pb-3">
-            <div class="section-header">
-                <div>
-                    <h5 class="card-title-custom mb-1">📋 Service History</h5>
-                    <p class="section-subtitle">View, update, delete, and generate alerts for maintenance records.</p>
+        <!-- Summary Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-xl">
+            <div class="bg-surface-container-lowest rounded-lg border border-outline-variant p-md shadow-sm flex flex-col relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-md opacity-10">
+                    <span class="material-symbols-outlined text-[64px] text-primary">assignment</span>
+                </div>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary mb-2 relative z-10">Total Records</span>
+                <span id="totalCount" class="font-headline text-4xl font-bold text-on-surface relative z-10" th:text="${#lists.size(records)}">0</span>
+                <span class="text-sm text-secondary mt-4 relative z-10">All historical logs</span>
+            </div>
+
+            <div class="bg-surface-container-lowest rounded-lg border border-outline-variant p-md shadow-sm flex flex-col relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-md opacity-10">
+                    <span class="material-symbols-outlined text-[64px] text-[#f59e0b]">pending_actions</span>
+                </div>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary mb-2 relative z-10">Pending Services</span>
+                <span id="pendingCount" class="font-headline text-4xl font-bold text-on-surface relative z-10">0</span>
+                <span class="text-sm text-[#f59e0b] mt-4 relative z-10 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">error</span>
+                    Requires attention
+                </span>
+            </div>
+
+            <div class="bg-surface-container-lowest rounded-lg border border-outline-variant p-md shadow-sm flex flex-col relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-md opacity-10">
+                    <span class="material-symbols-outlined text-[64px] text-[#3b82f6]">build_circle</span>
+                </div>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary mb-2 relative z-10">In Progress</span>
+                <span id="progressCount" class="font-headline text-4xl font-bold text-on-surface relative z-10">0</span>
+                <span class="text-sm text-[#3b82f6] mt-4 relative z-10 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">autorenew</span>
+                    Currently in shop
+                </span>
+            </div>
+
+            <div class="bg-surface-container-lowest rounded-lg border border-outline-variant p-md shadow-sm flex flex-col relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-md opacity-10">
+                    <span class="material-symbols-outlined text-[64px] text-[#10b981]">check_circle</span>
+                </div>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary mb-2 relative z-10">Completed</span>
+                <span id="completedCount" class="font-headline text-4xl font-bold text-on-surface relative z-10">0</span>
+                <span class="text-sm text-[#10b981] mt-4 relative z-10 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[16px]">task_alt</span>
+                    Ready for fleet
+                </span>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 xl:grid-cols-3 gap-gutter">
+            <!-- Add Form -->
+            <div class="xl:col-span-1">
+                <div id="addRecordForm" class="bg-surface-container-lowest rounded-lg border border-outline-variant p-md shadow-md xl:sticky xl:top-[88px]">
+                    <h3 class="font-headline text-xl font-semibold text-on-surface mb-6 border-b border-outline-variant pb-3">Add Maintenance Record</h3>
+
+                    <form th:action="@{/maintenance/add}" action="/maintenance/add" method="post" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1" for="vehicleId">Vehicle ID</label>
+                            <input id="vehicleId"
+                                   name="vehicleId"
+                                   type="text"
+                                   placeholder="e.g. VH-001"
+                                   required
+                                   class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1" for="vehicleType">Vehicle Type</label>
+                            <select id="vehicleType"
+                                    name="vehicleType"
+                                    required
+                                    class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-sm">
+                                <option value="">Select Type</option>
+                                <option value="Car">Car</option>
+                                <option value="Bike">Bike</option>
+                                <option value="Van">Van</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1" for="serviceType">Service Type</label>
+                            <select id="serviceType"
+                                    name="serviceType"
+                                    required
+                                    class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-sm">
+                                <option value="">Select Service</option>
+                                <option value="Engine">Engine</option>
+                                <option value="Tyre">Tyre</option>
+                                <option value="Oil Change">Oil Change</option>
+                                <option value="Brake">Brake</option>
+                                <option value="General">General</option>
+                                <option value="Brake Check">Brake Check</option>
+                                <option value="Tyre Replacement">Tyre Replacement</option>
+                                <option value="Engine Repair">Engine Repair</option>
+                                <option value="Battery Check">Battery Check</option>
+                                <option value="Full Service">Full Service</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1" for="serviceDate">Service Date</label>
+                            <input id="serviceDate"
+                                   name="serviceDate"
+                                   type="date"
+                                   required
+                                   class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1" for="notes">Notes</label>
+                            <textarea id="notes"
+                                      name="notes"
+                                      placeholder="Additional service details..."
+                                      rows="3"
+                                      class="w-full px-3 py-2 bg-surface border border-outline-variant rounded-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-sm resize-none"></textarea>
+                        </div>
+
+                        <div class="pt-4 flex gap-3">
+                            <button type="submit"
+                                    class="flex-1 bg-primary hover:bg-primary/90 text-white font-semibold text-sm py-2 px-4 rounded-md transition-colors shadow-sm">
+                                Save Record
+                            </button>
+                            <button type="reset"
+                                    class="flex-1 bg-transparent border border-outline text-secondary hover:bg-surface-variant font-semibold text-sm py-2 px-4 rounded-md transition-colors">
+                                Clear Form
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead>
-                <tr>
-                    <th>Record ID</th>
-                    <th>Vehicle ID</th>
-                    <th>Vehicle Type</th>
-                    <th>Service Type</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Notes</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
+            <!-- Service History -->
+            <div class="xl:col-span-2">
+                <div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-md overflow-hidden">
+                    <div class="p-md border-b border-outline-variant bg-surface-container-lowest flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h3 class="font-headline text-xl font-semibold text-on-surface">Service History</h3>
+                            <p class="text-sm text-secondary mt-1">View, update, delete, and generate alerts for maintenance records.</p>
+                        </div>
 
-                <tbody>
-                <tr th:each="record : ${records}">
-                    <td>
-                        <span class="record-id" th:text="${record.recordId}"></span>
-                    </td>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                            <div class="relative">
+                                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-[18px]">search</span>
+                                <input id="tableSearch"
+                                       class="pl-9 pr-3 py-1.5 border border-outline-variant rounded-md bg-surface text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none w-full sm:w-52"
+                                       placeholder="Search records..."
+                                       type="text">
+                            </div>
 
-                    <td>
-                        <span class="vehicle-pill" th:text="${record.vehicleId}"></span>
-                    </td>
-
-                    <td th:text="${record.vehicleType}"></td>
-
-                    <td>
-                        <span class="type-pill" th:text="${record.serviceType}"></span>
-                    </td>
-
-                    <td th:text="${record.serviceDate}"></td>
-
-                    <td>
-                        <span th:classappend="${record.status == 'Completed'} ? 'badge-completed' : (${record.status == 'In Progress'} ? 'badge-inprogress' : 'badge-pending')"
-                              class="badge"
-                              th:text="${record.status}">
-                        </span>
-                    </td>
-
-                    <td th:text="${record.notes}"></td>
-
-                    <td>
-                        <form action="/maintenance/update" method="post" class="action-form">
-                            <input type="hidden" name="recordId" th:value="${record.recordId}">
-
-                            <select name="status" class="form-select form-select-sm action-select">
+                            <select id="statusFilter"
+                                    class="px-3 py-1.5 border border-outline-variant rounded-md bg-surface text-sm text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none w-full sm:w-auto">
+                                <option value="All">All Statuses</option>
                                 <option value="Pending">Pending</option>
                                 <option value="In Progress">In Progress</option>
                                 <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
                             </select>
-
-                            <button type="submit" class="btn btn-sm btn-primary">
-                                Update
-                            </button>
-                        </form>
-
-                        <a th:href="@{/maintenance/delete/{id}(id=${record.recordId})}"
-                           class="btn btn-sm btn-danger ms-1"
-                           onclick="return confirm('Delete this record?')">
-                            Delete
-                        </a>
-
-                        <a th:href="@{/maintenance/alert/{id}(id=${record.recordId})}"
-                           class="btn btn-sm btn-warning ms-1"
-                           target="_blank">
-                            Alert
-                        </a>
-                    </td>
-                </tr>
-
-                <tr th:if="${#lists.isEmpty(records)}">
-                    <td colspan="8">
-                        <div class="empty-box">
-                            <h5>No maintenance records found</h5>
-                            <p class="mb-0">Add your first vehicle service record using the form above.</p>
                         </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-surface-container-low border-b border-outline-variant">
+                            <tr>
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-secondary whitespace-nowrap">Record ID</th>
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-secondary whitespace-nowrap">Vehicle Info</th>
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-secondary whitespace-nowrap">Service Details</th>
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-secondary whitespace-nowrap">Status</th>
+                                <th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-secondary text-right whitespace-nowrap">Actions</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="recordsTableBody" class="divide-y divide-outline-variant/50 bg-surface-container-lowest">
+                            <tr th:each="record : ${records}"
+                                class="maintenance-row hover:bg-surface-container-low/50 transition-colors"
+                                th:attr="data-status=${record.status}, data-record-id=${record.recordId}">
+                                <td class="px-4 py-4">
+                                    <span class="font-mono text-sm font-semibold text-primary" th:text="${record.recordId}">REC-12345678</span>
+                                </td>
+
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-semibold text-on-surface" th:text="${record.vehicleId}">VH-001</span>
+                                        <span class="text-xs text-secondary" th:text="${record.vehicleType}">Car</span>
+                                    </div>
+                                </td>
+
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm text-on-surface" th:text="${record.serviceType}">Oil Change</span>
+                                        <span class="text-xs text-secondary" th:text="${record.serviceDate}">2026-05-12</span>
+                                    </div>
+                                    <p class="text-xs text-secondary mt-1 max-w-[220px] truncate" th:text="${record.notes}" th:title="${record.notes}">
+                                        Routine service notes
+                                    </p>
+                                </td>
+
+                                <td class="px-4 py-4">
+                                    <span class="status-badge"
+                                          th:text="${record.status}"
+                                          th:classappend="${record.status == 'Completed'} ? ' status-completed' : (${record.status == 'In Progress'} ? ' status-in-progress' : (${record.status == 'Cancelled'} ? ' status-cancelled' : ' status-pending'))">
+                                        Pending
+                                    </span>
+                                </td>
+
+                                <td class="px-4 py-4 text-right">
+                                    <div class="flex flex-wrap items-center justify-end gap-2">
+                                        <button type="button"
+                                                class="p-1.5 text-secondary hover:text-primary hover:bg-primary-container/10 rounded transition-colors"
+                                                th:data-record-id="${record.recordId}"
+                                                onclick="showAlert(this.dataset.recordId)"
+                                                title="View Alert">
+                                            <span class="material-symbols-outlined text-[18px]">campaign</span>
+                                        </button>
+
+                                        <form th:action="@{/maintenance/update}" action="/maintenance/update" method="post"
+                                              class="inline-flex items-center gap-1 border border-outline-variant rounded bg-surface px-1">
+                                            <input type="hidden" name="recordId" th:value="${record.recordId}">
+
+                                            <select name="status"
+                                                    class="py-1 pl-1 pr-4 bg-transparent text-[11px] text-on-surface outline-none border-none focus:ring-0 cursor-pointer">
+                                                <option value="Pending" th:selected="${record.status == 'Pending'}">Pending</option>
+                                                <option value="In Progress" th:selected="${record.status == 'In Progress'}">In Progress</option>
+                                                <option value="Completed" th:selected="${record.status == 'Completed'}">Completed</option>
+                                                <option value="Cancelled" th:selected="${record.status == 'Cancelled'}">Cancelled</option>
+                                            </select>
+
+                                            <button type="submit"
+                                                    class="p-0.5 text-primary hover:bg-primary-container/20 rounded"
+                                                    title="Update Status">
+                                                <span class="material-symbols-outlined text-[16px]">save</span>
+                                            </button>
+                                        </form>
+
+                                        <a th:href="@{/maintenance/delete/{recordId}(recordId=${record.recordId})}"
+                                           href="/maintenance"
+                                           class="p-1.5 text-secondary hover:text-error hover:bg-error-container/20 rounded transition-colors"
+                                           onclick="return confirm('Are you sure you want to delete this maintenance record?')"
+                                           title="Delete">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr th:if="${#lists.isEmpty(records)}" id="emptyServerRow">
+                                <td colspan="5">
+                                    <div class="p-12 text-center text-secondary">
+                                        <span class="material-symbols-outlined text-[48px] text-outline mb-3">build_circle</span>
+                                        <h4 class="font-headline text-xl font-semibold text-on-surface">No maintenance records found</h4>
+                                        <p class="text-sm mt-1">Add your first vehicle service record using the form on the left.</p>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr id="emptyFilterRow" class="hidden">
+                                <td colspan="5">
+                                    <div class="p-10 text-center text-secondary">
+                                        No matching records found for your search/filter.
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer-layout ml-[260px] w-[calc(100%-260px)] py-4 bg-surface-container-lowest border-t border-outline-variant px-gutter">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-2 text-sm text-secondary">
+        <p>© 2026 AutoRent Logistics Solutions</p>
+        <p>WD272 Vehicle Rental Service Platform | Maintenance and Service Tracking Module</p>
+    </div>
+</footer>
+
+<!-- Alert Modal -->
+<div id="alertModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="bg-surface-container-lowest rounded-lg shadow-xl border border-outline-variant w-full max-w-md mx-4 overflow-hidden">
+        <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface">
+            <h3 class="font-headline text-xl font-semibold text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">notifications_active</span>
+                Vehicle Maintenance Alert
+            </h3>
+            <button type="button" class="text-secondary hover:text-on-surface p-1 rounded-full hover:bg-surface-variant" onclick="closeModal()">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <div class="p-6">
+            <div id="alertModalContent" class="text-sm text-on-surface-variant">
+                Loading alert details...
+            </div>
+        </div>
+
+        <div class="px-6 py-3 border-t border-outline-variant bg-surface flex justify-end">
+            <button type="button"
+                    class="bg-surface border border-outline text-on-surface hover:bg-surface-variant font-semibold text-sm py-1.5 px-4 rounded-md transition-colors"
+                    onclick="closeModal()">
+                Close
+            </button>
         </div>
     </div>
-
-    <div class="footer-note">
-        WD272 Vehicle Rental Service Platform — Maintenance and Service Tracking
-    </div>
-
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function showAlert(recordId) {
+        const modal = document.getElementById('alertModal');
+        const content = document.getElementById('alertModalContent');
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        content.innerHTML = `
+            <div class="flex justify-center py-4">
+                <span class="material-symbols-outlined animate-spin text-primary">progress_activity</span>
+            </div>
+        `;
+
+        fetch(`/maintenance/alert/${encodeURIComponent(recordId)}`)
+            .then(response => response.text())
+            .then(message => {
+                content.innerHTML = `
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r text-amber-900">
+                        <p class="font-semibold mb-1">Service Alert</p>
+                        <p>${escapeHtml(message)}</p>
+                    </div>
+                `;
+            })
+            .catch(() => {
+                content.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r text-red-900">
+                        <p class="font-semibold mb-1">Alert Error</p>
+                        <p>Could not load the maintenance alert. Please try again.</p>
+                    </div>
+                `;
+            });
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('alertModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = value;
+        return div.innerHTML;
+    }
+
+    function normaliseStatus(status) {
+        return (status || '').trim().toLowerCase();
+    }
+
+    function updateDashboardCounts() {
+        const rows = Array.from(document.querySelectorAll('.maintenance-row'));
+        let pending = 0;
+        let progress = 0;
+        let completed = 0;
+
+        rows.forEach(row => {
+            const status = normaliseStatus(row.dataset.status);
+            if (status === 'pending') pending++;
+            if (status === 'in progress') progress++;
+            if (status === 'completed') completed++;
+        });
+
+        const totalCount = document.getElementById('totalCount');
+        const pendingCount = document.getElementById('pendingCount');
+        const progressCount = document.getElementById('progressCount');
+        const completedCount = document.getElementById('completedCount');
+
+        if (totalCount && !totalCount.textContent.trim()) totalCount.textContent = rows.length;
+        if (pendingCount) pendingCount.textContent = pending;
+        if (progressCount) progressCount.textContent = progress;
+        if (completedCount) completedCount.textContent = completed;
+    }
+
+    function filterTable() {
+        const searchInput = document.getElementById('tableSearch');
+        const globalSearch = document.getElementById('globalSearch');
+        const statusFilter = document.getElementById('statusFilter');
+        const emptyFilterRow = document.getElementById('emptyFilterRow');
+        const rows = Array.from(document.querySelectorAll('.maintenance-row'));
+
+        const searchTerm = ((searchInput && searchInput.value) || (globalSearch && globalSearch.value) || '').toLowerCase();
+        const statusTerm = statusFilter ? statusFilter.value : 'All';
+
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const status = row.dataset.status || '';
+            const matchesSearch = text.includes(searchTerm);
+            const matchesStatus = statusTerm === 'All' || normaliseStatus(status) === normaliseStatus(statusTerm);
+
+            if (matchesSearch && matchesStatus) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        if (emptyFilterRow) {
+            if (rows.length > 0 && visibleCount === 0) {
+                emptyFilterRow.classList.remove('hidden');
+            } else {
+                emptyFilterRow.classList.add('hidden');
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('tableSearch');
+        const globalSearch = document.getElementById('globalSearch');
+        const statusFilter = document.getElementById('statusFilter');
+
+        updateDashboardCounts();
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                if (globalSearch) globalSearch.value = searchInput.value;
+                filterTable();
+            });
+        }
+
+        if (globalSearch) {
+            globalSearch.addEventListener('input', () => {
+                if (searchInput) searchInput.value = globalSearch.value;
+                filterTable();
+            });
+        }
+
+        if (statusFilter) {
+            statusFilter.addEventListener('change', filterTable);
+        }
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
