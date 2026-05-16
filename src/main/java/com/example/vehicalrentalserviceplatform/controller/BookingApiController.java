@@ -2,6 +2,7 @@ package com.example.vehicalrentalserviceplatform.controller;
 
 import com.example.vehicalrentalserviceplatform.model.Booking;
 import com.example.vehicalrentalserviceplatform.service.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,13 +12,8 @@ import java.util.List;
 @RestController
 public class BookingApiController {
 
-    // 1. Tell the API controller about your service layer
-    private final BookingService bookingService;
-
-    // 2. Initialize the service
-    public BookingApiController() {
-        this.bookingService = new BookingService();
-    }
+    @Autowired
+    private  BookingService bookingService;
 
     // 3. Your API endpoint for fetching JSON data
     @GetMapping("/api/bookings")

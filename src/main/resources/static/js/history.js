@@ -27,7 +27,7 @@ function loadBookings() {
                     actionHtml = `
                         <span style="color: #ffc107; font-weight: bold; display: block; margin-bottom: 5px;">⏳ Awaiting Approval</span>
                         <div class="action-buttons">
-                            <a href="/editBooking?id=${booking.transactionId}" class="button" style="padding: 4px 8px; font-size: 0.85em;">Edit</a>
+                            <a href="/editBooking?id=${booking.transactionId}&vehicle=${booking.vehicleId}&start=${booking.startDate}&end=${booking.returnDate}" class="button" style="padding: 4px 8px; font-size: 0.85em;">Edit</a>
                             <button onclick="submitDelete('${booking.transactionId}')" class="button secondary" style="padding: 4px 8px; font-size: 0.85em; background-color: #dc3545; border-color: #dc3545;">Delete</button>
                         </div>
                     `;

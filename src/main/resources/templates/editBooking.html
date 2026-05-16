@@ -9,22 +9,26 @@
 <div class="page-wrapper">
     <header>
         <h1>Update Your Reservation</h1>
-        <p class="text-muted">Modify the dates, vehicle, or status of this booking.</p>
+        <p class="text-muted">Modify the dates of your booking. To change vehicles, please cancel and create a new reservation.</p>
     </header>
+
+    <div th:if="${errorMessage}" style="background-color: #f8d7da; color: #842029; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 600; text-align: center;">
+        <span th:text="${errorMessage}"></span>
+    </div>
 
     <div class="form-card">
         <form action="/updateBooking" method="POST">
 
+            <input type="hidden" id="transactionIdBox" name="transactionId" required>
+
             <div class="form-section">
                 <div class="form-row">
                     <div>
-                        <label>Transaction ID</label>
-                        <input type="text" id="transactionIdBox" name="transactionId" required readonly style="width: 100%; background-color: #f1f5f9;">
+                        <label>Vehicle ID</label>
+                        <input type="text" id="vehicleIdBox" name="vehicleId" required readonly
+                               style="width: 100%; background-color: #f8fafc; color: #64748b; cursor: not-allowed;">
                     </div>
-                    <div>
-                        <label>New Vehicle ID</label>
-                        <input type="text" name="vehicleId" required style="width: 100%;">
-                    </div>
+                    <div></div>
                 </div>
             </div>
 
@@ -32,26 +36,30 @@
                 <div class="form-row">
                     <div>
                         <label>New Start Date</label>
-                        <input type="date" name="startDate" required style="width: 100%;">
+                        <input type="date" id="startDateBox" name="startDate" required style="width: 100%;">
                     </div>
                     <div>
                         <label>New Return Date</label>
-                        <input type="date" name="returnDate" required style="width: 100%;">
+                        <input type="date" id="returnDateBox" name="returnDate" required style="width: 100%;">
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="button">Save Changes</button>
+            <div class="action-buttons" style="margin-top: 24px;">
+                <a href="/reservationHistory" class="button secondary">Cancel</a>
+                <button type="submit" class="button">Save Changes</button>
+            </div>
         </form>
     </div>
 </div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
-    const targetId = urlParams.get('id');
-    if(targetId) {
-        document.getElementById('transactionIdBox').value = targetId;
-    }
+
+    if(urlParams.get('id')) document.getElementById('transactionIdBox').value = urlParams.get('id');
+    if(urlParams.get('vehicle')) document.getElementById('vehicleIdBox').value = urlParams.get('vehicle');
+    if(urlParams.get('start')) document.getElementById('startDateBox').value = urlParams.get('start');
+    if(urlParams.get('end')) document.getElementById('returnDateBox').value = urlParams.get('end');
 </script>
 </body>
 </html>

@@ -36,6 +36,28 @@ public class BookingService {
         return true; // No overlaps found, car is yours!
     }
 
+    public boolean isVehicleAvailableForUpdate(String transactionId, String vehicleId, String requestedStartDate, String requestedReturnDate) {
+        List<Booking> activeBookings = getAllBookings();
+        LocalDate reqStart = LocalDate.parse(requestedStartDate);
+        LocalDate reqReturn = LocalDate.parse(requestedReturnDate);
+
+        for (Booking x : activeBookings) {
+            if (x.getTransactionId().equals(transactionId)) {
+                continue;
+            }
+
+            if (x.getVehicleId().equals(vehicleId) && !x.getBookingStatus().equals("Cancelled")) {
+                LocalDate bookedStart = LocalDate.parse(x.getStartDate());
+                LocalDate bookedReturn = LocalDate.parse(x.getReturnDate());
+
+                if (!reqStart.isAfter(bookedReturn) && !reqReturn.isBefore(bookedStart)) {
+                    return false; // Car is taken by SOMEONE ELSE during these dates
+                }
+            }
+        }
+        return true;
+    }
+
     public boolean createBooking(Booking newBooking){
 
         if(!isVehicleAvailable(newBooking.getVehicleId(),newBooking.getStartDate(),newBooking.getReturnDate())){
@@ -108,7 +130,13 @@ public class BookingService {
 
     }
 
-    public void updateBooking(String transactionId,String newVehicleID, String newStartDate, String newReturnDate, String newStatus){
+    public boolean updateBooking(String transactionId,String newVehicleID, String newStartDate, String newReturnDate, String newStatus){
+
+        if(!isVehicleAvailableForUpdate(transactionId, newVehicleID,newStartDate, newReturnDate)){
+            System.out.println("Error: Vehicle is already booked for those updated dates.");
+            return false;
+        }
+
         List<Booking> allBookings = getAllBookings();
         boolean isUpdated = false;
 
@@ -126,8 +154,10 @@ public class BookingService {
         if (isUpdated){
             overWriteBookingFile(allBookings);
             System.out.println("Booking updated successfully");
+            return true;
         }else {
             System.out.println("Error: Booking updated failed");
+            return false;
         }
     }
 
@@ -159,5 +189,14 @@ public class BookingService {
         if (isRemoved){
             overWriteBookingFile(allBookings);
         }
+    }
+
+    public Booking getBookingById(String transactionId) {
+        for (Booking b : getAllBookings()) {
+            if (b.getTransactionId().equals(transactionId)) {
+                return b;
+            }
+        }
+        return null;
     }
 }

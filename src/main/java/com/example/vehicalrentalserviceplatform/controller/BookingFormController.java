@@ -40,16 +40,14 @@ public class BookingFormController {
             @RequestParam("startDate") String newStartDate,
             @RequestParam("returnDate") String newReturnDate) {
 
-        String secureStatus = "Pending";
-        for (Booking existing : bookingService.getAllBookings()) {
-            if (existing.getTransactionId().equals(transactionId)) {
-                secureStatus = existing.getBookingStatus();
-                break;
-            }
-        }
-        bookingService.updateBooking(transactionId, newVehicleId, newStartDate, newReturnDate, secureStatus);
+        Booking existing = bookingService.getBookingById(transactionId);
+        String secureStatus = (existing != null) ? existing.getBookingStatus() : "Pending";
 
-        // Redirect back to the history page after saving
+        boolean isSuccess = bookingService.updateBooking(transactionId,newVehicleId,newStartDate,newReturnDate,secureStatus);
+
+        if(!isSuccess){
+            return "redirect:/editBooking?id=" + transactionId + "&vehicle=" + newVehicleId + "&start=" + newStartDate + "&end=" + newReturnDate + "&error=overlap";
+        }
         return "redirect:/reservationHistory";
     }
 
