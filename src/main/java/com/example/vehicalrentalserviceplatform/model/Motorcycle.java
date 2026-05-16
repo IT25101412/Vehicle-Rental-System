@@ -8,7 +8,7 @@ public class Motorcycle extends Vehicle{
                       String fuelType, double mileage, boolean isAvailable,
                       String motorcycleType, String vehicleImageFileName, String vehicleId) {
         super(make, model, year, rentalRate, fuelType, mileage, isAvailable, vehicleImageFileName, vehicleId);
-        this.motorcycleType = motorcycleType;
+        setMotorcycleType(motorcycleType);
     }
 
     //Getter

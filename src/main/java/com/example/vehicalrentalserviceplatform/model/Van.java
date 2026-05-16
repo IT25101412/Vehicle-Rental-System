@@ -10,7 +10,7 @@ public class Van extends Vehicle{
                int numberOfSeats, String driveTrain, String vehicleImageFileName, String vehicleId) {
         super(make, model, year, rentalRate, fuelType, mileage, isAvailable, vehicleImageFileName, vehicleId);
         this.numberOfSeats = numberOfSeats;
-        this.driveTrain = driveTrain;
+        setDriveTrain(driveTrain);
     }
     //Getters
 
