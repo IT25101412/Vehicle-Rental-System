@@ -24,6 +24,7 @@ public class BookingPageController {
 
     @GetMapping("/bookVehicle")
     public String showBookVehicle(@RequestParam(name = "id",required = false)String vehicleId,
+                                  @RequestParam(name = "error",required = false)String error,
                                   HttpSession session, Model model) {
 
         String currentUser = (String) session.getAttribute("loggedInUser");
@@ -35,6 +36,9 @@ public class BookingPageController {
         model.addAttribute("username", currentUser);
         model.addAttribute("vehicleId", vehicleId);
 
+        if("overlap".equals(error)){
+            model.addAttribute("errorMessage","Sorry! This vehicle is already booked for the selected dates. Please choose different dates or a different vehicle.");
+        }
 
         return "bookVehicle";
 

@@ -36,11 +36,11 @@ public class BookingService {
         return true; // No overlaps found, car is yours!
     }
 
-    public  void  createBooking(Booking newBooking){
+    public boolean createBooking(Booking newBooking){
 
         if(!isVehicleAvailable(newBooking.getVehicleId(),newBooking.getStartDate(),newBooking.getReturnDate())){
             System.out.println("Error: Vehicle is already booked for those dates.");
-            return;
+            return false;
         }
 
         try(FileWriter fileWriter = new FileWriter(FILE_PATH.toFile(), true);
@@ -49,10 +49,12 @@ public class BookingService {
 
             out.println(newBooking.toString());
             System.out.println("Booking Successful");
+            return true;
 
         }catch(IOException e){
             System.out.println("An error occurred");
             e.printStackTrace();
+            return false;
         }
     }
 

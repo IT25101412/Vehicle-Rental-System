@@ -7,7 +7,7 @@ function loadBookings() {
 
     if (!currentUser) {
             console.error("No user logged in!");
-            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='7'>Please log in to view history.</td></tr>";
+            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='6'>Please log in to view history.</td></tr>";
             return;
     }
 
@@ -54,7 +54,6 @@ function loadBookings() {
                 // --- BUILD THE ROW ---
                 const row = `
                     <tr>
-                        <td>${booking.transactionId}</td>
                         <td>${booking.customerName}</td>
                         <td>${booking.vehicleId}</td>
                         <td>${booking.startDate}</td>
@@ -72,7 +71,7 @@ function loadBookings() {
         })
         .catch(error => {
             console.error("Error fetching the bookings:", error);
-            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='7'>Error loading bookings. Please try again later.</td></tr>";
+            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='6'>Error loading bookings. Please try again later.</td></tr>";
         });
 }
 

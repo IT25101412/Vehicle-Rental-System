@@ -23,7 +23,11 @@ public class BookingFormController {
             @RequestParam("returnDate") String returnDate) {
 
         Booking newBooking = new Booking(name, vehicleId, startDate, returnDate, "Pending");
-        bookingService.createBooking(newBooking);
+        boolean isSuccess =  bookingService.createBooking(newBooking);
+
+        if(!isSuccess){
+            return "redirect:/bookVehicle?id=" + vehicleId + "&error=overlap";
+        }
 
         return "redirect:/reservationHistory";
     }

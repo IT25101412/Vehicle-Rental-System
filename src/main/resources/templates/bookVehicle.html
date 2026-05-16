@@ -12,6 +12,10 @@
         <p class="text-muted">Enter the details below to reserve a vehicle.</p>
     </header>
 
+    <div th:if="${errorMessage}" style="background-color: #f8d7da; color: #842029; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 600; text-align: center;">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
     <div class="form-card">
         <form action="/createBooking" method="POST">
 
@@ -23,7 +27,17 @@
                     </div>
                     <div>
                         <label>Vehicle ID</label>
-                        <input type="text" name="vehicleId" th:value="${vehicleId}" readonly required style="width: 100%;">
+                        <div style="display: flex; align-items: center; background-color: #f8fafc; border: 1px solid #cbd2d9; border-radius: 12px; padding: 6px 8px 6px 16px;">
+
+                            <input type="text" name="vehicleId" th:value="${vehicleId}" readonly required
+                                   style="flex: 1; border: none; background: transparent; padding: 0; margin: 0; color: #64748b; outline: none; box-shadow: none; min-width: 0;">
+
+                            <a href="/catalog" class="button secondary"
+                               style="padding: 8px 16px; margin: 0; min-width: 0; font-size: 0.85rem; border-radius: 8px; white-space: nowrap; height: auto; line-height: 1.5;">
+                                Change
+                            </a>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,7 +58,7 @@
             <div class="action-buttons" style="margin-top: 24px;">
                 <a href="/reservationHistory" class="button secondary">View My History</a>
 
-                <button type="submit" class="button">Confirm & Pay</button>
+                <button type="submit" class="button">Book Now</button>
             </div>
         </form>
     </div>
