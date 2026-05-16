@@ -3,32 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin - Vehicle Inventory</title>
-    <link rel="stylesheet" href="/css/style.css"> <!-- Your existing CSS -->
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<h1>Vehicle Inventory Management</h1>
 
-<!-- Button to lead to the Add Form -->
-<button onclick="window.location.href='vehicleForm'" style="margin-bottom: 20px;">
-    + Add New Vehicle
-</button>
+<div class="page-wrapper">
+    <header>
+        <h1>Vehicle Inventory Management</h1>
+        <p class="text-muted">Manage your fleet, update details, and remove vehicles.</p>
+    </header>
 
-<table border="1" id="inventoryTable" style="width:100%; text-align: left;">
-    <thead>
-    <tr>
-        <th>Image</th>
-        <th>ID</th>
-        <th>Make/Model</th>
-        <th>Type</th>
-        <th>Rate (LKR)</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody id="inventoryBody">
-    <!-- Data will be injected here by JavaScript -->
-    </tbody>
-</table>
+    <div class="card">
+        <div class="toolbar" style="justify-content: flex-end; margin-bottom: 20px;">
+            <button class="button" onclick="window.location.href='/vehicleForm'">
+                + Add New Vehicle
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>ID</th>
+                    <th>Make & Model</th>
+                    <th>Type</th>
+                    <th>Rate / Day</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                </tr>
+                </thead>
+                <tbody id="inventoryBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <script src="/js/inventory.js"></script>
 </body>

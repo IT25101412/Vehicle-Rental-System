@@ -3,3 +3,5 @@ MOTORCYCLE,MOT-0001,2019,Ducati,Diavel,Petrol,8912.0,MOT-0001_faf.jpg,10000.0,tr
 CAR,CAR-0002,2015,Toyota,Aqua,Petrol,48763.0,CAR-0002_Untitled.jpg,4000.0,true,4,null
 MOTORCYCLE,MOT-0002,1991,Honda,Jade,Petrol,65536.0,MOT-0002_Untitled.jpg,2500.0,true,Standard
 CAR,CAR-0003,1991,Toyota,Vista,Diesel,128652.0,CAR-0003_OIPfx.jpg,3000.0,true,5,null
+SUV,SUV-0001,2020,BMW,X5,Petrol,26541.0,SUV-0001_OIP.jpg,10000.0,true,6,4WD
+VAN,VAN-0001,2025,Toyota,Hiace 223R,Diesel,12875.0,VAN-0001_Toyota-Hiace-2025.jpg,18500.0,true,16,4WD

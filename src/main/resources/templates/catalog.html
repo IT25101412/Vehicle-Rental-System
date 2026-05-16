@@ -4,43 +4,30 @@
     <meta charset="UTF-8">
     <title>Vehicle Catalog</title>
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        /* A simple grid for the catalog cards */
-        #catalogGrid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .vehicle-card {
-            border: 1px solid #ccc;
-            padding: 15px;
-            width: 250px;
-            text-align: center;
-            border-radius: 8px;
-        }
-        .vehicle-card img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 4px;
-        }
-    </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Available Vehicles</h1>
+<div class="page-wrapper">
 
-    <label for="typeFilter"><strong>Filter by Type:</strong></label>
-    <select id="typeFilter" onchange="loadCatalog()">
-        <option value="ALL">All Vehicles</option>
-        <option value="CAR">Cars</option>
-        <option value="MOTORCYCLE">Motorcycles</option>
-        <option value="SUV">SUVs</option>
-        <option value="VAN">Vans</option>
-    </select>
+    <header>
+        <h1>Available Vehicles</h1>
+        <p class="text-muted">Browse our selection and find the perfect vehicle for your needs.</p>
+    </header>
 
-    <div id="catalogGrid"></div>
+    <div class="card toolbar" style="display: flex; align-items: center; gap: 16px;">
+        <label for="typeFilter" style="margin-bottom: 0;">Filter by Type:</label>
+        <select id="typeFilter" onchange="loadCatalog()" style="width: auto; min-width: 200px; padding: 10px 16px;">
+            <option value="ALL">All Vehicles</option>
+            <option value="CAR">Cars</option>
+            <option value="MOTORCYCLE">Motorcycles</option>
+            <option value="SUV">SUVs</option>
+            <option value="VAN">Vans</option>
+        </select>
+    </div>
+
+    <div id="catalogGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 24px;">
+    </div>
+
 </div>
 
 <script src="/js/catalog.js"></script>
