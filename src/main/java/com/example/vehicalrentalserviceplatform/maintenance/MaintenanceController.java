@@ -1,5 +1,7 @@
 package com.example.vehicalrentalserviceplatform.maintenance;
 
+import com.example.vehicalrentalserviceplatform.service.VehicleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,9 @@ import java.util.UUID;
 @RequestMapping("/maintenance")
 public class MaintenanceController {
 
+    @Autowired
+    private VehicleService vehicleService;
+
     // READ - Show maintenance log entry form and service history
     @GetMapping
     public String maintenancePage(HttpSession session, Model model) {
@@ -20,10 +25,13 @@ public class MaintenanceController {
             return "redirect:/admin-login"; // Kick them out if not authorized
         }
 
-
         List<MaintenanceRecord> records = MaintenanceFileHandler.loadAllRecords();
         model.addAttribute("records", records);
+
+        model.addAttribute("vehicles",vehicleService.getAllVehicles());
+
         return "maintenance";
+
     }
 
     // CREATE - Add new maintenance record
