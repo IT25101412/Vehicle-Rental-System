@@ -1,6 +1,5 @@
 package com.example.vehicalrentalserviceplatform.maintenance;
 
-// Encapsulation: all fields are private and accessed only through getters and setters
 public class MaintenanceRecord {
 
     private String recordId;
@@ -11,7 +10,6 @@ public class MaintenanceRecord {
     private String status;
     private String notes;
 
-    // Constructor
     public MaintenanceRecord(String recordId, String vehicleId, String vehicleType,
                              String serviceType, String serviceDate, String status, String notes) {
         this.recordId = recordId;
@@ -23,71 +21,33 @@ public class MaintenanceRecord {
         this.notes = notes;
     }
 
-    // Getters and Setters - Encapsulation
-    public String getRecordId() {
-        return recordId;
-    }
+    public String getRecordId() { return recordId; }
+    public void setRecordId(String recordId) { this.recordId = recordId; }
 
-    public void setRecordId(String recordId) {
-        this.recordId = recordId;
-    }
+    public String getVehicleId() { return vehicleId; }
+    public void setVehicleId(String vehicleId) { this.vehicleId = vehicleId; }
 
-    public String getVehicleId() {
-        return vehicleId;
-    }
+    public String getVehicleType() { return vehicleType; }
+    public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
-    public void setVehicleId(String vehicleId) {
-        this.vehicleId = vehicleId;
-    }
+    public String getServiceType() { return serviceType; }
+    public void setServiceType(String serviceType) { this.serviceType = serviceType; }
 
-    public String getVehicleType() {
-        return vehicleType;
-    }
+    public String getServiceDate() { return serviceDate; }
+    public void setServiceDate(String serviceDate) { this.serviceDate = serviceDate; }
 
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public String getServiceType() {
-        return serviceType;
-    }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
-    public void setServiceType(String serviceType) {
-        this.serviceType = serviceType;
-    }
-
-    public String getServiceDate() {
-        return serviceDate;
-    }
-
-    public void setServiceDate(String serviceDate) {
-        this.serviceDate = serviceDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    // Saves the object as one line in maintenance.txt
     @Override
     public String toString() {
         return recordId + "," + vehicleId + "," + vehicleType + "," + serviceType + ","
                 + serviceDate + "," + status + "," + notes;
     }
 
-    // Vehicle type based maintenance alert
     public String getMaintenanceAlert() {
         if (vehicleType.equalsIgnoreCase("Car")) {
             return "Car maintenance alert: Check engine oil, brake system, tyres, battery, and coolant level for Vehicle " + vehicleId + ".";
