@@ -1,13 +1,10 @@
 window.onload = () => {
     setupCategoryTabs();
-    setupLoadMore();
     loadCatalog();
 };
 
 let allVehicles = [];
 let activeType = "ALL";
-let visibleCount = 4;
-const pageSize = 4;
 
 function setupCategoryTabs() {
     const tabs = document.querySelectorAll(".category-tab");
@@ -18,21 +15,8 @@ function setupCategoryTabs() {
             tab.classList.add("active");
 
             activeType = tab.dataset.type;
-            visibleCount = 4;
-
             renderVehicles();
         });
-    });
-}
-
-function setupLoadMore() {
-    const button = document.getElementById("loadMoreBtn");
-
-    if (!button) return;
-
-    button.addEventListener("click", () => {
-        visibleCount += pageSize;
-        renderVehicles();
     });
 }
 
@@ -54,15 +38,11 @@ async function loadCatalog() {
 
         const data = await response.json();
 
-console.log("Vehicles API response:", data);
+        allVehicles = Array.isArray(data)
+            ? data
+            : data.vehicles || data.data || data.content || [];
 
-allVehicles = Array.isArray(data)
-    ? data
-    : data.vehicles || data.data || data.content || [];
-
-console.log("Vehicles used by catalog:", allVehicles);
-
-renderVehicles();
+        renderVehicles();
 
     } catch (error) {
         console.error(error);
@@ -73,78 +53,69 @@ renderVehicles();
                 <p>Check if your backend API <strong>/api/vehicles</strong> is running.</p>
             </div>
         `;
-
-        const loadMoreBtn = document.getElementById("loadMoreBtn");
-        if (loadMoreBtn) loadMoreBtn.classList.add("hidden");
     }
 }
 
 function renderVehicles() {
     const grid = document.getElementById("catalogGrid");
-    const loadMoreBtn = document.getElementById("loadMoreBtn");
 
-    const filtered = allVehicles.filter(vehicle => {
-    const availabilityValue =
-        vehicle.available ??
-        vehicle.isAvailable ??
-        vehicle.availability ??
-        vehicle.status;
+    const filteredVehicles = allVehicles.filter(vehicle => {
+        const vehicleType = String(
+            vehicle.type ||
+            vehicle.vehicleType ||
+            vehicle.category ||
+            ""
+        ).toUpperCase();
 
-    const isAvailable =
-        availabilityValue === true ||
-        availabilityValue === 1 ||
-        String(availabilityValue).toLowerCase() === "true" ||
-        String(availabilityValue).toLowerCase() === "available";
+        const rate = Number(vehicle.rentalRate || vehicle.rate || vehicle.price || 0);
 
-    const vehicleType =
-        vehicle.type ||
-        vehicle.vehicleType ||
-        vehicle.category;
+        if (activeType === "ALL") {
+            return true;
+        }
 
-    const matchesType =
-        activeType === "ALL" ||
-        String(vehicleType).toUpperCase() === activeType;
+        if (activeType === "PREMIUM") {
+            return rate >= 25000;
+        }
 
-    return matchesType;
-});
-
-    const visibleVehicles = filtered.slice(0, visibleCount);
+        return vehicleType === activeType;
+    });
 
     grid.innerHTML = "";
 
-    if (visibleVehicles.length === 0) {
+    if (filteredVehicles.length === 0) {
         grid.innerHTML = `
             <div class="empty-state">
-                <h3>No vehicles available</h3>
+                <h3>No vehicles found</h3>
                 <p>No vehicles are available in this category right now.</p>
             </div>
         `;
-
-        if (loadMoreBtn) loadMoreBtn.classList.add("hidden");
         return;
     }
 
-    visibleVehicles.forEach(vehicle => {
-        const card = document.createElement("a");
+    filteredVehicles.forEach(vehicle => {
+        const card = document.createElement("article");
         card.className = "car-card";
-        card.href = `bookVehicle?id=${encodeURIComponent(vehicle.vehicleId)}`;
 
-        const imageFile = vehicle.vehicleImageFileName || "";
+        const vehicleId = vehicle.vehicleId || vehicle.id || "";
+        const imageFile = vehicle.vehicleImageFileName || vehicle.imageFileName || vehicle.image || "";
+
         const imageSrc = imageFile
             ? `/images/${imageFile}`
-            : "https://via.placeholder.com/800x520?text=Vehicle";
+            : "https://via.placeholder.com/900x560?text=DriveEase+Vehicle";
 
-        const seats = vehicle.seats || vehicle.seatCount || vehicle.capacity || "4";
-        const transmission = vehicle.transmission || vehicle.transmissionType || "Automatic";
-        const bags = vehicle.bags || vehicle.bagCount || vehicle.luggage || "1";
-        const title = `${vehicle.make || ""} ${vehicle.model || ""}`.trim() || "Vehicle";
+        const title = `${vehicle.make || ""} ${vehicle.model || ""}`.trim() || "DriveEase Vehicle";
+        const type = vehicle.type || vehicle.vehicleType || "Vehicle";
+        const seats = vehicle.seats || vehicle.seatCount || vehicle.capacity || getDefaultSeats(type);
+        const transmission = vehicle.transmission || vehicle.transmissionType || getDefaultTransmission(type);
+        const fuel = vehicle.fuel || vehicle.fuelType || "Fuel";
+        const rate = vehicle.rentalRate || vehicle.rate || vehicle.price || "0";
 
         card.innerHTML = `
             <div class="car-image-area">
-                <img 
-                    src="${imageSrc}" 
+                <img
+                    src="${imageSrc}"
                     alt="${escapeHtml(title)}"
-                    onerror="this.src='https://via.placeholder.com/800x520?text=Vehicle'"
+                    onerror="this.src='https://via.placeholder.com/900x560?text=DriveEase+Vehicle'"
                 >
             </div>
 
@@ -156,39 +127,80 @@ function renderVehicles() {
                 <div class="car-bottom">
                     <div class="car-specs">
                         <span class="spec-pill">
-                            <span class="spec-icon">♙</span>
-                            ${escapeHtml(seats)}
+                            <span class="spec-icon">▣</span>
+                            ${escapeHtml(formatType(type))}
                         </span>
 
                         <span class="spec-pill">
-                            <span class="spec-icon">⌘</span>
+                            <span class="spec-icon">⚙</span>
                             ${escapeHtml(transmission)}
                         </span>
 
                         <span class="spec-pill">
-                            <span class="spec-icon">▣</span>
-                            ${escapeHtml(bags)} bags
+                            <span class="spec-icon">♙</span>
+                            ${escapeHtml(seats)} seats
+                        </span>
+
+                        <span class="spec-pill">
+                            <span class="spec-icon">⛽</span>
+                            ${escapeHtml(fuel)}
                         </span>
                     </div>
 
                     <div class="car-price">
-                        <strong>Rs. ${escapeHtml(vehicle.rentalRate || "0")}</strong>
+                        <strong>Rs. ${escapeHtml(rate)}</strong>
                         <span>/Day</span>
                     </div>
                 </div>
+
+                <button class="book-now-btn" type="button">
+                    Book Now
+                </button>
             </div>
         `;
 
+        const bookButton = card.querySelector(".book-now-btn");
+
+        bookButton.addEventListener("click", () => {
+            if (!vehicleId) {
+                alert("Vehicle ID missing. Please check vehicle data.");
+                return;
+            }
+
+            window.location.href = `/bookVehicle?id=${encodeURIComponent(vehicleId)}`;
+        });
+
         grid.appendChild(card);
     });
+}
 
-    if (loadMoreBtn) {
-        if (visibleCount >= filtered.length) {
-            loadMoreBtn.classList.add("hidden");
-        } else {
-            loadMoreBtn.classList.remove("hidden");
-        }
-    }
+function formatType(type) {
+    const value = String(type).toUpperCase();
+
+    if (value === "CAR") return "Car";
+    if (value === "SUV") return "SUV";
+    if (value === "VAN") return "Van";
+    if (value === "MOTORCYCLE") return "Motorcycle";
+
+    return type;
+}
+
+function getDefaultSeats(type) {
+    const value = String(type).toUpperCase();
+
+    if (value === "MOTORCYCLE") return "2";
+    if (value === "VAN") return "8";
+    if (value === "SUV") return "5";
+
+    return "5";
+}
+
+function getDefaultTransmission(type) {
+    const value = String(type).toUpperCase();
+
+    if (value === "MOTORCYCLE") return "Manual";
+
+    return "Automatic";
 }
 
 function escapeHtml(value) {

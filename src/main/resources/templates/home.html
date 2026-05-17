@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/catalog.css">
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -122,29 +123,26 @@
 </head>
 <body class="bg-background text-on-background font-body-md antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
 <!-- TopNavBar (JSON Component) -->
-<nav class="bg-surface/95 dark:bg-on-tertiary-fixed/95 text-primary dark:text-primary-fixed font-body-md text-body-md docked full-width top-0 sticky z-50 border-b border-outline-variant dark:border-on-surface-variant/20 shadow-sm transition-colors duration-200">
-<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-<!-- Brand -->
-<a class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-primary-fixed" href="/">DriveEase</a>
+<header class="catalog-header">
+    <nav class="catalog-navbar">
+        <a href="/" class="catalog-logo">
+            <span class="catalog-logo-mark">✺</span>
+            <span>DriveEase</span>
+        </a>
 
-<!-- Navigation Links (Desktop) -->
-<div class="hidden md:flex items-center gap-stack-md">
-<a class="text-secondary dark:text-secondary-fixed-dim font-bold border-b-2 border-secondary dark:border-secondary-fixed-dim pb-1 font-label-md text-label-md" href="/">Home</a>
-<a class="text-on-surface-variant dark:text-tertiary-fixed-dim font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container dark:hover:bg-on-tertiary-container transition-colors duration-200 rounded px-2 py-1 font-label-md text-label-md" href="#about">About</a>
-<a class="text-on-surface-variant dark:text-tertiary-fixed-dim font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container dark:hover:bg-on-tertiary-container transition-colors duration-200 rounded px-2 py-1 font-label-md text-label-md" href="/catalog">Vehicles</a>
-<a class="text-on-surface-variant dark:text-tertiary-fixed-dim font-medium hover:text-primary dark:hover:text-primary-fixed hover:bg-surface-container dark:hover:bg-on-tertiary-container transition-colors duration-200 rounded px-2 py-1 font-label-md text-label-md" href="#contact">Contact</a>
-</div>
+        <div class="catalog-nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="/catalog">Vehicles</a>
+            <a href="#contact">Contact</a>
+        </div>
 
-<!-- Trailing Action -->
-<div class="flex items-center gap-4">
-<a class="hidden md:inline-flex bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded-full hover:bg-on-surface transition-colors duration-200 shadow-sm active:scale-95" href="/catalog">Browse Vehicles</a>
-<!-- Mobile Menu Icon -->
-<button class="md:hidden text-primary p-2">
-<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;">menu</span>
-</button>
-</div>
-</div>
-</nav>
+        <a href="/catalog" class="catalog-header-btn">
+            Browse Vehicles
+            <span>→</span>
+        </a>
+    </nav>
+</header>
 <!-- Hero Section -->
 <header class="relative min-h-[90vh] flex flex-col justify-center items-center overflow-hidden">
 <!-- Background Image -->
@@ -228,7 +226,7 @@
 </div>
 <!-- Right: Visual Asset -->
 <div class="lg:col-span-7 relative min-h-[400px] lg:min-h-[600px] order-1 lg:order-2 rounded-3xl overflow-hidden ambient-shadow-lg">
-<img alt="A dynamic composition featuring two overlapping glossy photos on a clean white background. One photo shows a sleek white premium SUV, while the other shows a modern black motorcycle. The lighting is studio-quality, emphasizing the clean lines and premium feel of the vehicles. The overall aesthetic is modern, minimalist, and corporate." class="absolute inset-0 w-full h-full object-cover rounded-3xl" src="/images/home-about.png">>
+<img alt="A dynamic composition featuring two overlapping glossy photos on a clean white background. One photo shows a sleek white premium SUV, while the other shows a modern black motorcycle. The lighting is studio-quality, emphasizing the clean lines and premium feel of the vehicles. The overall aesthetic is modern, minimalist, and corporate." class="absolute inset-0 w-full h-full object-cover rounded-3xl" src="/images/home-about.png">
 <!-- Decorative Element -->
 <div class="absolute bottom-6 left-6 right-6 p-6 glass-panel rounded-2xl">
 <p class="font-label-md text-label-md text-on-surface">Reliable Fleet Collection</p>
@@ -349,48 +347,61 @@
 </div>
 </section>
 <!-- Footer (JSON Component) -->
-<footer id="contact" class="bg-tertiary-container dark:bg-on-tertiary-fixed text-tertiary-fixed dark:text-tertiary-fixed-dim font-body-md text-body-md w-full rounded-t-xl flat no shadows mt-16 pb-24 pt-32">
-<!-- Newsletter Card (Integrated into Footer Area) -->
-<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-16">
+<footer class="site-footer" id="contact">
+    <div class="footer-inner">
 
-</div>
-<div class="grid grid-cols-1 md:grid-cols-4 gap-stack-md w-full px-margin-mobile md:px-margin-desktop py-stack-lg max-w-container-max mx-auto border-t border-outline/20">
-<!-- Brand Column -->
-<div class="flex flex-col gap-4 col-span-1 md:col-span-1">
-<span class="font-headline-md text-headline-md font-bold text-white mb-2">DriveEase</span>
-<p class="font-body-md text-body-md text-tertiary-fixed-dim/70 max-w-xs">
-                    Premium Automotive Rentals. Elevating your journey with unmatched reliability and style.
-                </p>
-</div>
-<!-- Links Column 1 -->
-<div class="flex flex-col gap-3">
-<h4 class="font-label-md text-label-md text-white uppercase tracking-wider mb-2">Explore</h4>
-<a class="font-body-md text-body-md text-tertiary-fixed-dim/70 hover:text-white hover:text-secondary-fixed-dim transition-all duration-200" href="/">Home</a>
-<a class="font-body-md text-body-md text-tertiary-fixed-dim/70 hover:text-white hover:text-secondary-fixed-dim transition-all duration-200" href="#about">About</a>
-<a class="font-body-md text-body-md text-tertiary-fixed-dim/70 hover:text-white hover:text-secondary-fixed-dim transition-all duration-200" href="/catalog">Vehicles</a>
-</div>
-<!-- Links Column 2 -->
-<div class="flex flex-col gap-3">
-<h4 class="font-label-md text-label-md text-white uppercase tracking-wider mb-2">Support</h4>
-<a class="font-body-md text-body-md text-tertiary-fixed-dim/70 hover:text-white hover:text-secondary-fixed-dim transition-all duration-200" href="#contact">Contact</a>
-<a class="font-body-md text-body-md text-tertiary-fixed-dim/70 hover:text-white hover:text-secondary-fixed-dim transition-all duration-200" href="#faq">FAQ</a>
-</div>
-<!-- Links Column 3 -->
-<div class="flex flex-col gap-3">
-<h4 class="font-label-md text-label-md text-white uppercase tracking-wider mb-2">Legal</h4>
-<a class="font-body-md text-body-md text-tertiary-fixed-dim/70 hover:text-white hover:text-secondary-fixed-dim transition-all duration-200" href="#contact">Privacy Policy</a>
-<a class="font-body-md text-body-md text-tertiary-fixed-dim/70 hover:text-white hover:text-secondary-fixed-dim transition-all duration-200" href="#contact">Terms of Service</a></div>
-</div>
-<!-- Copyright & Watermark -->
-<div class="w-full px-margin-mobile md:px-margin-desktop pb-8 max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4 border-t border-outline/20 pt-8 relative overflow-hidden">
-<p class="font-body-md text-sm text-tertiary-fixed-dim/50 z-10">
-                © 2024 DriveEase. Premium Automotive Rentals.
-            </p>
-<!-- Watermark -->
-<span class="absolute bottom-0 right-0 font-display-lg font-bold text-white/[0.03] leading-none select-none pointer-events-none transform text-[15vw] translate-y-1/3 left-0 text-center w-full">
-                DriveEase
-            </span>
-</div>
+        <div class="footer-brand-area">
+            <div class="footer-brand-column">
+                <div class="footer-logo">✺</div>
+
+                <div class="priority-card">
+                    <h2>Get priority booking</h2>
+                    <p>Receive early access to selected vehicles and seasonal rental offers.</p>
+
+                    <div class="priority-form">
+                        <input type="email" placeholder="you@example.com">
+                        <button type="button">Join VIP</button>
+                    </div>
+
+                    <small>We will contact you within 24 hours for availability details.</small>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <div>
+                    <h3>Pages</h3>
+                    <div class="footer-link-grid">
+                        <a href="/" class="active">Home</a>
+                        <a href="#about">About</a>
+                        <a href="/catalog">Vehicles</a>
+                        <a href="#faq">FAQs</a>
+                        <a href="#contact">Contact</a>
+                        <a href="/reservationHistory">My Bookings</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>Contact info</h3>
+                    <p>+94 77 123 4567</p>
+                    <p>support@driveease.lk</p>
+                    <p>Colombo, Sri Lanka</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>Designed for the DriveEase vehicle rental system.</p>
+
+            <div class="socials">
+                <span>◎</span>
+                <span>𝕏</span>
+                <span>in</span>
+                <span>f</span>
+            </div>
+        </div>
+
+        <div class="footer-watermark">DriveEase</div>
+    </div>
 </footer>
 
 
