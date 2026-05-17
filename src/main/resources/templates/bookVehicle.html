@@ -46,11 +46,11 @@
                 <div class="form-row">
                     <div>
                         <label>Start Date</label>
-                        <input type="date" name="startDate" required style="width: 100%;">
+                        <input type="date" id="startDateBox" name="startDate" required style="width: 100%;">
                     </div>
                     <div>
                         <label>Return Date</label>
-                        <input type="date" name="returnDate" required style="width: 100%;">
+                        <input type="date" id="returnDateBox" name="returnDate" required style="width: 100%;">
                     </div>
                 </div>
             </div>
@@ -63,5 +63,23 @@
         </form>
     </div>
 </div>
+<script>
+    const startDateInput = document.getElementById('startDateBox');
+    const returnDateInput = document.getElementById('returnDateBox');
+
+    const today = new Date().toISOString().split('T')[0];
+
+    startDateInput.setAttribute('min', today);
+    returnDateInput.setAttribute('min', today);
+
+    startDateInput.addEventListener('change', function() {
+
+        returnDateInput.setAttribute('min', this.value);
+
+        if (returnDateInput.value && returnDateInput.value < this.value) {
+            returnDateInput.value = this.value;
+        }
+    });
+</script>
 </body>
 </html>

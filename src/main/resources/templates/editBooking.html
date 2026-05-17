@@ -60,6 +60,23 @@
     if(urlParams.get('vehicle')) document.getElementById('vehicleIdBox').value = urlParams.get('vehicle');
     if(urlParams.get('start')) document.getElementById('startDateBox').value = urlParams.get('start');
     if(urlParams.get('end')) document.getElementById('returnDateBox').value = urlParams.get('end');
+
+    const startDateInput = document.getElementById('startDateBox');
+    const returnDateInput = document.getElementById('returnDateBox');
+
+    const today = new Date().toISOString().split('T')[0];
+
+    startDateInput.setAttribute('min', today);
+    returnDateInput.setAttribute('min', today);
+
+    startDateInput.addEventListener('change', function() {
+
+        returnDateInput.setAttribute('min', this.value);
+
+        if (returnDateInput.value && returnDateInput.value < this.value) {
+            returnDateInput.value = this.value;
+        }
+    });
 </script>
 </body>
 </html>
