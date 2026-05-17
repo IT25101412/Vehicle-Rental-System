@@ -41,6 +41,18 @@
                 </div>
             </div>
 
+            <div th:if="${error == 'pastStartDate'}" style="color: #b91c1c; margin-top: 16px; font-weight: 600;">
+    Start date cannot be in the past.
+</div>
+
+<div th:if="${error == 'invalidReturnDate'}" style="color: #b91c1c; margin-top: 16px; font-weight: 600;">
+    Return date must be after the start date.
+</div>
+
+<div th:if="${error == 'invalidDateFormat'}" style="color: #b91c1c; margin-top: 16px; font-weight: 600;">
+    Please select valid booking dates.
+</div>
+
             <div class="action-buttons" style="margin-top: 24px;">
                 <a href="/reservationHistory" class="button secondary">View My History</a>
 

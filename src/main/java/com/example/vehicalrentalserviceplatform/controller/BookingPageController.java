@@ -24,6 +24,7 @@ public class BookingPageController {
 
     @GetMapping("/bookVehicle")
 public String showBookVehicle(@RequestParam(name = "id", required = false) String vehicleId,
+                              @RequestParam(name = "error", required = false) String error,
                               HttpSession session,
                               Model model) {
 
@@ -39,7 +40,8 @@ public String showBookVehicle(@RequestParam(name = "id", required = false) Strin
 
     model.addAttribute("username", currentUser);
     model.addAttribute("vehicleId", vehicleId);
-
+    model.addAttribute("error", error);
+    
     return "bookVehicle";
 }
 

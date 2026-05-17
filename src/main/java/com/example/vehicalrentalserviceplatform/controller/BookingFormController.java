@@ -1,5 +1,7 @@
 package com.example.vehicalrentalserviceplatform.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import jakarta.servlet.http.HttpSession;
 import com.example.vehicalrentalserviceplatform.model.Booking;
 import com.example.vehicalrentalserviceplatform.service.BookingService;
@@ -31,6 +33,23 @@ public String createBooking(
 
     if (vehicleId == null || vehicleId.isBlank()) {
         return "redirect:/catalog";
+    }
+
+    try {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(returnDate);
+        LocalDate today = LocalDate.now();
+
+        if (start.isBefore(today)) {
+            return "redirect:/bookVehicle?id=" + vehicleId + "&error=pastStartDate";
+        }
+
+        if (!end.isAfter(start)) {
+            return "redirect:/bookVehicle?id=" + vehicleId + "&error=invalidReturnDate";
+        }
+
+    } catch (DateTimeParseException e) {
+        return "redirect:/bookVehicle?id=" + vehicleId + "&error=invalidDateFormat";
     }
 
     Booking newBooking = new Booking(currentUser, vehicleId, startDate, returnDate, "Pending");
