@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside th:fragment="sidebar" class="sidebar">
+
+    <div class="sidebar-header">
+        <div class="sidebar-brand">DriveEase</div>
+        <div class="sidebar-user">
+            <div class="avatar">
+                <img alt="Admin Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArJWEnEE7LA6MoCtoczTgKLxIFhNZE2qFju-R-Uxwrbztb2aLHyohzBV4TH7x9wnFNZR75nzzL6kJ363XCBpVnAINj_tsqgGZT9L61iojCmfN7XNNvwN28NKBofkxv7onyvWtXum_SvJg_dfAYv6SikP-T1qeTtOQxlWoS5EtGBP3aV3c3I7hVTzhUCqsVE2i52Vcq-HF44ZxJrvY2q6Y71ghbohEPsHVGqMueVZgkTPZQqLjjfjSzbzNpJKG_aCOCptOrRauCi0E">
+            </div>
+            <div class="user-info">
+                <div class="name">Admin</div>
+                <div class="role">Fleet Manager</div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a class="nav-link active" href="/admin/dashboard">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Dashboard</span>
+        </a>
+
+        <a class="nav-link" href="/inventory">
+            <span class="material-symbols-outlined">directions_car</span>
+            <span>Inventory</span>
+        </a>
+
+        <a class="nav-link" href="/admin/registration">
+            <span class="material-symbols-outlined">badge</span>
+            <span>Staff</span>
+        </a>
+
+        <a class="nav-link" href="/maintenance">
+            <span class="material-symbols-outlined">build</span>
+            <span>Maintenance</span>
+        </a>
+
+        <a class="nav-link" href="/checkout">
+            <span class="material-symbols-outlined">payments</span>
+            <span>Billing</span>
+        </a>
+
+        <a class="nav-link" href="/admin/activity-log">
+            <span class="material-symbols-outlined">history</span>
+            <span>Activity Logs</span>
+        </a>
+    </nav>
+
+</aside>
+</body>
+</html>

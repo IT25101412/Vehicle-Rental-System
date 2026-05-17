@@ -11,46 +11,62 @@ async function fetchInventory() {
 
         // Show a nice message if the inventory is empty
         if (vehicles.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="7" class="summary-empty">No vehicles currently in inventory.</td></tr>';
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 3rem;">
+                        <span class="material-symbols-outlined" style="font-size: 2rem; opacity: 0.5; display: block; margin-bottom: 8px;">directions_car</span>
+                        No vehicles currently in inventory.
+                    </td>
+                </tr>`;
             return;
         }
 
         vehicles.forEach(vehicle => {
             const row = document.createElement('tr');
 
-            // Check availability to determine badge color
+            // Reuse the badge classes we made for the dashboard
             const isAvailable = String(vehicle.available).toLowerCase() === 'true';
+            const badgeClass = isAvailable ? 'badge approved' : 'badge rejected';
+            const badgeText = isAvailable ? 'AVAILABLE' : 'RENTED';
 
             row.innerHTML = `
                 <td>
-                    <img src="/images/${vehicle.vehicleImageFileName}" 
-                         onerror="this.src='https://via.placeholder.com/80'" 
-                         style="width: 80px; height: 56px; object-fit: cover; border-radius: 8px; display: block;">
+                    <div class="img-thumbnail-container">
+                        <img src="/images/${vehicle.vehicleImageFileName}"
+                             onerror="this.src='https://via.placeholder.com/80'"
+                             class="img-thumbnail">
+                    </div>
                 </td>
-                
-                <td style="font-family: monospace; font-weight: 600; color: #475569;">
+
+                <td style="font-family: monospace; color: var(--text-secondary); white-space: nowrap;">
                     ${vehicle.vehicleId}
                 </td>
-                
+
                 <td>
-                    <strong>${vehicle.make} ${vehicle.model}</strong> 
-                    <span class="text-muted" style="margin-left: 6px;">(${vehicle.year})</span>
+                    <div style="font-weight: 600; color: var(--text-primary);">${vehicle.make} ${vehicle.model}</div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">${vehicle.year}</div>
                 </td>
-                
-                <td>${vehicle.type || 'Vehicle'}</td> 
-                
-                <td>Rs. ${vehicle.rentalRate}</td>
-                
-                <td>
-                    <span class="status-pill ${isAvailable ? 'PAID' : 'CANCELLED'}">
-                        ${isAvailable ? 'AVAILABLE' : 'RENTED'}
-                    </span>
+
+                <td style="color: var(--text-secondary);">
+                    ${vehicle.type || 'Vehicle'}
                 </td>
-                
+
+                <td style="font-weight: 600; color: var(--text-secondary);">
+                    Rs. ${vehicle.rentalRate}
+                </td>
+
                 <td>
-                    <div class="action-buttons" style="flex-wrap: nowrap; justify-content: flex-end;">
-                        <button class="button secondary" style="min-width: 70px; padding: 6px 14px; font-size: 0.85rem;" onclick="editVehicle('${vehicle.vehicleId}')">Edit</button>
-                        <button class="button" style="background-color: #dc2626; min-width: 70px; padding: 6px 14px; font-size: 0.85rem;" onclick="deleteVehicle('${vehicle.vehicleId}')">Delete</button>
+                    <span class="${badgeClass}">${badgeText}</span>
+                </td>
+
+                <td style="text-align: right;">
+                    <div class="action-buttons">
+                        <button class="btn btn-ghost-yellow" onclick="editVehicle('${vehicle.vehicleId}')" style="padding: 6px 12px; gap: 4px;">
+                            <span class="material-symbols-outlined" style="font-size: 1rem;">edit</span> Edit
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteVehicle('${vehicle.vehicleId}')" style="padding: 6px 12px; gap: 4px;">
+                            <span class="material-symbols-outlined" style="font-size: 1rem;">delete</span> Delete
+                        </button>
                     </div>
                 </td>
             `;
@@ -61,12 +77,10 @@ async function fetchInventory() {
     }
 }
 
-// Redirects to the form with the ID in the URL
 function editVehicle(id) {
     window.location.href = `/vehicleForm?id=${id}`;
 }
 
-// Calls your @DeleteMapping in the Controller
 async function deleteVehicle(id) {
     if (confirm("Are you sure you want to delete this vehicle? This cannot be undone.")) {
         const response = await fetch(`/api/vehicles/delete/${id}`, {
