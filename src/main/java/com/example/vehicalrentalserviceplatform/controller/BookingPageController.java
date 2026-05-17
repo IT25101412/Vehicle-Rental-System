@@ -45,7 +45,13 @@ public class BookingPageController {
     }
 
     @GetMapping("/editBooking")
-    public String showEditBooking(@RequestParam(name = "error", required = false) String error, Model model) {
+    public String showEditBooking(@RequestParam(name = "error", required = false) String error,HttpSession session,Model model) {
+
+        String currentUsername = (String) session.getAttribute("loggedInUser");
+
+        if (currentUsername == null) {
+            return "redirect:/login";
+        }
 
         if ("overlap".equals(error)) {
             model.addAttribute("errorMessage", "Sorry! This vehicle is already booked for those new dates. Please choose different dates.");
