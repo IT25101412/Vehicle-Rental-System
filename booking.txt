@@ -12,3 +12,4 @@ bd6b85c5-cc74-4d82-b29d-67998287b3ac,testcustomer,MOT-0001,2026-05-17,2026-05-20
 505a6036-fdfb-4eae-a8bc-0434f3d8ae60,testcustomer,CAR-0002,2026-05-16,2026-05-23,Rejected
 8e16d641-5775-403a-8b54-e0a59a1710ae,testcustomer,MOT-0002,2026-05-16,2026-05-30,Paid
 6929ace6-12c0-4e88-a919-e84ba2d4f37b,testcustomer,MOT-0001,2026-05-23,2026-05-20,Paid
+193a78db-ab06-4dff-8dfd-77ebbf893292,testcustomer,CAR-0001,2026-05-25,2026-05-27,Paid

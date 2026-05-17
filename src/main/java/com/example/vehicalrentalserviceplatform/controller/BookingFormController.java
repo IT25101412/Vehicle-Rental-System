@@ -53,41 +53,114 @@ public String createBooking(
     }
 
     Booking newBooking = new Booking(currentUser, vehicleId, startDate, returnDate, "Pending");
-    bookingService.createBooking(newBooking);
+boolean created = bookingService.createBooking(newBooking);
 
-    return "redirect:/reservationHistory";
+if (!created) {
+    return "redirect:/bookVehicle?id=" + vehicleId + "&error=vehicleBooked";
+}
+
+return "redirect:/reservationHistory";
 }
 
     // 2. Replaces your old UpdateBookingController
     @PostMapping("/updateBooking")
-    public String updateBooking(
-            @RequestParam("transactionId") String transactionId,
-            @RequestParam("vehicleId") String newVehicleId,
-            @RequestParam("startDate") String newStartDate,
-            @RequestParam("returnDate") String newReturnDate) {
+public String updateBooking(
+        @RequestParam("transactionId") String transactionId,
+        @RequestParam("startDate") String newStartDate,
+        @RequestParam("returnDate") String newReturnDate,
+        HttpSession session) {
 
-        String secureStatus = "Pending";
-        for (Booking existing : bookingService.getAllBookings()) {
-            if (existing.getTransactionId().equals(transactionId)) {
-                secureStatus = existing.getBookingStatus();
-                break;
-            }
+    String currentUser = (String) session.getAttribute("loggedInUser");
+
+    if (currentUser == null) {
+        return "redirect:/login";
+    }
+
+    Booking selectedBooking = null;
+
+    for (Booking existing : bookingService.getAllBookings()) {
+        if (existing.getTransactionId().equals(transactionId)) {
+            selectedBooking = existing;
+            break;
         }
-        bookingService.updateBooking(transactionId, newVehicleId, newStartDate, newReturnDate, secureStatus);
+    }
 
-        // Redirect back to the history page after saving
+    if (selectedBooking == null) {
         return "redirect:/reservationHistory";
     }
+
+    if (!selectedBooking.getCustomerName().equals(currentUser)) {
+        return "redirect:/reservationHistory";
+    }
+
+    if (!selectedBooking.getBookingStatus().equalsIgnoreCase("Pending")) {
+        return "redirect:/reservationHistory";
+    }
+
+    try {
+        LocalDate start = LocalDate.parse(newStartDate);
+        LocalDate end = LocalDate.parse(newReturnDate);
+        LocalDate today = LocalDate.now();
+
+        if (start.isBefore(today)) {
+            return "redirect:/editBooking?id=" + transactionId + "&error=pastStartDate";
+        }
+
+        if (!end.isAfter(start)) {
+            return "redirect:/editBooking?id=" + transactionId + "&error=invalidReturnDate";
+        }
+
+    } catch (DateTimeParseException e) {
+        return "redirect:/editBooking?id=" + transactionId + "&error=invalidDateFormat";
+    }
+
+    bookingService.updateBooking(
+            transactionId,
+            selectedBooking.getVehicleId(),
+            newStartDate,
+            newReturnDate,
+            selectedBooking.getBookingStatus()
+    );
+
+    return "redirect:/reservationHistory";
+}
 
     // 3. Replaces your old DeleteBookingController
     @PostMapping("/deleteBooking")
-    public String deleteBooking(@RequestParam("transactionId") String targetID) {
+public String deleteBooking(@RequestParam("transactionId") String transactionId,
+                            HttpSession session) {
 
-        bookingService.deleteBooking(targetID);
+    String currentUser = (String) session.getAttribute("loggedInUser");
 
-        // Redirect back to the history page after deleting
+    if (currentUser == null) {
+        return "redirect:/login";
+    }
+
+    Booking selectedBooking = null;
+
+    for (Booking existing : bookingService.getAllBookings()) {
+        if (existing.getTransactionId().equals(transactionId)) {
+            selectedBooking = existing;
+            break;
+        }
+    }
+
+    if (selectedBooking == null) {
         return "redirect:/reservationHistory";
     }
+
+    if (!selectedBooking.getCustomerName().equals(currentUser)) {
+        return "redirect:/reservationHistory";
+    }
+
+    if (!selectedBooking.getBookingStatus().equalsIgnoreCase("Pending")) {
+        return "redirect:/reservationHistory";
+    }
+
+    bookingService.deleteBooking(transactionId);
+
+    return "redirect:/reservationHistory";
+}
 
     @PostMapping("/admin/approveBooking")
     public String approveBooking(@RequestParam("transactionId") String transactionId) {

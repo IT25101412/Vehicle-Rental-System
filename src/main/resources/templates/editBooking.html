@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Update Booking</title>
@@ -9,7 +9,7 @@
 <div class="page-wrapper">
     <header>
         <h1>Update Your Reservation</h1>
-        <p class="text-muted">Modify the dates, vehicle, or status of this booking.</p>
+        <p class="text-muted">You can only modify dates while this booking is still pending.</p>
     </header>
 
     <div class="form-card">
@@ -19,11 +19,19 @@
                 <div class="form-row">
                     <div>
                         <label>Transaction ID</label>
-                        <input type="text" id="transactionIdBox" name="transactionId" required readonly style="width: 100%; background-color: #f1f5f9;">
+                        <input type="text"
+                               name="transactionId"
+                               th:value="${transactionId}"
+                               required
+                               readonly
+                               style="width: 100%; background-color: #f1f5f9;">
                     </div>
                     <div>
-                        <label>New Vehicle ID</label>
-                        <input type="text" name="vehicleId" required style="width: 100%;">
+                        <label>Vehicle ID</label>
+                        <input type="text"
+                               th:value="${vehicleId}"
+                               readonly
+                               style="width: 100%; background-color: #f1f5f9;">
                     </div>
                 </div>
             </div>
@@ -32,26 +40,41 @@
                 <div class="form-row">
                     <div>
                         <label>New Start Date</label>
-                        <input type="date" name="startDate" required style="width: 100%;">
+                        <input type="date"
+                               name="startDate"
+                               th:value="${startDate}"
+                               required
+                               style="width: 100%;">
                     </div>
                     <div>
                         <label>New Return Date</label>
-                        <input type="date" name="returnDate" required style="width: 100%;">
+                        <input type="date"
+                               name="returnDate"
+                               th:value="${returnDate}"
+                               required
+                               style="width: 100%;">
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="button">Save Changes</button>
+            <div th:if="${error == 'pastStartDate'}" style="color: #b91c1c; margin-top: 16px; font-weight: 600;">
+                Start date cannot be in the past.
+            </div>
+
+            <div th:if="${error == 'invalidReturnDate'}" style="color: #b91c1c; margin-top: 16px; font-weight: 600;">
+                Return date must be after the start date.
+            </div>
+
+            <div th:if="${error == 'invalidDateFormat'}" style="color: #b91c1c; margin-top: 16px; font-weight: 600;">
+                Please select valid booking dates.
+            </div>
+
+            <div class="action-buttons" style="margin-top: 24px;">
+                <a href="/reservationHistory" class="button secondary">Cancel</a>
+                <button type="submit" class="button">Save Changes</button>
+            </div>
         </form>
     </div>
 </div>
-
-<script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetId = urlParams.get('id');
-    if(targetId) {
-        document.getElementById('transactionIdBox').value = targetId;
-    }
-</script>
 </body>
 </html>
