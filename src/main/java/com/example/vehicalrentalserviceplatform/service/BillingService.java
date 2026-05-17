@@ -43,7 +43,10 @@ public class BillingService {
         synchronized (fileLock) {
             validateInvoice(invoice);
             invoice.setId(nextId.getAndIncrement());
-            invoice.setStatus(InvoiceStatus.PENDING);
+
+            invoice.setStatus(InvoiceStatus.PAID);
+            invoice.setPaidAt(LocalDateTime.now());
+            
             if (invoice.getCreatedAt() == null) {
                 invoice.setCreatedAt(LocalDateTime.now());
             }
