@@ -3,358 +3,418 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Register | DriveEase Rentals</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --navy:          #080F1A;
-            --navy-soft:     #0F1E30;
-            --navy-card:     #111D2E;
-            --gold:          #BFA263;
-            --gold-light:    #D4B87A;
-            --gold-muted:    rgba(191,162,99,0.12);
-            --gold-border:   rgba(191,162,99,0.25);
-            --white:         #FFFFFF;
-            --off-white:     #F5F3EF;
-            --text-primary:  #0D1B2A;
-            --text-soft:     #4A5568;
-            --text-muted:    #8A95A3;
-            --text-on-dark:  #FFFFFF;
-            --border:        #E2E5EA;
-            --border-focus:  #BFA263;
-            --error:         #C0392B;
-            --error-bg:      #FDF0EF;
-            --success:       #1A6B42;
-            --success-bg:    #EAF5EF;
-            --input-bg:      #FAFAFA;
-            --shadow-card:   0 8px 40px rgba(8,15,26,0.10), 0 2px 8px rgba(8,15,26,0.06);
-            --shadow-btn:    0 4px 20px rgba(191,162,99,0.35);
-            --focus-ring:    0 0 0 3px rgba(191,162,99,0.22);
-            --transition:    200ms cubic-bezier(0.4,0,0.2,1);
-        }
+    <title>Register | DriveEase</title>
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 16px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--off-white);
-            color: var(--text-primary);
-            line-height: 1.6;
+    <link rel="stylesheet" href="/css/catalog.css">
+
+    <style>
+        .auth-body {
+            margin: 0;
             min-height: 100vh;
+            background: #ffffff;
+            color: #161618;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             display: flex;
             flex-direction: column;
         }
-        a { color: inherit; text-decoration: none; }
-        input, button { font-family: inherit; }
 
-        /* ── Nav ── */
-        .site-nav {
-            background: var(--navy);
-            padding: 0;
-            position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(191,162,99,0.15);
+        .auth-main {
+            flex: 1;
+            padding: 110px 24px 130px;
         }
-        .nav-inner {
-            display: flex; align-items: center; justify-content: space-between;
-            max-width: 1140px; margin: 0 auto; padding: 0 32px; height: 68px;
-        }
-        .nav-logo { display: flex; align-items: center; gap: 12px; }
-        .nav-logo-mark {
-            width: 34px; height: 34px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .nav-brand {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px; font-weight: 700;
-            color: var(--text-on-dark); letter-spacing: 0.01em;
-        }
-        .nav-brand span { color: var(--gold); }
-        .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
-        .nav-links a {
-            color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 400;
-            padding: 8px 16px; border-radius: 6px;
-            transition: color var(--transition), background var(--transition);
-        }
-        .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.06); }
-        .nav-cta {
-            background: linear-gradient(135deg, var(--gold), var(--gold-light)) !important;
-            color: var(--navy) !important; font-weight: 600 !important;
-            border-radius: 8px !important;
-        }
-        .nav-cta:hover { opacity: 0.92; background: var(--gold-light) !important; }
 
-        /* ── Hero ── */
-        .page-hero {
-            background: var(--navy);
-            padding: 72px 0 56px;
-            position: relative; overflow: hidden;
+        .auth-shell {
+            width: min(1280px, 100%);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 96px;
+            align-items: start;
         }
-        .page-hero::after {
-            content: '';
-            position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold-border), transparent);
-        }
-        .hero-bg {
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(191,162,99,0.06) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .hero-content { position: relative; z-index: 1; }
-        .container { max-width: 1140px; margin: 0 auto; padding: 0 32px; }
-        .eyebrow {
-            display: inline-flex; align-items: center; gap: 10px;
-            font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-            text-transform: uppercase; color: var(--gold);
-            margin-bottom: 16px;
-        }
-        .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); display: block; }
-        .page-hero h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(32px, 5vw, 52px); font-weight: 700;
-            color: var(--text-on-dark); line-height: 1.1;
-            letter-spacing: -0.01em; margin-bottom: 14px;
-        }
-        .page-hero p { font-size: 16px; color: rgba(255,255,255,0.5); font-weight: 300; }
 
-        /* ── Content ── */
-        .content-section { padding: 64px 0 80px; }
-        .form-wrapper { max-width: 540px; margin: 0 auto; }
+        .auth-info h1 {
+            margin: 0;
+            font-size: clamp(54px, 5vw, 78px);
+            line-height: 0.95;
+            letter-spacing: -0.08em;
+            font-weight: 900;
+            color: #161618;
+        }
 
-        /* ── Card ── */
-        .card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            box-shadow: var(--shadow-card);
-            overflow: hidden;
+        .auth-info > p {
+            max-width: 500px;
+            margin: 28px 0 0;
+            color: #565656;
+            font-size: 18px;
+            line-height: 1.5;
+            font-weight: 500;
         }
-        .card-header {
-            padding: 28px 36px;
-            border-bottom: 1px solid #F0F2F5;
-            display: flex; align-items: center; gap: 14px;
+
+        .auth-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 46px 70px;
+            margin-top: 110px;
         }
-        .card-header-icon {
-            width: 42px; height: 42px;
-            background: var(--gold-muted);
-            border: 1px solid var(--gold-border);
+
+        .auth-info-item:first-child {
+            grid-column: 1 / -1;
+        }
+
+        .auth-icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .auth-info-item h3 {
+            margin: 0 0 14px;
+            font-size: 21px;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            color: #161618;
+        }
+
+        .auth-info-item p {
+            margin: 0 0 8px;
+            color: #4f4f4f;
+            font-size: 16px;
+            line-height: 1.45;
+        }
+
+        .auth-card {
+            background: #f4f4f4;
+            border-radius: 24px;
+            padding: 58px 62px;
+        }
+
+        .auth-card-header {
+            margin-bottom: 28px;
+        }
+
+        .auth-card-header h2 {
+            margin: 0;
+            font-size: 34px;
+            line-height: 1;
+            letter-spacing: -0.06em;
+            font-weight: 900;
+            color: #161618;
+        }
+
+        .auth-card-header p {
+            margin: 12px 0 0;
+            color: #606060;
+            font-size: 16px;
+        }
+
+        .auth-alert {
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            font-weight: 700;
+            font-size: 14px;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .auth-form {
+            display: grid;
+            gap: 22px;
+        }
+
+        .auth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px 24px;
+        }
+
+        .span-full {
+            grid-column: 1 / -1;
+        }
+
+        .auth-field {
+            display: grid;
+            gap: 9px;
+        }
+
+        .auth-field label {
+            color: #202020;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .auth-field input {
+            width: 100%;
+            height: 56px;
+            border: 1px solid #d7d7d7;
             border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-        }
-        .card-header h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px; font-weight: 700; color: var(--text-primary);
-            letter-spacing: -0.01em;
-        }
-        .card-header p { font-size: 13px; color: var(--text-muted); margin-top: 2px; font-weight: 400; }
-        .card-body { padding: 36px; }
-
-        /* ── Form ── */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; }
-        .span-full { grid-column: 1 / -1; }
-        .form-group { display: flex; flex-direction: column; gap: 7px; }
-        .form-label { font-size: 12px; font-weight: 600; color: var(--text-soft); letter-spacing: 0.03em; text-transform: uppercase; }
-        .required { color: var(--error); margin-left: 2px; }
-        .form-input {
-            width: 100%; height: 46px;
-            padding: 0 16px;
-            background: var(--input-bg);
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            font-size: 15px; font-weight: 400; color: var(--text-primary);
-            transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+            background: #ffffff;
+            color: #161618;
+            padding: 0 18px;
+            font-size: 16px;
             outline: none;
+            font-family: inherit;
         }
-        .form-input::placeholder { color: #C0C8D2; font-weight: 300; }
-        .form-input:hover { border-color: #C8CDD5; background: var(--white); }
-        .form-input:focus { border-color: var(--border-focus); background: var(--white); box-shadow: var(--focus-ring); }
 
-        /* ── Section divider ── */
-        .section-label {
+        .auth-field input:focus {
+            border-color: #161618;
+            box-shadow: 0 0 0 3px rgba(22, 22, 24, 0.08);
+        }
+
+        .section-divider {
             grid-column: 1 / -1;
-            display: flex; align-items: center; gap: 12px;
-            margin: 6px 0 2px;
-        }
-        .section-label::before, .section-label::after { content: ''; flex: 1; height: 1px; background: #EEF0F3; }
-        .section-label span {
-            font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
-            text-transform: uppercase; color: #B0B8C4;
+            height: 1px;
+            background: #dedede;
+            margin: 4px 0;
         }
 
-        /* ── Buttons ── */
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 8px; height: 48px; padding: 0 28px;
-            border: none; border-radius: 10px;
-            font-size: 14px; font-weight: 600; letter-spacing: 0.02em;
-            cursor: pointer; transition: all var(--transition);
+        .auth-submit {
+            width: auto;
+            min-width: 168px;
+            height: 58px;
+            border: none;
+            border-radius: 9px;
+            background: #8f8f91;
+            color: #ffffff;
+            padding: 0 30px;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            font-family: inherit;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-            color: var(--navy);
-            box-shadow: var(--shadow-btn);
-        }
-        .btn-primary:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(191,162,99,0.45); }
-        .btn-primary:active { transform: translateY(0); }
 
-        /* ── Form footer ── */
-        .form-footer {
-            grid-column: 1 / -1;
-            display: flex; align-items: center; justify-content: space-between;
-            margin-top: 8px; padding-top: 20px;
-            border-top: 1px solid #F0F2F5;
+        .auth-submit:hover {
+            background: #161618;
         }
-        .form-footer-link { font-size: 13px; color: var(--text-muted); }
-        .form-footer-link a { color: var(--gold); font-weight: 500; }
-        .form-footer-link a:hover { text-decoration: underline; }
 
-        /* ── Alert ── */
-        .alert {
-            padding: 14px 18px; border-radius: 10px;
-            font-size: 14px; margin-bottom: 20px;
-            border: 1px solid transparent;
-            display: flex; align-items: center; gap: 10px;
+        .auth-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 6px;
         }
-        .alert-error { background: var(--error-bg); border-color: rgba(192,57,43,0.2); color: var(--error); }
 
-        /* ── Footer ── */
-        .site-footer { background: var(--navy); padding: 24px 0; margin-top: auto; border-top: 1px solid rgba(191,162,99,0.1); }
-        .footer-inner {
-            max-width: 1140px; margin: 0 auto; padding: 0 32px;
-            display: flex; align-items: center; justify-content: space-between;
+        .auth-small-text {
+            color: #555;
+            font-size: 14px;
         }
-        .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
-        .footer-tagline { font-size: 12px; color: var(--gold); opacity: 0.7; font-style: italic; }
+
+        .auth-small-text a {
+            color: #161618;
+            font-weight: 800;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        @media (max-width: 980px) {
+            .auth-main {
+                padding-top: 70px;
+            }
+
+            .auth-shell {
+                grid-template-columns: 1fr;
+                gap: 54px;
+            }
+
+            .auth-info-grid {
+                margin-top: 50px;
+            }
+        }
 
         @media (max-width: 640px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .card-body { padding: 24px; }
-            .card-header { padding: 22px 24px; }
-            .nav-links { display: none; }
-            .form-footer { flex-direction: column; gap: 16px; text-align: center; }
+            .auth-main {
+                padding: 48px 14px 80px;
+            }
+
+            .auth-card {
+                padding: 34px 22px;
+            }
+
+            .auth-grid,
+            .auth-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .span-full,
+            .section-divider {
+                grid-column: auto;
+            }
+
+            .auth-info h1 {
+                font-size: 52px;
+            }
         }
     </style>
 </head>
-<body>
 
-<nav class="site-nav">
-    <div class="nav-inner">
-        <a href="/" class="nav-logo">
-            <div class="nav-logo-mark">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                     stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h14l4 4v4a2 2 0 0 1-2 2h-2"/>
-                    <circle cx="7" cy="17" r="2"/><circle cx="15" cy="17" r="2"/>
-                </svg>
-            </div>
-            <span class="nav-brand">Drive<span>Ease</span></span>
+<body class="auth-body">
+
+<header class="catalog-header">
+    <nav class="catalog-navbar">
+        <a href="/" class="catalog-logo">
+            <span class="catalog-logo-mark">✺</span>
+            <span>DriveEase</span>
         </a>
-        <ul class="nav-links">
-            <li><a href="/login">Sign In</a></li>
-            <li><a href="/register" class="nav-cta">Get Started</a></li>
-        </ul>
-    </div>
-</nav>
 
-<section class="page-hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-        <p class="eyebrow">New Account</p>
-        <h1>Create Your Account</h1>
-        <p>Join DriveEase and start booking premium vehicles today.</p>
-    </div>
-</section>
+        <div class="catalog-nav-links">
+            <a href="/">Home</a>
+            <a href="/#about">About</a>
+            <a href="/catalog">Vehicles</a>
+            <a href="/#contact">Contact</a>
+        </div>
 
-<main>
-    <section class="content-section">
-        <div class="container">
-            <div class="form-wrapper">
+        <a href="/login" class="catalog-header-btn">
+            Sign In
+            <span>→</span>
+        </a>
+    </nav>
+</header>
 
-                <div class="alert alert-error" th:if="${error}">
-                    <span th:text="${error}"></span>
+<main class="auth-main">
+    <section class="auth-shell">
+
+        <div class="auth-info">
+            <h1>Create account!</h1>
+            <p>Register as a DriveEase customer to request bookings, manage rentals, and view your rental history.</p>
+
+            <div class="auth-info-grid">
+                <div class="auth-info-item">
+                    <span class="auth-icon">⌖</span>
+                    <h3>Quick registration</h3>
+                    <p>Create your customer profile with your license, contact details, and secure password.</p>
+                    <p>After registration, sign in and start booking vehicles.</p>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-header-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                 stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                                <circle cx="9" cy="7" r="4"/>
-                                <line x1="19" y1="8" x2="19" y2="14"/>
-                                <line x1="22" y1="11" x2="16" y2="11"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h2>Account Details</h2>
-                            <p>Fill in your information to get started</p>
-                        </div>
-                    </div>
+                <div class="auth-info-item">
+                    <span class="auth-icon">☊</span>
+                    <h3>Support</h3>
+                    <p>support@driveease.lk</p>
+                    <p>+94 77 123 4567</p>
+                </div>
 
-                    <div class="card-body">
-                        <form th:action="@{/register}" th:object="${customer}" method="post">
-                            <div class="form-grid">
-
-                                <div class="form-group">
-                                    <label class="form-label" for="username">Username <span class="required">*</span></label>
-                                    <input class="form-input" type="text" id="username"
-                                           name="username" placeholder="e.g. johndoe" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="licenseId">License ID <span class="required">*</span></label>
-                                    <input class="form-input" type="text" id="licenseId"
-                                           name="licenseId" placeholder="e.g. LIC-001" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="email">Email Address <span class="required">*</span></label>
-                                    <input class="form-input" type="email" id="email"
-                                           name="email" placeholder="john@email.com" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="phone">Phone Number <span class="required">*</span></label>
-                                    <input class="form-input" type="text" id="phone"
-                                           name="phone" placeholder="e.g. 0771234567" required />
-                                </div>
-
-                                <div class="section-label"><span>Security</span></div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="password">Password <span class="required">*</span></label>
-                                    <input class="form-input" type="password" id="password"
-                                           name="password" placeholder="Create a password" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="confirmPassword">Confirm Password <span class="required">*</span></label>
-                                    <input class="form-input" type="password" id="confirmPassword"
-                                           placeholder="Repeat password" required />
-                                </div>
-
-                                <div class="form-footer">
-                                    <p class="form-footer-link">Already have an account? <a href="/login">Sign in</a></p>
-                                    <button type="submit" class="btn btn-primary">Create Account →</button>
-                                </div>
-
-                            </div>
-                        </form>
-                    </div>
+                <div class="auth-info-item">
+                    <span class="auth-icon">⌘</span>
+                    <h3>Working hours</h3>
+                    <p>Mon - Fri: 9am - 7pm</p>
+                    <p>Sat: 10am - 3pm</p>
                 </div>
             </div>
         </div>
+
+        <div class="auth-card">
+            <div class="auth-card-header">
+                <h2>Customer details</h2>
+                <p>Fill in your information to get started.</p>
+            </div>
+
+            <div class="auth-alert" th:if="${error}">
+                <span th:text="${error}"></span>
+            </div>
+
+            <form class="auth-form" th:action="@{/register}" th:object="${customer}" method="post">
+                <div class="auth-grid">
+
+                    <div class="auth-field">
+                        <label for="username">Username*</label>
+                        <input type="text" id="username" name="username" placeholder="e.g. sanithu" required>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="licenseId">License ID*</label>
+                        <input type="text" id="licenseId" name="licenseId" placeholder="e.g. LIC-001" required>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="email">Email*</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="phone">Phone number*</label>
+                        <input type="text" id="phone" name="phone" placeholder="0771234567" required>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <div class="auth-field">
+                        <label for="password">Password*</label>
+                        <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="confirmPassword">Confirm password*</label>
+                        <input type="password" id="confirmPassword" placeholder="Repeat password" required>
+                    </div>
+
+                    <div class="auth-row span-full">
+                        <button type="submit" class="auth-submit">Create Account</button>
+                        <p class="auth-small-text">
+                            Already registered? <a href="/login">Sign in</a>
+                        </p>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
     </section>
 </main>
 
-<footer class="site-footer">
+<footer class="site-footer" id="contact">
     <div class="footer-inner">
-        <p class="footer-copy">&copy; 2025 DriveEase Rentals. All rights reserved.</p>
-        <p class="footer-tagline">Drive with confidence.</p>
+
+        <div class="footer-brand-area">
+            <div class="footer-brand-column">
+                <div class="footer-logo">✺</div>
+
+                <div class="priority-card">
+                    <h2>Get priority booking</h2>
+                    <p>Receive early access to selected vehicles and seasonal rental offers.</p>
+
+                    <div class="priority-form">
+                        <input type="email" placeholder="you@example.com">
+                        <button type="button">Join VIP</button>
+                    </div>
+
+                    <small>We will contact you within 24 hours for availability details.</small>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <div>
+                    <h3>Pages</h3>
+                    <div class="footer-link-grid">
+                        <a href="/">Home</a>
+                        <a href="/#about">About</a>
+                        <a href="/catalog">Vehicles</a>
+                        <a href="/#faq">FAQs</a>
+                        <a href="/#contact">Contact</a>
+                        <a href="/reservationHistory">My Bookings</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>Contact info</h3>
+                    <p>+94 77 123 4567</p>
+                    <p>support@driveease.lk</p>
+                    <p>Colombo, Sri Lanka</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>Designed for the DriveEase vehicle rental system.</p>
+
+            <div class="socials">
+                <span>◎</span>
+                <span>𝕏</span>
+                <span>in</span>
+                <span>f</span>
+            </div>
+        </div>
+
+        <div class="footer-watermark">DriveEase</div>
     </div>
 </footer>
 
