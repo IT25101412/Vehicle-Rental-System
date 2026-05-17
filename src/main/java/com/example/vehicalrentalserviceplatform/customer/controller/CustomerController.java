@@ -137,4 +137,14 @@ public class CustomerController {
         }
         return "profile";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // This destroys the session and clears all logged-in user data
+        session.invalidate();
+
+        // Now redirect them to the login page safely
+        return "redirect:/login";
+    }
+
 }
