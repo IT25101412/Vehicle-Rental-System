@@ -34,12 +34,15 @@
                     </div>
                 </div>
             </aside>
+
             <form id="checkout-form" class="form-card">
                 <input type="hidden" id="transactionId" th:value="${transactionId}">
+
                 <div class="section-title">
                     <h2>Checkout</h2>
                     <p>Generate invoices for completed rentals and collect payment details.</p>
                 </div>
+
                 <div class="form-section">
                     <h3>Rental Information</h3>
                     <div class="form-row">
@@ -59,7 +62,7 @@
                         </div>
                         <div class="form-group">
                             <label for="rentalDays">Rental Days</label>
-                            <input id="rentalDays" name="rentalDays" type="number" min="1" th:value="${rentalDays}" required>
+                            <input id="rentalDays" name="rentalDays" type="number" min="1" th:value="${rentalDays}" readonly required>
                         </div>
                         <div class="form-group">
                             <label for="amountPerDay">Amount Per Day</label>
@@ -67,19 +70,22 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="form-section">
-                    <h3>Fee Summary</h3>
+                    <h3>Billing Summary</h3>
+
+                    <input id="discount" name="discount" type="hidden" value="0">
+                    <input id="lateFee" name="lateFee" type="hidden" value="0">
+
                     <div class="form-row">
-                        <div class="form-group">
-                            <label for="discount">Discount</label>
-                            <input id="discount" name="discount" type="number" min="0" step="0.01" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="lateFee">Late Fee</label>
-                            <input id="lateFee" name="lateFee" type="number" min="0" step="0.01" value="0">
+                        <div class="form-group" style="width: 100%;">
+                            <label for="totalAmount" style="font-size: 1.1em; font-weight: bold; color: #080F1A;">Total Amount Due</label>
+                            <input id="totalAmount" name="totalAmount" type="text" readonly
+                                   style="font-size: 1.5em; font-weight: bold; color: #1A6B42; background-color: #EAF5EF; border: 2px solid #1A6B42;">
                         </div>
                     </div>
                 </div>
+
                 <div class="form-section">
                     <h3>Payment Method</h3>
                     <div class="form-group">
@@ -101,6 +107,21 @@
         </div>
     </main>
 </div>
+
 <script src="/js/checkout.js?v=20260505-2"></script>
+
+<script>
+    function calculateTotal() {
+        const days = parseFloat(document.getElementById('rentalDays').value) || 0;
+        const rate = parseFloat(document.getElementById('amountPerDay').value) || 0;
+
+        const total = (days * rate).toFixed(2);
+
+        document.getElementById('totalAmount').value = total;
+    }
+
+    document.addEventListener('DOMContentLoaded', calculateTotal);
+    document.getElementById('rentalDays').addEventListener('input', calculateTotal);
+</script>
 </body>
 </html>
