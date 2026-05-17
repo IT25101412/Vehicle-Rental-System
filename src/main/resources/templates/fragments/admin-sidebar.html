@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside th:fragment="sidebar" class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-primary-container dark:bg-primary-container z-50">
+    <div class="px-6 py-8">
+        <h1 class="font-headline-md text-headline-md font-bold text-on-primary-fixed mb-8">WD272 Admin</h1>
+        <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden">
+                <img alt="Admin User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArJWEnEE7LA6MoCtoczTgKLxIFhNZE2qFju-R-Uxwrbztb2aLHyohzBV4TH7x9wnFNZR75nzzL6kJ363XCBpVnAINj_tsqgGZT9L61iojCmfN7XNNvwN28NKBofkxv7onyvWtXum_SvJg_dfAYv6SikP-T1qeTtOQxlWoS5EtGBP3aV3c3I7hVTzhUCqsVE2i52Vcq-HF44ZxJrvY2q6Y71ghbohEPsHVGqMueVZgkTPZQqLjjfjSzbzNpJKG_aCOCptOrRauCi0E">
+            </div>
+            <div>
+                <div class="font-label-md text-label-md text-on-primary-fixed">WD272 Admin</div>
+                <div class="font-label-sm text-label-sm text-on-primary-container">Fleet Manager</div>
+            </div>
+        </div>
+
+        <nav class="flex flex-col gap-1">
+            <a class="bg-tertiary-container text-on-tertiary-container rounded-lg mx-2 my-1 flex items-center px-4 py-3 scale-98 active:scale-95 transition-all" href="/admin/dashboard">
+                <span class="material-symbols-outlined mr-3" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                <span class="font-label-md text-label-md">Dashboard</span>
+            </a>
+
+            <a class="text-on-primary-container/70 hover:bg-on-primary-container/10 rounded-lg mx-2 my-1 flex items-center px-4 py-3 hover:bg-on-primary-container/10 transition-colors scale-98 active:scale-95 transition-all" href="/inventory">
+                <span class="material-symbols-outlined mr-3">directions_car</span>
+                <span class="font-label-md text-label-md">Inventory</span>
+            </a>
+
+            <a class="text-on-primary-container/70 hover:bg-on-primary-container/10 rounded-lg mx-2 my-1 flex items-center px-4 py-3 hover:bg-on-primary-container/10 transition-colors scale-98 active:scale-95 transition-all" href="/admin/registration">
+                <span class="material-symbols-outlined mr-3">badge</span>
+                <span class="font-label-md text-label-md">Staff</span>
+            </a>
+
+            <a class="text-on-primary-container/70 hover:bg-on-primary-container/10 rounded-lg mx-2 my-1 flex items-center px-4 py-3 hover:bg-on-primary-container/10 transition-colors scale-98 active:scale-95 transition-all" href="/maintenance">
+                <span class="material-symbols-outlined mr-3">build</span>
+                <span class="font-label-md text-label-md">Maintenance</span>
+            </a>
+
+            <a class="text-on-primary-container/70 hover:bg-on-primary-container/10 rounded-lg mx-2 my-1 flex items-center px-4 py-3 hover:bg-on-primary-container/10 transition-colors scale-98 active:scale-95 transition-all" href="/checkout">
+                <span class="material-symbols-outlined mr-3">payments</span>
+                <span class="font-label-md text-label-md">Billing</span>
+            </a>
+
+            <a class="text-on-primary-container/70 hover:bg-on-primary-container/10 rounded-lg mx-2 my-1 flex items-center px-4 py-3 hover:bg-on-primary-container/10 transition-colors scale-98 active:scale-95 transition-all" href="/admin/activity-log">
+                <span class="material-symbols-outlined mr-3">history</span>
+                <span class="font-label-md text-label-md">Activity Logs</span>
+            </a>
+        </nav>
+    </div>
+</aside>
+</body>
+</html>

@@ -1,98 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Vehicle Management - Form</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>DriveEase - Vehicle Form</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                  "primary-container": "#1c1b1b", "on-surface-variant": "#444748", "tertiary-fixed": "#d8e2ff",
+                  "on-primary": "#ffffff", "error": "#ba1a1a", "surface-dim": "#d9dadc", "primary": "#000000",
+                  "surface-container-low": "#f3f3f5", "tertiary-container": "#001a41", "error-container": "#ffdad6",
+                  "surface": "#f9f9fb", "on-tertiary-container": "#2480ff", "on-surface": "#1a1c1d",
+                  "on-primary-fixed": "#1c1b1b", "on-primary-container": "#858383"
+              },
+              fontFamily: {
+                  "headline-md": ["Hanken Grotesk"], "display-xl": ["Hanken Grotesk"], "headline-lg-mobile": ["Hanken Grotesk"],
+                  "body-md": ["Inter"], "body-lg": ["Inter"], "headline-lg": ["Hanken Grotesk"], "label-md": ["Inter"], "label-sm": ["Inter"]
+              }
+            }
+          }
+        }
+    </script>
 </head>
-<body>
 
-<div class="page-wrapper">
-    <header>
-        <h1 id="formTitle">Add New Vehicle</h1>
-        <p class="text-muted">Enter the details below to add or update a vehicle in your fleet.</p>
-    </header>
+<body class="bg-surface dark:bg-[#0A0A0A] text-on-surface dark:text-on-primary font-body-md text-body-md antialiased min-h-screen flex">
 
-    <div class="form-card">
-        <form id="vehicleForm">
+<div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
 
-            <div class="form-section">
-                <div class="form-group" style="margin-bottom: 24px;">
-                    <label for="type">Vehicle Type</label>
-                    <select id="type" onchange="toggleFields()" required style="width: 100%;">
-                        <option value="CAR">Car</option>
-                        <option value="MOTORCYCLE">Motorcycle</option>
-                        <option value="SUV">SUV</option>
-                        <option value="VAN">Van</option>
-                    </select>
-                </div>
-            </div>
+<main class="flex-1 ml-0 md:ml-64 min-h-screen flex flex-col bg-[#0A0A0A]">
 
-            <div class="form-section">
-                <h3>Basic Details</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="make">Make</label>
-                        <input type="text" id="make" placeholder="e.g., Toyota" required style="width: 100%;">
-                    </div>
-                    <div class="form-group">
-                        <label for="model">Model</label>
-                        <input type="text" id="model" placeholder="e.g., Corolla" required style="width: 100%;">
-                    </div>
-                    <div class="form-group">
-                        <label for="year">Manufacture Year</label>
-                        <input type="text" id="year" placeholder="e.g., 2022" required style="width: 100%;">
-                    </div>
-                    <div class="form-group">
-                        <label for="imageUpload">Vehicle Photo</label>
-                        <input type="file" id="imageUpload" accept="image/*" required style="width: 100%; padding: 10px 16px;">
+    <div th:replace="~{fragments/admin-topbar :: topbar}"></div>
+
+    <div class="flex-1 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full p-8">
+
+        <div class="mb-8">
+            <h2 id="formTitle" class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-primary mb-2">Add New Vehicle</h2>
+            <p class="font-body-md text-body-md text-on-primary-container">Enter the details below to add or update a vehicle in your fleet.</p>
+        </div>
+
+        <div class="bg-[#1C1C1E] rounded-xl p-8 max-w-4xl border border-on-surface-variant/20 shadow-2xl">
+
+            <form id="vehicleForm" class="flex flex-col gap-8">
+
+                <div>
+                    <h3 class="font-label-md text-label-md text-on-primary border-b border-on-surface-variant/20 pb-2 mb-4">Vehicle Classification</h3>
+                    <div class="w-full md:w-1/2">
+                        <label for="type" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Vehicle Type</label>
+                        <select id="type" onchange="toggleFields()" required
+                                class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors appearance-none">
+                            <option value="CAR">Car</option>
+                            <option value="MOTORCYCLE">Motorcycle</option>
+                            <option value="SUV">SUV</option>
+                            <option value="VAN">Van</option>
+                        </select>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-section">
-                <h3>Performance & Pricing</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="rate">Daily Rental Rate (LKR)</label>
-                        <input type="number" id="rate" placeholder="e.g., 5000" step="0.01" required style="width: 100%;">
-                    </div>
-                    <div class="form-group">
-                        <label for="fuel">Fuel Type</label>
-                        <input type="text" id="fuel" placeholder="e.g., Petrol / Diesel" required style="width: 100%;">
-                    </div>
-                    <div class="form-group">
-                        <label for="mileage">Current Mileage (km)</label>
-                        <input type="number" id="mileage" placeholder="e.g., 15000" step="0.1" required style="width: 100%;">
+                <div>
+                    <h3 class="font-label-md text-label-md text-on-primary border-b border-on-surface-variant/20 pb-2 mb-4">Basic Details</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div>
+                            <label for="make" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Make</label>
+                            <input type="text" id="make" placeholder="e.g., Toyota" required
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
+                        <div>
+                            <label for="model" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Model</label>
+                            <input type="text" id="model" placeholder="e.g., Corolla" required
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
+                        <div>
+                            <label for="year" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Manufacture Year</label>
+                            <input type="text" id="year" placeholder="e.g., 2022" required
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
+                        <div class="md:col-span-2 lg:col-span-3">
+                            <label for="imageUpload" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Vehicle Photo</label>
+                            <input type="file" id="imageUpload" accept="image/*" required
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-2.5 text-on-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-on-surface-variant/20 file:text-on-primary hover:file:bg-on-surface-variant/30 transition-colors cursor-pointer">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-section">
-                <div class="form-row">
-                    <div class="form-group" id="seatsGroup">
-                        <label for="seats">Number of Seats</label>
-                        <input type="number" id="seats" placeholder="e.g., 5" style="width: 100%;">
-                    </div>
-                    <div class="form-group" id="driveTrainGroup">
-                        <label for="driveTrain">Drive Train</label>
-                        <input type="text" id="driveTrain" placeholder="e.g., 4WD/AWD" style="width: 100%;">
-                    </div>
-                    <div class="form-group" id="motoGroup" style="display:none;">
-                        <label for="motoType">Motorcycle Type</label>
-                        <input type="text" id="motoType" placeholder="e.g., Standard / Scooter" style="width: 100%;">
+                <div>
+                    <h3 class="font-label-md text-label-md text-on-primary border-b border-on-surface-variant/20 pb-2 mb-4">Performance & Pricing</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label for="rate" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Daily Rate (LKR)</label>
+                            <input type="number" id="rate" placeholder="e.g., 5000" step="0.01" required
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
+                        <div>
+                            <label for="fuel" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Fuel Type</label>
+                            <input type="text" id="fuel" placeholder="e.g., Petrol / Diesel" required
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
+                        <div>
+                            <label for="mileage" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Current Mileage</label>
+                            <input type="number" id="mileage" placeholder="e.g., 15000" step="0.1" required
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="action-buttons" style="margin-top: 32px;">
-                <button type="button" class="button secondary" onclick="window.location.href='/inventory'">Cancel</button>
-                <button type="button" class="button" onclick="submitVehicleForm()">Save Vehicle</button>
-            </div>
+                <div>
+                    <h3 class="font-label-md text-label-md text-on-primary border-b border-on-surface-variant/20 pb-2 mb-4">Additional Specifications</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div id="seatsGroup">
+                            <label for="seats" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Number of Seats</label>
+                            <input type="number" id="seats" placeholder="e.g., 5"
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
+                        <div id="driveTrainGroup">
+                            <label for="driveTrain" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Drive Train</label>
+                            <input type="text" id="driveTrain" placeholder="e.g., 4WD/AWD"
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
+                        <div id="motoGroup" style="display:none;">
+                            <label for="motoType" class="block font-label-sm text-label-sm text-on-primary-container mb-2 uppercase tracking-wider">Motorcycle Type</label>
+                            <input type="text" id="motoType" placeholder="e.g., Standard / Scooter"
+                                   class="w-full bg-[#0A0A0A] border border-on-surface-variant/20 rounded-lg px-4 py-3 text-on-primary placeholder:text-on-surface-variant focus:outline-none focus:border-on-tertiary-container focus:ring-1 focus:ring-on-tertiary-container transition-colors">
+                        </div>
+                    </div>
+                </div>
 
-        </form>
+                <div class="flex items-center justify-end gap-4 pt-6 mt-4 border-t border-on-surface-variant/20">
+                    <button type="button" onclick="window.location.href='/inventory'"
+                            class="border border-on-surface-variant/30 text-on-primary-container hover:text-on-primary hover:bg-[#2A2A2C] font-label-md text-label-md py-3 px-6 rounded-lg transition-all duration-200">
+                        Cancel
+                    </button>
+                    <button type="button" onclick="submitVehicleForm()"
+                            class="bg-on-primary text-primary-container font-label-md text-label-md py-3 px-8 rounded-lg hover:scale-[1.02] active:scale-95 transition-all duration-200">
+                        Save Vehicle
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
     </div>
-</div>
+</main>
 
 <script src="/js/vehicleForm.js"></script>
 </body>

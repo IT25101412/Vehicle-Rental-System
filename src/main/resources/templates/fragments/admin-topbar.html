@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="topbar" class="sticky top-0 w-full z-40 border-b border-outline-variant dark:border-on-surface-variant/20 bg-surface-container-highest dark:bg-primary-container flex justify-between items-center px-6 h-16">
+    <div class="flex-1 flex items-center">
+    </div>
+    <div class="flex items-center gap-4">
+
+        <div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden md:hidden">
+            <img alt="Admin Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRKGhUawb6vjWVC6vwmT-lW4_LzVBBanRFG5uCKm4sr8zpE5R2tLK9O-4aAAj7ZnSx9DxH6YFwf3pMsS1kQdqiZPBCwJldmFlD19eI9-5zxeY9JLpAzJ6SgcvplF8Grhrb6j3nQtR2P8EGi21MvMEQuhslF47-vuJAdgL0zNIQLBgrERvxCrc4PPb1XG6ySSlDmZyxgocxCGkoyQ-SJEkxeF3kZ0PABVumvVZfJSz4l50X_t43Fi1ylIpDLHmp5MyHmEdcTtKPw-k">
+        </div>
+
+        <a href="/logout" class="text-on-surface-variant dark:text-on-primary-container hover:bg-surface-container-high dark:hover:bg-on-primary-container/10 p-2 rounded-full transition-colors active:scale-90 transition-all" title="Logout">
+            <span class="material-symbols-outlined">logout</span>
+        </a>
+
+    </div>
+</header>
+</body>
+</html>

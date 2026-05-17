@@ -17,9 +17,9 @@ public class DeleteAdminStaffController extends HttpServlet {
         boolean deleted = service.deleteByUserId(userId, "system-admin");
 
         if (deleted) {
-            response.sendRedirect("/admin-dashboard.html?message=Account%20deleted%20successfully.");
+            response.sendRedirect("/admin/admin-dashboard.html?message=Account%20deleted%20successfully.");
         } else {
-            response.sendRedirect("/admin-dashboard.html?message=Account%20not%20found.");
+            response.sendRedirect("/admin/admin-dashboard.html?message=Account%20not%20found.");
         }
     }
 }

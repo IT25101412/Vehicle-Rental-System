@@ -1,44 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin - Vehicle Inventory</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>DriveEase - Vehicle Inventory</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                  "primary-container": "#1c1b1b", "on-surface-variant": "#444748", "tertiary-fixed": "#d8e2ff",
+                  "on-primary": "#ffffff", "error": "#ba1a1a", "surface-dim": "#d9dadc", "primary": "#000000",
+                  "surface-container-low": "#f3f3f5", "tertiary-container": "#001a41", "error-container": "#ffdad6",
+                  "surface": "#f9f9fb", "on-tertiary-container": "#2480ff", "on-surface": "#1a1c1d",
+                  "on-primary-fixed": "#1c1b1b", "on-primary-container": "#858383"
+              },
+              fontFamily: {
+                  "headline-md": ["Hanken Grotesk"], "display-xl": ["Hanken Grotesk"], "headline-lg-mobile": ["Hanken Grotesk"],
+                  "body-md": ["Inter"], "body-lg": ["Inter"], "headline-lg": ["Hanken Grotesk"], "label-md": ["Inter"], "label-sm": ["Inter"]
+              }
+            }
+          }
+        }
+    </script>
 </head>
-<body>
 
-<div class="page-wrapper">
-    <header>
-        <h1>Vehicle Inventory Management</h1>
-        <p class="text-muted">Manage your fleet, update details, and remove vehicles.</p>
-    </header>
+<body class="bg-surface dark:bg-[#0A0A0A] text-on-surface dark:text-on-primary font-body-md text-body-md antialiased min-h-screen flex">
 
-    <div class="card">
-        <div class="toolbar" style="justify-content: flex-end; margin-bottom: 20px;">
-            <button class="button" onclick="window.location.href='/vehicleForm'">
-                + Add New Vehicle
-            </button>
+<div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+<main class="flex-1 ml-0 md:ml-64 min-h-screen flex flex-col bg-[#0A0A0A]">
+
+    <div th:replace="~{fragments/admin-topbar :: topbar}"></div>
+
+    <div class="flex-1 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full p-8">
+
+        <div class="mb-8 flex justify-between items-end">
+            <div>
+                <h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-primary mb-2">Fleet Inventory</h2>
+                <p class="font-body-md text-body-md text-on-primary-container">Manage your vehicle catalog, pricing, and availability.</p>
+            </div>
+
+            <a href="/vehicleForm" class="bg-on-primary text-primary-container font-label-md text-label-md py-3 px-6 rounded-lg hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Add New Vehicle
+            </a>
         </div>
 
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>ID</th>
-                    <th>Make & Model</th>
-                    <th>Type</th>
-                    <th>Rate / Day</th>
-                    <th>Status</th>
-                    <th style="text-align: right;">Actions</th>
-                </tr>
-                </thead>
-                <tbody id="inventoryBody">
-                </tbody>
-            </table>
+        <div class="bg-[#1C1C1E] rounded-xl overflow-hidden shadow-2xl border border-on-surface-variant/10">
+            <div class="p-0 overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                    <tr class="border-b border-on-surface-variant/20 bg-[#0A0A0A]/80">
+                        <th class="p-4 font-label-sm text-label-sm text-on-primary-container font-semibold uppercase tracking-wider">Image</th>
+                        <th class="p-4 font-label-sm text-label-sm text-on-primary-container font-semibold uppercase tracking-wider">ID</th>
+                        <th class="p-4 font-label-sm text-label-sm text-on-primary-container font-semibold uppercase tracking-wider">Make & Model</th>
+                        <th class="p-4 font-label-sm text-label-sm text-on-primary-container font-semibold uppercase tracking-wider">Type</th>
+                        <th class="p-4 font-label-sm text-label-sm text-on-primary-container font-semibold uppercase tracking-wider">Rate / Day</th>
+                        <th class="p-4 font-label-sm text-label-sm text-on-primary-container font-semibold uppercase tracking-wider">Status</th>
+                        <th class="p-4 font-label-sm text-label-sm text-on-primary-container font-semibold uppercase tracking-wider text-right">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="inventoryBody">
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </div>
-</div>
+</main>
 
 <script src="/js/inventory.js"></script>
 </body>

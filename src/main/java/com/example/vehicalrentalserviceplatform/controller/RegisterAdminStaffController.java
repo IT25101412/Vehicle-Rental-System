@@ -20,6 +20,6 @@ public class RegisterAdminStaffController extends HttpServlet {
         AdminStaffService service = new AdminStaffService();
         String result = service.register(fullName, username, role, employeeType, password, "system-admin");
 
-        response.sendRedirect("/admin-registration.html?message=" + result.replace(" ", "%20"));
+        response.sendRedirect("/admin/admin-registration.html?message=" + result.replace(" ", "%20"));
     }
 }
