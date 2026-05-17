@@ -41,12 +41,16 @@ public class BillingService {
 
     public Invoice createInvoice(Invoice invoice) {
         synchronized (fileLock) {
+
+            invoice.setDiscount(0.0);
+            invoice.setLateFee(0.0);
+
             validateInvoice(invoice);
             invoice.setId(nextId.getAndIncrement());
 
             invoice.setStatus(InvoiceStatus.PAID);
             invoice.setPaidAt(LocalDateTime.now());
-            
+
             if (invoice.getCreatedAt() == null) {
                 invoice.setCreatedAt(LocalDateTime.now());
             }

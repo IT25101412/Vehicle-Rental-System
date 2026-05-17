@@ -1,5 +1,6 @@
 package com.example.vehicalrentalserviceplatform.controller;
 
+import jakarta.servlet.http.HttpSession;
 import com.example.vehicalrentalserviceplatform.model.Booking;
 import com.example.vehicalrentalserviceplatform.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,27 @@ public class BookingFormController {
 
     // 1. Replaces your old BookingController (Create)
     @PostMapping("/createBooking")
-    public String createBooking(
-            @RequestParam("customerUsername") String name,
-            @RequestParam("vehicleId") String vehicleId,
-            @RequestParam("startDate") String startDate,
-            @RequestParam("returnDate") String returnDate) {
+public String createBooking(
+        @RequestParam("vehicleId") String vehicleId,
+        @RequestParam("startDate") String startDate,
+        @RequestParam("returnDate") String returnDate,
+        HttpSession session) {
 
-        Booking newBooking = new Booking(name, vehicleId, startDate, returnDate, "Pending");
-        bookingService.createBooking(newBooking);
+    String currentUser = (String) session.getAttribute("loggedInUser");
 
-        return "redirect:/reservationHistory";
+    if (currentUser == null) {
+        return "redirect:/login";
     }
+
+    if (vehicleId == null || vehicleId.isBlank()) {
+        return "redirect:/catalog";
+    }
+
+    Booking newBooking = new Booking(currentUser, vehicleId, startDate, returnDate, "Pending");
+    bookingService.createBooking(newBooking);
+
+    return "redirect:/reservationHistory";
+}
 
     // 2. Replaces your old UpdateBookingController
     @PostMapping("/updateBooking")

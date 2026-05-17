@@ -23,22 +23,25 @@ public class BookingPageController {
     }
 
     @GetMapping("/bookVehicle")
-    public String showBookVehicle(@RequestParam(name = "id",required = false)String vehicleId,
-                                  HttpSession session, Model model) {
+public String showBookVehicle(@RequestParam(name = "id", required = false) String vehicleId,
+                              HttpSession session,
+                              Model model) {
 
-        String currentUser = (String) session.getAttribute("loggedInUser");
+    String currentUser = (String) session.getAttribute("loggedInUser");
 
-        if(currentUser == null){
-            return "redirect:/login";
-        }
-
-        model.addAttribute("username", currentUser);
-        model.addAttribute("vehicleId", vehicleId);
-
-
-        return "bookVehicle";
-
+    if (currentUser == null) {
+        return "redirect:/login";
     }
+
+    if (vehicleId == null || vehicleId.isBlank()) {
+        return "redirect:/catalog";
+    }
+
+    model.addAttribute("username", currentUser);
+    model.addAttribute("vehicleId", vehicleId);
+
+    return "bookVehicle";
+}
 
     @GetMapping("/editBooking")
     public String showEditBooking() {

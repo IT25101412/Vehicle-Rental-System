@@ -8,8 +8,8 @@
 <body>
 <div class="page-wrapper">
     <header>
-        <h1>Create a New Booking</h1>
-        <p class="text-muted">Enter the details below to reserve a vehicle.</p>
+        <h1>Confirm Your Vehicle Booking</h1>
+        <p class="text-muted">Review the selected vehicle and choose your rental dates.</p>
     </header>
 
     <div class="form-card">
@@ -23,7 +23,7 @@
                     </div>
                     <div>
                         <label>Vehicle ID</label>
-                        <input type="text" name="vehicleId" th:value="${vehicleId}" placeholder="e.g. CAR-0001" required style="width: 100%;">
+                        <input type="text" name="vehicleId" th:value="${vehicleId}" readonly required style="width: 100%;">
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
             <div class="action-buttons" style="margin-top: 24px;">
                 <a href="/reservationHistory" class="button secondary">View My History</a>
 
-                <button type="submit" class="button">Confirm & Pay</button>
+                <button type="submit" class="button">Request Booking</button>
             </div>
         </form>
     </div>
