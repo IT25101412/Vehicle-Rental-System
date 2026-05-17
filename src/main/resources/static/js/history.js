@@ -1,97 +1,147 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     loadBookings();
 });
 
-function loadBookings() {
-    const currentUser = document.getElementById("loggedInUsername").value;
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
 
-    if (!currentUser) {
-            console.error("No user logged in!");
-            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='7'>Please log in to view history.</td></tr>";
-            return;
+function shortId(value) {
+    const text = String(value ?? "");
+    if (text.length <= 14) {
+        return text;
+    }
+    return `${text.slice(0, 8)}...${text.slice(-4)}`;
+}
+
+function statusClass(status) {
+    const normalized = String(status ?? "").toLowerCase();
+
+    if (normalized === "pending") return "pending";
+    if (normalized === "approved") return "approved";
+    if (normalized === "paid") return "paid";
+    if (normalized === "rejected") return "rejected";
+
+    return "pending";
+}
+
+function buildActionHtml(booking) {
+    const transactionId = escapeHtml(booking.transactionId);
+    const status = String(booking.bookingStatus ?? "");
+
+    if (status === "Pending") {
+        return `
+            <div class="history-actions">
+                <span class="history-action-note gold">⏳ Awaiting approval</span>
+                <a href="/editBooking?id=${transactionId}" class="history-action-btn light">Edit</a>
+                <button onclick="submitDelete('${transactionId}')" class="history-action-btn red">Delete</button>
+            </div>
+        `;
     }
 
-    fetch(`/api/bookings?customer=${currentUser}`)
+    if (status === "Approved") {
+        return `
+            <div class="history-actions">
+                <a href="/checkout?transactionId=${transactionId}" class="history-action-btn green">Pay Now</a>
+            </div>
+        `;
+    }
+
+    if (status === "Paid") {
+        return `<span class="history-action-note green">✅ Payment complete</span>`;
+    }
+
+    if (status === "Rejected") {
+        return `<span class="history-action-note red">✕ Booking declined</span>`;
+    }
+
+    return `<strong>${escapeHtml(status)}</strong>`;
+}
+
+function loadBookings() {
+    const currentUserElement = document.getElementById("loggedInUsername");
+    const tableBody = document.getElementById("bookingTableBody");
+
+    if (!currentUserElement || !tableBody) {
+        console.error("Booking history page elements are missing.");
+        return;
+    }
+
+    const currentUser = currentUserElement.value;
+
+    if (!currentUser) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="history-empty">Please log in to view your booking history.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    fetch(`/api/bookings?customer=${encodeURIComponent(currentUser)}`)
         .then(response => response.json())
         .then(data => {
-            const tableBody = document.getElementById("bookingTableBody");
             tableBody.innerHTML = "";
 
+            if (!data.length) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="history-empty">
+                            No bookings found yet. Choose a vehicle from the catalog to start your first rental.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
             data.forEach(booking => {
+                const status = escapeHtml(booking.bookingStatus);
 
-                // --- THE SMART BUTTON LOGIC ---
-                let actionHtml = '';
-
-                if (booking.bookingStatus === 'Pending') {
-                    // Show a waiting message, plus let them Edit or Delete while they wait
-                    actionHtml = `
-                        <span style="color: #ffc107; font-weight: bold; display: block; margin-bottom: 5px;">⏳ Awaiting Approval</span>
-                        <div class="action-buttons">
-                            <a href="/editBooking?id=${booking.transactionId}" class="button" style="padding: 4px 8px; font-size: 0.85em;">Edit</a>
-                            <button onclick="submitDelete('${booking.transactionId}')" class="button secondary" style="padding: 4px 8px; font-size: 0.85em; background-color: #dc3545; border-color: #dc3545;">Delete</button>
-                        </div>
-                    `;
-                } else if (booking.bookingStatus === 'Approved') {
-                    // The Admin approved it! Give them the Pay Now button
-                    actionHtml = `
-                        <a href="/checkout?transactionId=${booking.transactionId}" class="button" style="background-color: #28a745; border-color: #28a745; font-weight: bold;">💳 Pay Now</a>
-                    `;
-                } else if (booking.bookingStatus === 'Paid') {
-                    // They paid successfully
-                    actionHtml = `
-                        <span style="color: #28a745; font-weight: bold;">✅ Payment Complete</span>
-                    `;
-                } else if (booking.bookingStatus === 'Rejected') {
-                    // The Admin rejected the booking
-                    actionHtml = `
-                        <span style="color: #dc3545; font-weight: bold;">❌ Booking Declined</span>
-                    `;
-                } else {
-                    // Fallback for any other status (like 'Cancelled')
-                    actionHtml = `<strong>${booking.bookingStatus}</strong>`;
-                }
-
-                // --- BUILD THE ROW ---
                 const row = `
                     <tr>
-                        <td>${booking.transactionId}</td>
-                        <td>${booking.customerName}</td>
-                        <td>${booking.vehicleId}</td>
-                        <td>${booking.startDate}</td>
-                        <td>${booking.returnDate}</td>
-                        <td><strong>${booking.bookingStatus}</strong></td>
+                        <td class="history-id" title="${escapeHtml(booking.transactionId)}">${shortId(booking.transactionId)}</td>
+                        <td>${escapeHtml(booking.customerName)}</td>
+                        <td>${escapeHtml(booking.vehicleId)}</td>
+                        <td>${escapeHtml(booking.startDate)}</td>
+                        <td>${escapeHtml(booking.returnDate)}</td>
                         <td>
-                            ${actionHtml}
+                            <span class="history-status ${statusClass(booking.bookingStatus)}">${status}</span>
                         </td>
+                        <td>${buildActionHtml(booking)}</td>
                     </tr>
                 `;
 
                 tableBody.innerHTML += row;
             });
-
         })
         .catch(error => {
             console.error("Error fetching the bookings:", error);
-            document.getElementById("bookingTableBody").innerHTML = "<tr><td colspan='7'>Error loading bookings. Please try again later.</td></tr>";
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="history-empty">Error loading bookings. Please try again later.</td>
+                </tr>
+            `;
         });
 }
 
-// This creates an invisible form, submits it to the Java Controller, and deletes
 function submitDelete(transactionId) {
     if (confirm("Are you sure you want to cancel this booking?")) {
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = "/deleteBooking";
 
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/deleteBooking';
-
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'transactionId';
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "transactionId";
         input.value = transactionId;
 
         form.appendChild(input);
         document.body.appendChild(form);
-
         form.submit();
     }
 }
