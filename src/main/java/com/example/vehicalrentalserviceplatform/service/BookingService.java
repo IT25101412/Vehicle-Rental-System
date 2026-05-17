@@ -36,6 +36,43 @@ public class BookingService {
         return true; // No overlaps found, car is yours!
     }
 
+public boolean isVehicleAvailableForUpdate(String vehicleId,
+                                           String requestedStartDate,
+                                           String requestedReturnDate,
+                                           String currentTransactionId) {
+
+    List<Booking> activeBookings = getAllBookings();
+
+    LocalDate reqStart = LocalDate.parse(requestedStartDate);
+    LocalDate reqReturn = LocalDate.parse(requestedReturnDate);
+
+    for (Booking booking : activeBookings) {
+
+        if (booking.getTransactionId().equals(currentTransactionId)) {
+            continue;
+        }
+
+        if (!booking.getVehicleId().equals(vehicleId)) {
+            continue;
+        }
+
+        String status = booking.getBookingStatus();
+
+        if (status.equalsIgnoreCase("Cancelled") || status.equalsIgnoreCase("Rejected")) {
+            continue;
+        }
+
+        LocalDate bookedStart = LocalDate.parse(booking.getStartDate());
+        LocalDate bookedReturn = LocalDate.parse(booking.getReturnDate());
+
+        if (!reqStart.isAfter(bookedReturn) && !reqReturn.isBefore(bookedStart)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
     public boolean createBooking(Booking newBooking) {
 
     if (!isVehicleAvailable(newBooking.getVehicleId(), newBooking.getStartDate(), newBooking.getReturnDate())) {

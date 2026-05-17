@@ -57,6 +57,10 @@
                 </div>
             </div>
 
+            <div th:if="${error == 'vehicleBooked'}" style="color: #b91c1c; margin-top: 16px; font-weight: 600;">
+    This vehicle is already booked for the selected dates. Please choose different dates.
+</div>
+
             <div th:if="${error == 'pastStartDate'}" style="color: #b91c1c; margin-top: 16px; font-weight: 600;">
                 Start date cannot be in the past.
             </div>

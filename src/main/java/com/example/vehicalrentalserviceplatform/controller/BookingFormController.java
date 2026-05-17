@@ -114,6 +114,17 @@ public String updateBooking(
         return "redirect:/editBooking?id=" + transactionId + "&error=invalidDateFormat";
     }
 
+boolean available = bookingService.isVehicleAvailableForUpdate(
+        selectedBooking.getVehicleId(),
+        newStartDate,
+        newReturnDate,
+        transactionId
+);
+
+if (!available) {
+    return "redirect:/editBooking?id=" + transactionId + "&error=vehicleBooked";
+}
+
     bookingService.updateBooking(
             transactionId,
             selectedBooking.getVehicleId(),
