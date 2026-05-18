@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.vehicalrentalserviceplatform.service.BookingService;
 import jakarta.servlet.http.HttpSession;
+import com.example.vehicalrentalserviceplatform.maintenance.MaintenanceFileHandler;
+import com.example.vehicalrentalserviceplatform.maintenance.MaintenanceRecord;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -30,10 +33,16 @@ public class AdminPageController {
     public String dashboard(HttpSession session, @RequestParam(required = false) String message, Model model) {
         if(isNotAuthorized(session)) return "redirect:/admin-login";
 
+        List<MaintenanceRecord> allMaintenance = MaintenanceFileHandler.loadAllRecords();
+        long pendingCount = allMaintenance.stream()
+                .filter(record -> "Pending".equalsIgnoreCase(record.getStatus()))
+                .count();
+
         model.addAttribute("message", message);
         model.addAttribute("admins", adminStaffService.getAllAdmins());
         model.addAttribute("logs", adminStaffService.getAllActivityLogs());
         model.addAttribute("allBookings", bookingService.getAllBookings());
+        model.addAttribute("pendingMaintenanceCount", pendingCount);
         return "admin-dashboard";
     }
 

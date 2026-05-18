@@ -1,4 +1,3 @@
 REC-94EB4ABF,VH-001,Car,Engine,2026-05-08,Completed,Check engine light on
-REC-C88B0DF9,VH-001,Car,Tyre,2026-05-12,Completed,Patch
-REC-9A111107,CAR-0003,Car,General,2026-05-15,In Progress,
-REC-9304237A,CAR-0001,Car,Engine,2026-05-19,Completed,Check engine light on
+REC-C88B0DF9,VH-001,Car,Tyre,2026-05-12,Pending,Patch
+REC-E7C4797B,CAR-0002,Car,Oil Change,2026-05-19,Pending,Oil Change needed
