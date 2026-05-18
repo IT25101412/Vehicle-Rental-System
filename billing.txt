@@ -5,3 +5,4 @@
 5 | Sanithu1 | CAR-0001 | BMW M3 GTR | 1 | 45000.0 | 0.0 | 0.0 | PENDING | cash | 11 | 2026-05-15T12:26:21.838445100 | 
 6 | Sanithu1 | CAR-0001 | BMW M3 GTR | 6 | 45000.0 | 0.0 | 0.0 | PENDING | cash | 1 | 2026-05-16T14:02:02.090113300 | 
 7 | Sanithu1 | VAN-0001 | Toyota Hiace 223R | 1 | 18500.0 | 0.0 | 0.0 | PAID | cash | 112 | 2026-05-18T14:41:19.764146100 | 2026-05-18T14:41:19.894014600
+8 | Aroz | MOT-0001 | Ducati Diavel | 1 | 10000.0 | 0.0 | 0.0 | PAID | paypal | aroshaznethumz@gmail.com | 2026-05-18T16:00:10.418020100 | 2026-05-18T16:00:10.478229100
