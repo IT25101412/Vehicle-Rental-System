@@ -478,21 +478,7 @@
                     </div>
                 </div>
 
-                <div class="booking-alert" th:if="${error == 'vehicleBooked'}">
-                    This vehicle is already booked for the selected dates. Please choose different dates.
-                </div>
-
-                <div class="booking-alert" th:if="${error == 'pastStartDate'}">
-                    Start date cannot be in the past.
-                </div>
-
-                <div class="booking-alert" th:if="${error == 'invalidReturnDate'}">
-                    Return date must be after the start date.
-                </div>
-
-                <div class="booking-alert" th:if="${error == 'invalidDateFormat'}">
-                    Please select valid booking dates.
-                </div>
+                <div class="booking-alert" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
                 <div class="booking-actions">
                     <a href="/reservationHistory" class="booking-btn secondary">View My History</a>
@@ -561,6 +547,26 @@
         <div class="footer-watermark">DriveEase</div>
     </div>
 </footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const startDateInput = document.getElementById('startDate');
+        const returnDateInput = document.getElementById('returnDate');
 
+        if (startDateInput && returnDateInput) {
+            const today = new Date().toISOString().split('T')[0];
+
+            startDateInput.setAttribute('min', today);
+            returnDateInput.setAttribute('min', today);
+
+            startDateInput.addEventListener('change', function() {
+                returnDateInput.setAttribute('min', this.value);
+
+                if (returnDateInput.value && returnDateInput.value < this.value) {
+                    returnDateInput.value = this.value;
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

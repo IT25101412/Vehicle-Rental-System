@@ -189,8 +189,9 @@
 
         .edit-field input[readonly] {
             background: #ffffff;
-            color: #202020;
+            color: #71717a;
             font-weight: 650;
+            cursor: not-allowed;
         }
 
         .edit-alert {
@@ -362,21 +363,15 @@
 
             <form class="edit-form" action="/updateBooking" method="POST">
 
-                <div class="edit-grid">
-                    <div class="edit-field">
-                        <label for="transactionId">Transaction ID*</label>
-                        <input id="transactionId"
-                               type="text"
-                               name="transactionId"
-                               th:value="${transactionId}"
-                               required
-                               readonly>
-                    </div>
+                <input type="hidden" id="transactionId" name="transactionId" th:value="${transactionId}" required>
 
-                    <div class="edit-field">
-                        <label for="vehicleId">Vehicle ID*</label>
+                <div class="edit-grid">
+
+                    <div class="edit-field" style="grid-column: 1 / -1;">
+                        <label for="vehicleId">Vehicle ID (Locked)</label>
                         <input id="vehicleId"
                                type="text"
+                               name="vehicleId"
                                th:value="${vehicleId}"
                                readonly>
                     </div>
@@ -400,21 +395,7 @@
                     </div>
                 </div>
 
-                <div class="edit-alert" th:if="${error == 'vehicleBooked'}">
-                    This vehicle is already booked for the selected dates. Please choose different dates.
-                </div>
-
-                <div class="edit-alert" th:if="${error == 'pastStartDate'}">
-                    Start date cannot be in the past.
-                </div>
-
-                <div class="edit-alert" th:if="${error == 'invalidReturnDate'}">
-                    Return date must be after the start date.
-                </div>
-
-                <div class="edit-alert" th:if="${error == 'invalidDateFormat'}">
-                    Please select valid booking dates.
-                </div>
+                <div class="edit-alert" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
                 <div class="edit-actions">
                     <a href="/reservationHistory" class="edit-btn secondary">Cancel</a>
@@ -484,5 +465,27 @@
     </div>
 </footer>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ONLY handling calendar restrictions now. Data filling is handled safely by the Java backend!
+        const startDateInput = document.getElementById('startDate');
+        const returnDateInput = document.getElementById('returnDate');
+
+        if (startDateInput && returnDateInput) {
+            const today = new Date().toISOString().split('T')[0];
+
+            startDateInput.setAttribute('min', today);
+            returnDateInput.setAttribute('min', today);
+
+            startDateInput.addEventListener('change', function() {
+                returnDateInput.setAttribute('min', this.value);
+
+                if (returnDateInput.value && returnDateInput.value < this.value) {
+                    returnDateInput.value = this.value;
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
