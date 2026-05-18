@@ -1,64 +1,213 @@
-window.onload = loadCatalog;
+window.onload = () => {
+    setupCategoryTabs();
+    loadCatalog();
+};
+
+let allVehicles = [];
+let activeType = "ALL";
+
+function setupCategoryTabs() {
+    const tabs = document.querySelectorAll(".category-tab");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(item => item.classList.remove("active"));
+            tab.classList.add("active");
+
+            activeType = tab.dataset.type;
+            renderVehicles();
+        });
+    });
+}
 
 async function loadCatalog() {
+    const grid = document.getElementById("catalogGrid");
+
     try {
-        const response = await fetch('/api/vehicles');
-        const vehicles = await response.json();
+        grid.innerHTML = `
+            <div class="empty-state">
+                Loading vehicles...
+            </div>
+        `;
 
-        const typeFilter = document.getElementById("typeFilter").value;
-        const grid = document.getElementById('catalogGrid');
-        grid.innerHTML = '';
+        const response = await fetch("/api/vehicles");
 
-        // Filter based on the 'available' key found in your console screenshot
-        const filtered = vehicles.filter(v => {
-            const isAvail = String(v.available).toLowerCase() === "true";
-            const matchesType = (typeFilter === "ALL" || v.type === typeFilter);
-            return isAvail && matchesType;
-        });
-
-        if (filtered.length === 0) {
-            grid.innerHTML = '<p class="text-muted" style="padding: 20px;">No vehicles available in this category.</p>';
-            return;
+        if (!response.ok) {
+            throw new Error("Could not fetch /api/vehicles");
         }
 
-        filtered.forEach(vehicle => {
-            const card = document.createElement('div');
-            card.className = 'card';
+        const data = await response.json();
 
-            // THE FIX: These constraints prevent the massive images from breaking the grid
-            card.style.display = 'flex';
-            card.style.flexDirection = 'column';
-            card.style.minWidth = '0';        // Stops flexbox from expanding infinitely
-            card.style.overflow = 'hidden';   // Hides anything that bleeds over the edge
+        allVehicles = Array.isArray(data)
+            ? data
+            : data.vehicles || data.data || data.content || [];
 
-            // 2. Build the internal HTML
-            card.innerHTML = `
-                <img src="/images/${vehicle.vehicleImageFileName}" alt="${vehicle.make}" 
-                     onerror="this.src='https://via.placeholder.com/250'" 
-                     style="width: 100%; max-width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 16px; display: block;">
-                
-                <h3 style="margin-bottom: 8px; font-size: 1.25rem; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    ${vehicle.year} ${vehicle.make} ${vehicle.model}
-                </h3>
-                
-                <div style="margin-bottom: 20px;">
-                    <p class="text-muted" style="margin-bottom: 4px; font-size: 0.95rem;"><strong>Fuel:</strong> ${vehicle.fuelType}</p>
-                    <p class="text-muted" style="font-size: 0.95rem;"><strong>Cost:</strong> Rs. ${vehicle.rentalRate} / day</p>
-                </div>
-                
-                <div style="margin-top: auto;">
-                    <button class="button" style="width: 100%;" onclick="goToBooking('${vehicle.vehicleId}')">Book Now</button>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
+        renderVehicles();
 
     } catch (error) {
-        console.error("Error:", error);
+        console.error(error);
+
+        grid.innerHTML = `
+            <div class="empty-state">
+                <h3>Could not load vehicles</h3>
+                <p>Check if your backend API <strong>/api/vehicles</strong> is running.</p>
+            </div>
+        `;
     }
 }
 
-// 3. Keep your redirect function, but ensure it has the leading slash
-function goToBooking(id) {
-    window.location.href = `/bookVehicle?id=${id}`;
+function renderVehicles() {
+    const grid = document.getElementById("catalogGrid");
+
+    const filteredVehicles = allVehicles.filter(vehicle => {
+        const vehicleType = String(
+            vehicle.type ||
+            vehicle.vehicleType ||
+            vehicle.category ||
+            ""
+        ).toUpperCase();
+
+        const rate = Number(vehicle.rentalRate || vehicle.rate || vehicle.price || 0);
+
+        if (activeType === "ALL") {
+            return true;
+        }
+
+        if (activeType === "PREMIUM") {
+            return rate >= 25000;
+        }
+
+        return vehicleType === activeType;
+    });
+
+    grid.innerHTML = "";
+
+    if (filteredVehicles.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <h3>No vehicles found</h3>
+                <p>No vehicles are available in this category right now.</p>
+            </div>
+        `;
+        return;
+    }
+
+    filteredVehicles.forEach(vehicle => {
+        const card = document.createElement("article");
+        card.className = "car-card";
+
+        const vehicleId = vehicle.vehicleId || vehicle.id || "";
+        const imageFile = vehicle.vehicleImageFileName || vehicle.imageFileName || vehicle.image || "";
+
+        const imageSrc = imageFile
+            ? `/images/${imageFile}`
+            : "https://via.placeholder.com/900x560?text=DriveEase+Vehicle";
+
+        const title = `${vehicle.make || ""} ${vehicle.model || ""}`.trim() || "DriveEase Vehicle";
+        const type = vehicle.type || vehicle.vehicleType || "Vehicle";
+        const seats = vehicle.seats || vehicle.seatCount || vehicle.capacity || getDefaultSeats(type);
+        const transmission = vehicle.transmission || vehicle.transmissionType || getDefaultTransmission(type);
+        const fuel = vehicle.fuel || vehicle.fuelType || "Fuel";
+        const rate = vehicle.rentalRate || vehicle.rate || vehicle.price || "0";
+
+        card.innerHTML = `
+            <div class="car-image-area">
+                <img
+                    src="${imageSrc}"
+                    alt="${escapeHtml(title)}"
+                    onerror="this.src='https://via.placeholder.com/900x560?text=DriveEase+Vehicle'"
+                >
+            </div>
+
+            <div class="car-card-body">
+                <h3>${escapeHtml(title)}</h3>
+
+                <div class="car-divider"></div>
+
+                <div class="car-bottom">
+                    <div class="car-specs">
+                        <span class="spec-pill">
+                            <span class="spec-icon">▣</span>
+                            ${escapeHtml(formatType(type))}
+                        </span>
+
+                        <span class="spec-pill">
+                            <span class="spec-icon">⚙</span>
+                            ${escapeHtml(transmission)}
+                        </span>
+
+                        <span class="spec-pill">
+                            <span class="spec-icon">♙</span>
+                            ${escapeHtml(seats)} seats
+                        </span>
+
+                        <span class="spec-pill">
+                            <span class="spec-icon">⛽</span>
+                            ${escapeHtml(fuel)}
+                        </span>
+                    </div>
+
+                    <div class="car-price">
+                        <strong>Rs. ${escapeHtml(rate)}</strong>
+                        <span>/Day</span>
+                    </div>
+                </div>
+
+                <button class="book-now-btn" type="button">
+                    Book Now
+                </button>
+            </div>
+        `;
+
+        const bookButton = card.querySelector(".book-now-btn");
+
+        bookButton.addEventListener("click", () => {
+            if (!vehicleId) {
+                alert("Vehicle ID missing. Please check vehicle data.");
+                return;
+            }
+
+            window.location.href = `/bookVehicle?id=${encodeURIComponent(vehicleId)}`;
+        });
+
+        grid.appendChild(card);
+    });
+}
+
+function formatType(type) {
+    const value = String(type).toUpperCase();
+
+    if (value === "CAR") return "Car";
+    if (value === "SUV") return "SUV";
+    if (value === "VAN") return "Van";
+    if (value === "MOTORCYCLE") return "Motorcycle";
+
+    return type;
+}
+
+function getDefaultSeats(type) {
+    const value = String(type).toUpperCase();
+
+    if (value === "MOTORCYCLE") return "2";
+    if (value === "VAN") return "8";
+    if (value === "SUV") return "5";
+
+    return "5";
+}
+
+function getDefaultTransmission(type) {
+    const value = String(type).toUpperCase();
+
+    if (value === "MOTORCYCLE") return "Manual";
+
+    return "Automatic";
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }

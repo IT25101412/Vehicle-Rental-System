@@ -2,34 +2,112 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Vehicle Catalog</title>
+    <title>DriveEase - Vehicles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/catalog.css">
 </head>
-<body>
+<body class="catalog-body">
 
-<div class="page-wrapper">
+<header class="catalog-header">
+    <nav class="catalog-navbar">
+        <a href="/" class="catalog-logo">
+            <span class="catalog-logo-mark">✺</span>
+            <span>DriveEase</span>
+        </a>
 
-    <header>
-        <h1>Available Vehicles</h1>
-        <p class="text-muted">Browse our selection and find the perfect vehicle for your needs.</p>
-    </header>
+        <div class="catalog-nav-links">
+            <a href="/">Home</a>
+            <a href="/#about">About</a>
+            <a href="/catalog" class="active">Vehicles</a>
+            <a href="/#contact">Contact</a>
+        </div>
 
-    <div class="card toolbar" style="display: flex; align-items: center; gap: 16px;">
-        <label for="typeFilter" style="margin-bottom: 0;">Filter by Type:</label>
-        <select id="typeFilter" onchange="loadCatalog()" style="width: auto; min-width: 200px; padding: 10px 16px;">
-            <option value="ALL">All Vehicles</option>
-            <option value="CAR">Cars</option>
-            <option value="MOTORCYCLE">Motorcycles</option>
-            <option value="SUV">SUVs</option>
-            <option value="VAN">Vans</option>
-        </select>
+        <a href="/reservationHistory" class="catalog-header-btn">
+            My Bookings
+            <span>→</span>
+        </a>
+    </nav>
+</header>
+
+<main class="catalog-main">
+    <section class="catalog-hero">
+        <h1>Vehicles</h1>
+        <p>Choose the perfect ride for daily travel, family trips, business, or weekend adventures.</p>
+
+        <div class="category-tabs">
+            <button class="category-tab active" data-type="ALL">All</button>
+            <button class="category-tab" data-type="CAR">Cars</button>
+            <button class="category-tab" data-type="SUV">SUVs</button>
+            <button class="category-tab" data-type="VAN">Vans</button>
+            <button class="category-tab" data-type="MOTORCYCLE">Motorcycles</button>
+            <button class="category-tab" data-type="PREMIUM">Premium</button>
+        </div>
+    </section>
+
+    <section class="catalog-section">
+        <div id="catalogGrid" class="cars-grid"></div>
+    </section>
+</main>
+
+<footer class="site-footer" id="contact">
+    <div class="footer-inner">
+
+        <div class="footer-brand-area">
+            <div class="footer-brand-column">
+                <div class="footer-logo">✺</div>
+
+                <div class="priority-card">
+                    <h2>Get priority booking</h2>
+                    <p>Receive early access to selected vehicles and seasonal rental offers.</p>
+
+                    <div class="priority-form">
+                        <input type="email" placeholder="you@example.com">
+                        <button type="button">Join VIP</button>
+                    </div>
+
+                    <small>We will contact you within 24 hours for availability details.</small>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <div>
+                    <h3>Pages</h3>
+                    <div class="footer-link-grid">
+                        <a href="/">Home</a>
+                        <a href="/#about">About</a>
+                        <a href="/catalog" class="active">Vehicles</a>
+                        <a href="/#faq">FAQs</a>
+                        <a href="/#contact">Contact</a>
+                        <a href="/reservationHistory">My Bookings</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>Contact info</h3>
+                    <p>+94 77 123 4567</p>
+                    <p>support@driveease.lk</p>
+                    <p>Colombo, Sri Lanka</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>Designed for the DriveEase vehicle rental system.</p>
+
+            <div class="socials">
+                <span>◎</span>
+                <span>𝕏</span>
+                <span>in</span>
+                <span>f</span>
+            </div>
+        </div>
+
+        <div class="footer-watermark">DriveEase</div>
     </div>
+</footer>
 
-    <div id="catalogGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 24px;">
-    </div>
-
-</div>
-
-<script src="/js/catalog.js"></script>
+<script src="/js/catalog.js?v=4"></script>
 </body>
 </html>

@@ -94,6 +94,13 @@ public class AdminPageController {
         return "redirect:/admin/activity-log";
     }
 
+    @GetMapping("/report")
+    public String adminReport(HttpSession session) {
+    if (isNotAuthorized(session)) return "redirect:/admin-login";
+
+        return "admin-report";
+    }
+
     @GetMapping("/edit-admin-staff.html")
     public String editHtmlFromAdminPrefix(
             @RequestParam String userId,

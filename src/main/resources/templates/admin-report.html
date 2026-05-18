@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payments & Billing Report</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <main style="padding: 40px; font-family: Arial, sans-serif;">
+        <h1>Payments & Billing Report</h1>
+        <p>This admin page will display invoice, billing, and payment records.</p>
+
+        <section style="margin-top: 30px;">
+            <h2>Invoice Records</h2>
+            <div id="invoice-summary">
+                Loading invoice data...
+            </div>
+
+            <table border="1" cellpadding="12" cellspacing="0" style="margin-top: 20px; width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>Invoice ID</th>
+                        <th>Customer</th>
+                        <th>Vehicle</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Payment Method</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="invoice-table-body">
+                    <tr>
+                        <td colspan="7">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <p style="margin-top: 30px;">
+            <a href="/admin/dashboard">← Back to Admin Dashboard</a>
+        </p>
+    </main>
+
+    <script src="/js/admin-report.js"></script>
+</body>
+</html>
