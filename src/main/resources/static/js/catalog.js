@@ -1,23 +1,80 @@
 window.onload = () => {
-    setupCategoryTabs();
+    setupFilterControls();
     loadCatalog();
 };
 
 let allVehicles = [];
-let activeType = "ALL";
 
-function setupCategoryTabs() {
-    const tabs = document.querySelectorAll(".category-tab");
+let viewMode = "TOP";
+let activeType = "CAR";
+let activeUse = "FAMILY";
 
-    tabs.forEach(tab => {
+let visibleCount = 12;
+const LOAD_MORE_STEP = 9;
+
+/*
+    Metadata will be filled properly after we finalize the 45 vehicles.
+    For now, missing vehicles fall back to type/rate based rules.
+*/
+const vehicleMeta = {};
+
+function setupFilterControls() {
+    const modeTabs = document.querySelectorAll(".filter-mode-tab");
+    const typeTabs = document.querySelectorAll("#typeFilterTabs .category-tab");
+    const useTabs = document.querySelectorAll("#useFilterTabs .category-tab");
+
+    const typeFilterTabs = document.getElementById("typeFilterTabs");
+    const useFilterTabs = document.getElementById("useFilterTabs");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+
+    modeTabs.forEach(tab => {
         tab.addEventListener("click", () => {
-            tabs.forEach(item => item.classList.remove("active"));
+            modeTabs.forEach(item => item.classList.remove("active"));
             tab.classList.add("active");
 
-            activeType = tab.dataset.type;
+            viewMode = tab.dataset.mode;
+            visibleCount = 12;
+
+            if (typeFilterTabs) {
+                typeFilterTabs.hidden = viewMode !== "TYPE";
+            }
+
+            if (useFilterTabs) {
+                useFilterTabs.hidden = viewMode !== "USE";
+            }
+
             renderVehicles();
         });
     });
+
+    typeTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            typeTabs.forEach(item => item.classList.remove("active"));
+            tab.classList.add("active");
+
+            activeType = tab.dataset.type;
+            visibleCount = 12;
+            renderVehicles();
+        });
+    });
+
+    useTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            useTabs.forEach(item => item.classList.remove("active"));
+            tab.classList.add("active");
+
+            activeUse = tab.dataset.use;
+            visibleCount = 12;
+            renderVehicles();
+        });
+    });
+
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener("click", () => {
+            visibleCount += LOAD_MORE_STEP;
+            renderVehicles();
+        });
+    }
 }
 
 async function loadCatalog() {
@@ -58,27 +115,13 @@ async function loadCatalog() {
 
 function renderVehicles() {
     const grid = document.getElementById("catalogGrid");
+    const loadMoreWrap = document.getElementById("loadMoreWrap");
 
-    const filteredVehicles = allVehicles.filter(vehicle => {
-        const vehicleType = String(
-            vehicle.type ||
-            vehicle.vehicleType ||
-            vehicle.category ||
-            ""
-        ).toUpperCase();
+    const filteredVehicles = getFilteredVehicles();
 
-        const rate = Number(vehicle.rentalRate || vehicle.rate || vehicle.price || 0);
-
-        if (activeType === "ALL") {
-            return true;
-        }
-
-        if (activeType === "PREMIUM") {
-            return rate >= 25000;
-        }
-
-        return vehicleType === activeType;
-    });
+    const vehiclesToShow = viewMode === "ALL"
+        ? filteredVehicles.slice(0, visibleCount)
+        : filteredVehicles;
 
     grid.innerHTML = "";
 
@@ -86,17 +129,22 @@ function renderVehicles() {
         grid.innerHTML = `
             <div class="empty-state">
                 <h3>No vehicles found</h3>
-                <p>No vehicles are available in this category right now.</p>
+                <p>No vehicles are available in this filter right now.</p>
             </div>
         `;
+
+        if (loadMoreWrap) {
+            loadMoreWrap.hidden = true;
+        }
+
         return;
     }
 
-    filteredVehicles.forEach(vehicle => {
+    vehiclesToShow.forEach(vehicle => {
         const card = document.createElement("article");
         card.className = "car-card";
 
-        const vehicleId = vehicle.vehicleId || vehicle.id || "";
+        const vehicleId = getVehicleId(vehicle);
         const imageFile = vehicle.vehicleImageFileName || vehicle.imageFileName || vehicle.image || "";
 
         const imageSrc = imageFile
@@ -104,11 +152,22 @@ function renderVehicles() {
             : "https://via.placeholder.com/900x560?text=DriveEase+Vehicle";
 
         const title = `${vehicle.make || ""} ${vehicle.model || ""}`.trim() || "DriveEase Vehicle";
-        const type = vehicle.type || vehicle.vehicleType || "Vehicle";
-        const seats = vehicle.seats || vehicle.seatCount || vehicle.capacity || getDefaultSeats(type);
+        const type = getVehicleType(vehicle);
+        const useCategory = getUseCategory(vehicle);
+        const topChoice = isTopChoice(vehicle);
+
+        const seats = vehicle.numberOfSeats || vehicle.seats || vehicle.seatCount || vehicle.capacity || getDefaultSeats(type);
         const transmission = vehicle.transmission || vehicle.transmissionType || getDefaultTransmission(type);
         const fuel = vehicle.fuel || vehicle.fuelType || "Fuel";
-        const rate = vehicle.rentalRate || vehicle.rate || vehicle.price || "0";
+
+        const rateValue = Number(vehicle.rentalRate || vehicle.rate || vehicle.price || 0);
+        const rate = Number.isFinite(rateValue)
+            ? rateValue.toLocaleString("en-LK")
+            : "0";
+
+        const topChoiceTag = topChoice
+            ? `<span class="car-tag dark">Top Choice</span>`
+            : "";
 
         card.innerHTML = `
             <div class="car-image-area">
@@ -121,6 +180,12 @@ function renderVehicles() {
 
             <div class="car-card-body">
                 <h3>${escapeHtml(title)}</h3>
+
+                <div class="car-tags">
+                    <span class="car-tag">${escapeHtml(formatType(type))}</span>
+                    <span class="car-tag">${escapeHtml(formatUse(useCategory))}</span>
+                    ${topChoiceTag}
+                </div>
 
                 <div class="car-divider"></div>
 
@@ -172,8 +237,105 @@ function renderVehicles() {
 
         grid.appendChild(card);
     });
+
+    if (loadMoreWrap) {
+        loadMoreWrap.hidden = !(viewMode === "ALL" && filteredVehicles.length > visibleCount);
+    }
+}
+function getFilteredVehicles() {
+    return allVehicles.filter(vehicle => {
+        if (viewMode === "TOP") {
+            return isTopChoice(vehicle);
+        }
+
+        if (viewMode === "ALL") {
+            return true;
+        }
+
+        if (viewMode === "TYPE") {
+            if (activeType === "PREMIUM") {
+                return isPremium(vehicle);
+            }
+
+            return getVehicleType(vehicle) === activeType;
+        }
+
+        if (viewMode === "USE") {
+            return getUseCategory(vehicle) === activeUse;
+        }
+
+        return true;
+    });
 }
 
+function getVehicleId(vehicle) {
+    return vehicle.vehicleId || vehicle.id || "";
+}
+
+function getVehicleMeta(vehicle) {
+    const vehicleId = getVehicleId(vehicle);
+    return vehicleMeta[vehicleId] || {};
+}
+
+function getVehicleType(vehicle) {
+    return String(
+        vehicle.type ||
+        vehicle.vehicleType ||
+        vehicle.category ||
+        ""
+    ).toUpperCase();
+}
+
+function getUseCategory(vehicle) {
+    const meta = getVehicleMeta(vehicle);
+
+    if (meta.useCategory) {
+        return meta.useCategory;
+    }
+
+    const type = getVehicleType(vehicle);
+
+    if (type === "VAN") return "TRANSPORT";
+    if (type === "SUV") return "FAMILY";
+    if (type === "MOTORCYCLE") return "DAILY";
+
+    return "DAILY";
+}
+
+function isPremium(vehicle) {
+    const meta = getVehicleMeta(vehicle);
+
+    if (meta.displayCategory === "PREMIUM") {
+        return true;
+    }
+
+    const rate = Number(vehicle.rentalRate || vehicle.rate || vehicle.price || 0);
+    return rate >= 25000;
+}
+
+function isTopChoice(vehicle) {
+    const meta = getVehicleMeta(vehicle);
+
+    if (typeof meta.topChoice === "boolean") {
+        return meta.topChoice;
+    }
+
+    const rate = Number(vehicle.rentalRate || vehicle.rate || vehicle.price || 0);
+    return rate >= 10000;
+}
+
+function formatUse(useCategory) {
+    const value = String(useCategory).toUpperCase();
+
+    if (value === "FAMILY") return "Family";
+    if (value === "BUSINESS") return "Business";
+    if (value === "WEDDING") return "Wedding";
+    if (value === "ADVENTURE") return "Adventure";
+    if (value === "TRANSPORT") return "Transport";
+    if (value === "DAILY") return "Daily Use";
+
+    return useCategory;
+}
 function formatType(type) {
     const value = String(type).toUpperCase();
 
