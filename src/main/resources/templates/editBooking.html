@@ -471,21 +471,22 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // ONLY handling calendar restrictions now. Data filling is handled safely by the Java backend!
         const startDateInput = document.getElementById('startDate');
         const returnDateInput = document.getElementById('returnDate');
 
         if (startDateInput && returnDateInput) {
             const today = new Date().toISOString().split('T')[0];
-
             startDateInput.setAttribute('min', today);
-            returnDateInput.setAttribute('min', today);
 
             startDateInput.addEventListener('change', function() {
-                returnDateInput.setAttribute('min', this.value);
+                // The Math Trick: Add exactly 1 day (86,400,000 milliseconds) to the selected date
+                const nextDay = new Date(this.valueAsNumber + 86400000).toISOString().split('T')[0];
 
-                if (returnDateInput.value && returnDateInput.value < this.value) {
-                    returnDateInput.value = this.value;
+                returnDateInput.setAttribute('min', nextDay);
+
+                // If the return date is the same or earlier, bump it to tomorrow
+                if (returnDateInput.value && returnDateInput.value <= this.value) {
+                    returnDateInput.value = nextDay;
                 }
             });
         }
