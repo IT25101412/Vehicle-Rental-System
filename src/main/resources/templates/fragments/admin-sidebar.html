@@ -17,7 +17,7 @@
     </div>
 
     <nav class="sidebar-nav">
-        <a class="nav-link active" href="/admin/dashboard">
+        <a class="nav-link" href="/admin/dashboard">
             <span class="material-symbols-outlined">dashboard</span>
             <span>Dashboard</span>
         </a>
@@ -47,6 +47,25 @@
             <span>Activity Logs</span>
         </a>
     </nav>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.sidebar-nav .nav-link');
+
+            navLinks.forEach(link => {
+                // Clear any leftover active classes
+                link.classList.remove('active');
+
+                const href = link.getAttribute('href');
+
+                // Highlight the link if the current URL matches or starts with the href
+                if (currentPath === href || (href !== '/' && currentPath.startsWith(href))) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 
 </aside>
 </body>
