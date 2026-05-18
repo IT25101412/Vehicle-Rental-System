@@ -71,19 +71,21 @@
                 <th>User ID</th>
                 <th>Full Name</th>
                 <th>Username</th>
+                <th>Password</th>
                 <th>Role</th>
-                <th>Employee Type</th>
+                <th>Password</th>
                 <th style="text-align: right;">Action</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(admins)}">
-                <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 2rem;">No accounts found.</td>
+                <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 2rem;">No accounts found.</td>
             </tr>
             <tr th:each="admin : ${admins}">
                 <td style="font-family: monospace; color: var(--text-secondary);" th:text="${admin.userId}"></td>
                 <td style="font-weight: 500;" th:text="${admin.fullName}"></td>
                 <td th:text="${admin.username}"></td>
+                <td th:text="${admin.maskedPasswordHash}"></td>
                 <td>
                     <span class="badge" th:classappend="${admin.role == 'ADMIN' ? 'approved' : 'pending'}" th:text="${admin.role}"></span>
                 </td>

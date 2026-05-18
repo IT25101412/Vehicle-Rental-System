@@ -77,7 +77,7 @@ function loadBookings() {
     if (!currentUser) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="7" class="history-empty">Please log in to view your booking history.</td>
+                <td colspan="6" class="history-empty">Please log in to view your booking history.</td>
             </tr>
         `;
         return;
@@ -104,7 +104,6 @@ function loadBookings() {
 
                 const row = `
                     <tr>
-                        <td class="history-id" title="${escapeHtml(booking.transactionId)}">${shortId(booking.transactionId)}</td>
                         <td>${escapeHtml(booking.customerName)}</td>
                         <td>${escapeHtml(booking.vehicleId)}</td>
                         <td>${escapeHtml(booking.startDate)}</td>
@@ -123,7 +122,7 @@ function loadBookings() {
             console.error("Error fetching the bookings:", error);
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="7" class="history-empty">Error loading bookings. Please try again later.</td>
+                    <td colspan="6" class="history-empty">Error loading bookings. Please try again later.</td>
                 </tr>
             `;
         });
