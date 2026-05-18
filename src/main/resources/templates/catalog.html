@@ -40,18 +40,41 @@
         <h1>Vehicles</h1>
         <p>Choose the perfect ride for daily travel, family trips, business, or weekend adventures.</p>
 
-        <div class="category-tabs">
-            <button class="category-tab active" data-type="ALL">All</button>
-            <button class="category-tab" data-type="CAR">Cars</button>
-            <button class="category-tab" data-type="SUV">SUVs</button>
-            <button class="category-tab" data-type="VAN">Vans</button>
-            <button class="category-tab" data-type="MOTORCYCLE">Motorcycles</button>
-            <button class="category-tab" data-type="PREMIUM">Premium</button>
+        <div class="catalog-filter-panel">
+
+            <div class="filter-mode-tabs">
+                <button class="filter-mode-tab active" data-mode="TOP">Top Choices</button>
+                <button class="filter-mode-tab" data-mode="ALL">All Vehicles</button>
+                <button class="filter-mode-tab" data-mode="TYPE">By Type</button>
+                <button class="filter-mode-tab" data-mode="USE">By Use</button>
+            </div>
+
+            <div class="category-tabs" id="typeFilterTabs" hidden>
+                <button class="category-tab active" data-type="CAR">Cars</button>
+                <button class="category-tab" data-type="SUV">SUVs</button>
+                <button class="category-tab" data-type="VAN">Vans</button>
+                <button class="category-tab" data-type="MOTORCYCLE">Motorcycles</button>
+                <button class="category-tab" data-type="PREMIUM">Premium</button>
+            </div>
+
+            <div class="category-tabs" id="useFilterTabs" hidden>
+                <button class="category-tab active" data-use="FAMILY">Family</button>
+                <button class="category-tab" data-use="BUSINESS">Business</button>
+                <button class="category-tab" data-use="WEDDING">Wedding</button>
+                <button class="category-tab" data-use="ADVENTURE">Adventure</button>
+                <button class="category-tab" data-use="TRANSPORT">Transport</button>
+                <button class="category-tab" data-use="DAILY">Daily Use</button>
+            </div>
+
         </div>
     </section>
 
     <section class="catalog-section">
         <div id="catalogGrid" class="cars-grid"></div>
+
+        <div class="load-more-wrap" id="loadMoreWrap" hidden>
+            <button type="button" class="load-more-btn" id="loadMoreBtn">Load More</button>
+        </div>
     </section>
 </main>
 
@@ -112,6 +135,6 @@
     </div>
 </footer>
 
-<script src="/js/catalog.js?v=4"></script>
+<script src="/js/catalog.js?v=6"></script>
 </body>
 </html>
