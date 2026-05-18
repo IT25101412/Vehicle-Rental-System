@@ -15,11 +15,46 @@
 }
 
 body {
-    background-color: var(--bg-main);
+    /* Deep indigo/black base */
+    background-color: #080612;
+    background-image:
+        radial-gradient(circle at 15% 40%, rgba(36, 128, 255, 0.3) 0, transparent 45%),   /* Bright Blue */
+        radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.3) 0, transparent 45%),   /* Vibrant Purple */
+        radial-gradient(circle at 50% 90%, rgba(225, 29, 72, 0.2) 0, transparent 50%);    /* Rose/Red */
+
+    background-attachment: fixed;
     color: var(--text-primary);
     margin: 0;
     display: flex;
     min-height: 100vh;
+}
+
+/* --- GLASSMORPHISM EFFECT --- */
+.sidebar,
+.topbar,
+.stat-card,
+.table-card,
+.form-card {
+    /* Semi-transparent dark background */
+    background-color: rgba(28, 28, 30, 0.4) !important;
+
+    /* The magic frosted glass blur */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px); /* Safari support */
+
+    /* Subtle glowing edge */
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Make table headers slightly more transparent to match */
+.premium-table th {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Make table hover rows transparent */
+.premium-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.03) !important;
 }
 
 h1, h2, h3 {
@@ -314,8 +349,10 @@ h1, h2, h3 {
 
 .form-control {
     width: 100%;
-    background-color: var(--bg-main);
-    border: 1px solid var(--border-subtle);
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
     padding: 0.75rem 1rem;
     border-radius: 8px;
