@@ -495,7 +495,7 @@
 .footer-watermark {
     position: absolute;
     left: 50%;
-    bottom: -110px;
+    bottom: -50px;
     transform: translateX(-50%);
     font-size: clamp(150px, 28vw, 420px);
     line-height: 0.75;
@@ -638,7 +638,7 @@
     }
 
     .footer-watermark {
-        bottom: -40px;
+        bottom: 10px;
     }
 }
 
@@ -1084,4 +1084,47 @@
     border-radius: 8px;
     font-size: 12px;
     line-height: 1;
+}
+
+/* ===== FOOTER RENTAL HELP CARD ===== */
+
+.rental-help-card p {
+    max-width: 420px;
+    line-height: 1.55;
+}
+
+.footer-action-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 22px 0 14px;
+}
+
+.footer-action-row a {
+    min-height: 52px;
+    padding: 0 20px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 850;
+    line-height: 1;
+}
+
+.footer-primary-action {
+    background: #ffffff;
+    color: #161618;
+}
+
+.footer-secondary-action {
+    background: #171719;
+    color: #ffffff;
+    border: 1px solid #343438;
+}
+
+.footer-primary-action:hover,
+.footer-secondary-action:hover {
+    transform: translateY(-1px);
 }
