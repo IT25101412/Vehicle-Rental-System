@@ -35,7 +35,7 @@ public class VehicleService {
     private void saveVehiclesToFile() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_PATH))) {
             for (Vehicle v : vehicles) {
-                // IMPORTANT: Your model's toString() method determines exactly how this is saved!
+                // toString() method to save txt
                 writer.println(v.toString());
             }
         } catch (IOException e) {
@@ -53,7 +53,7 @@ public class VehicleService {
                 String[] parts = line.split(",");
                 if (parts.length < 2) continue;
 
-                // 1. Read everything in the exact order of your super.toString()
+                //Read everything in the exact order of super.toString()
                 String type = parts[0];
                 String id = parts[1];
                 String year = parts[2];
@@ -65,7 +65,7 @@ public class VehicleService {
                 double rate = Double.parseDouble(parts[8]);
                 boolean isAvailable = Boolean.parseBoolean(parts[9]);
 
-                // 2. Put them into the Constructors (which expect Make, Model, Year, Rate, Fuel, Mileage, Available, [Extras], Image, ID)
+                //Put them into the Constructors
                 if (type.equals("CAR")) {
                     int seats = Integer.parseInt(parts[10]);
                     vehicles.add(new Car(make, model, year, rate, fuel, mileage, isAvailable, seats, image, id));
@@ -109,7 +109,7 @@ public class VehicleService {
         return false; // If the ID wasn't found
     }
     public String generateNextId(String type) {
-        //Determine the correct prefix
+        //select the correct prefix
         String prefix;
         if (type.equals("CAR")) {
             prefix = "CAR-";
@@ -121,7 +121,7 @@ public class VehicleService {
             prefix = "VAN-";
         }
 
-        //Find the highest number currently in use for that prefix
+        //Find the highest number currently in use for that vehicle type
         int highestNumber = 0;
 
         for (Vehicle v : vehicles) {
@@ -130,7 +130,7 @@ public class VehicleService {
             // Only look at vehicles that start with this specific prefix
             if (currentId != null && currentId.startsWith(prefix)) {
                 try {
-                    // Chop off the prefix (e.g., "CAR-12" becomes "12")
+                    // remove prefix
                     String numberPart = currentId.substring(prefix.length());
                     int number = Integer.parseInt(numberPart);
 
@@ -138,7 +138,7 @@ public class VehicleService {
                         highestNumber = number;
                     }
                 } catch (NumberFormatException e) {
-                    // If a manual edit in vehicles.txt breaks the number format, skip it
+                    // If number formats broken skip it
                     System.out.println("Skipping invalid ID format: " + currentId);
                 }
             }
@@ -148,6 +148,6 @@ public class VehicleService {
         int nextNumber = highestNumber + 1;
 
         //Return the combined string (e.g., "CAR-1")
-        return prefix + String.format("%04d", nextNumber);
+        return prefix + String.format("%04d", nextNumber); //%04d is for 4digit logic
     }
 }
