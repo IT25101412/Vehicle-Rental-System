@@ -327,12 +327,14 @@
 
                     <div class="auth-field">
                         <label for="email">Email*</label>
-                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        <input type="email" id="email" name="email" placeholder="you@example.com"
+                               pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[a-zA-Z]{2,}$"
+                               title="Please enter a valid email address (e.g., user@example.com)"
+                               required>
                     </div>
 
                     <div class="auth-field">
                         <label for="phone">Phone number*</label>
-                        <!-- CHANGE: added maxlength, pattern, title for 10-digit enforcement -->
                         <input type="text" id="phone" name="phone" placeholder="0771234567"
                                maxlength="10" pattern="[0-9]{10}"
                                title="Phone number must be exactly 10 digits"

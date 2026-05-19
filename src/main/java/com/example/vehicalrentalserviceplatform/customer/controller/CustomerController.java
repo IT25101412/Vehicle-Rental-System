@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
+import java.util.regex.Pattern; // ADDED: Import for Regex
 
 // Handles all customer page requests
 @Controller
@@ -19,6 +20,15 @@ public class CustomerController {
     // Spring automatically injects the service
     @Autowired
     private CustomerFileService customerFileService;
+
+    // ADDED: Define the standard Email Regex Pattern
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+    // ADDED: Create a helper method to check if the email matches the regex
+    private boolean isValidEmail(String email) {
+        if (email == null) return false;
+        return Pattern.compile(EMAIL_REGEX).matcher(email).matches();
+    }
 
     // ─── REGISTER ──────────────────────────────────────────
 
@@ -32,6 +42,12 @@ public class CustomerController {
     // Handles registration form submission
     @PostMapping("/register")
     public String handleRegister(@ModelAttribute RegularCustomer customer, Model model) {
+        // ADDED: Validate email format before attempting to register
+        if (!isValidEmail(customer.getEmail())) {
+            model.addAttribute("error", "Invalid email format. Please enter a valid email address.");
+            return "register";
+        }
+
         boolean success = customerFileService.registerCustomer(customer);
         if (success) {
             model.addAttribute("message", "Registration successful! Please sign in.");
@@ -95,6 +111,14 @@ public class CustomerController {
                                @RequestParam String email,
                                @RequestParam String phone,
                                Model model) {
+        // ADDED: Validate email format before attempting to update
+        if (!isValidEmail(email)) {
+            User customer = customerFileService.findCustomer(username);
+            model.addAttribute("customer", customer);
+            model.addAttribute("error", "Update failed: Invalid email format.");
+            return "profile";
+        }
+
         boolean updated = customerFileService.updateCustomer(username, email, phone);
         if (updated) {
             User customer = customerFileService.findCustomer(username);

@@ -501,12 +501,13 @@
                                        name="email"
                                        placeholder="you@example.com"
                                        th:value="${customer.email}"
+                                       pattern="^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[a-zA-Z]{2,}$"
+                                       title="Please enter a valid email address (e.g., user@example.com)"
                                        required>
                             </div>
 
                             <div class="profile-field">
                                 <label for="phone">Phone Number*</label>
-                                <!-- CHANGE: added maxlength, pattern, title for 10-digit enforcement -->
                                 <input id="phone"
                                        type="text"
                                        name="phone"

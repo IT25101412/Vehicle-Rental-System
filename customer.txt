@@ -1,4 +1,10 @@
 CUSTOMER,Sanithu,sanithu1,lic 1 ,sanithumsiriwardhana@gmail.com,0703887127
 CUSTOMER,Sanithu1,Sanithu123,lic 12,sanithumsiriwardhana@gmail.com,0703887127
+CUSTOMER,anan,1234,1234567,anan@gmail.com,34567890
 CUSTOMER,testcustomer,111,LIC-TEST-001,testcustomer@gmail.com,0771234567
+CUSTOMER,testcustomer,111,LIC-TEST-001,testcustomer@gmail.com,0771234567
+CUSTOMER,testcustomer,111,LIC-TEST-001,testcustomer@gmail.com,0771234567
+CUSTOMER,sasa,1234567,45465767,sasa@gmail.com,0778664567
 CUSTOMER,Aroz,123456,LIC-TEST-003,aroshaznethumz@gmail.com,0718025666
+CUSTOMER,sunith,123456,1234567890,sunith@gmail.com,2345678909876567890876
+CUSTOMER,asdf,123456789,1234567,heelo@gm,0978648866
