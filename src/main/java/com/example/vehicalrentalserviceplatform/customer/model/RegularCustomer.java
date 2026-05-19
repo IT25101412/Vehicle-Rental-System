@@ -12,7 +12,10 @@ public class RegularCustomer extends User {
                            String email, String phone) {
         super(null, username, username, password, licenseId, "CUSTOMER");
         this.email = email;
-        this.phone = phone;
+
+        this.phone = (phone != null && phone.length() > 10)
+                ? phone.substring(0, 10)
+                : phone;
     }
 
     public RegularCustomer() {
@@ -22,7 +25,15 @@ public class RegularCustomer extends User {
     public String getEmail() { return email; }
     public String getPhone() { return phone; }
     public void setEmail(String email) { this.email = email; }
-    public void setPhone(String phone) { this.phone = phone; }
+
+
+    public void setPhone(String phone) {
+        if (phone != null && phone.length() > 10) {
+            this.phone = phone.substring(0, 10);
+        } else {
+            this.phone = phone;
+        }
+    }
 
     public String toFileString() {
         return "CUSTOMER," +

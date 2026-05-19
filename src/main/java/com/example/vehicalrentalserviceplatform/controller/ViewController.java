@@ -24,10 +24,8 @@ public class ViewController {
     }
 
     @GetMapping("/catalog")
-    public String showCatalog(HttpSession session) {
-        if (isNotLoggedIn(session))
-            return "redirect:/login";
-        return "catalog"; // Looks for /templates/catalog.html
+    public String showCatalog() {
+        return "catalog"; // Public page: anyone can browse vehicles
     }
 
     @GetMapping("/vehicleForm")
