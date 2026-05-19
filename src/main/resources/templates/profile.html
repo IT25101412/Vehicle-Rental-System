@@ -506,11 +506,15 @@
 
                             <div class="profile-field">
                                 <label for="phone">Phone Number*</label>
+                                <!-- CHANGE: added maxlength, pattern, title for 10-digit enforcement -->
                                 <input id="phone"
                                        type="text"
                                        name="phone"
                                        placeholder="0771234567"
                                        th:value="${customer.phone}"
+                                       maxlength="10"
+                                       pattern="[0-9]{10}"
+                                       title="Phone number must be exactly 10 digits"
                                        required>
                             </div>
                         </div>
