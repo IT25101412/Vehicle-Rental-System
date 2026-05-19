@@ -119,6 +119,201 @@
         .ambient-shadow-lg {
             box-shadow: 0px 10px 30px rgba(0,0,0,0.08);
         }
+
+                /* ===== HOME FAQ ACCORDION ===== */
+
+        .home-faq-section {
+            padding: 96px 48px;
+            background: #ffffff;
+        }
+
+        .home-faq-shell {
+            width: min(1360px, 100%);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 0.72fr 1.18fr;
+            gap: 88px;
+            align-items: start;
+        }
+
+        .home-faq-title {
+            margin: 0;
+            color: #161618;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: clamp(54px, 5vw, 78px);
+            line-height: 0.95;
+            letter-spacing: -0.08em;
+            font-weight: 950;
+        }
+
+        .home-faq-card {
+            margin-top: 54px;
+            max-width: 420px;
+            background: #161618;
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 42px;
+        }
+
+        .home-faq-card-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: #202023;
+            border: 1px solid #333338;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+
+        .home-faq-card h3 {
+            margin: 0 0 24px;
+            color: #ffffff;
+            font-size: 24px;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            font-weight: 900;
+        }
+
+        .home-faq-card a {
+            width: fit-content;
+            min-width: 210px;
+            height: 58px;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #161618;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .home-faq-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .faq-item {
+            background: #f4f4f4;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .faq-item.is-open {
+            background: #f4f4f4;
+        }
+
+        .faq-question {
+            width: 100%;
+            min-height: 82px;
+            border: none;
+            background: transparent;
+            color: #161618;
+            padding: 0 22px 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 22px;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .faq-question span:first-child {
+            color: #161618;
+            font-size: 24px;
+            line-height: 1.2;
+            letter-spacing: -0.04em;
+            font-weight: 900;
+        }
+
+        .faq-icon {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #161618;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+        }
+
+        .faq-item.is-open .faq-icon {
+            background: #161618;
+            color: #ffffff;
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.32s ease, opacity 0.25s ease;
+        }
+
+        .faq-answer-inner {
+            padding: 0 92px 28px 28px;
+            color: #4d4d4d;
+            font-size: 18px;
+            line-height: 1.45;
+            font-weight: 500;
+        }
+
+        .faq-item.is-open .faq-answer {
+            max-height: 220px;
+            opacity: 1;
+        }
+
+        @media (max-width: 980px) {
+            .home-faq-section {
+                padding: 72px 18px;
+            }
+
+            .home-faq-shell {
+                grid-template-columns: 1fr;
+                gap: 42px;
+            }
+
+            .home-faq-card {
+                max-width: none;
+                margin-top: 32px;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .home-faq-title {
+                font-size: 48px;
+            }
+
+            .faq-question {
+                min-height: 74px;
+                padding: 0 16px 0 18px;
+            }
+
+            .faq-question span:first-child {
+                font-size: 19px;
+            }
+
+            .faq-icon {
+                width: 42px;
+                height: 42px;
+                min-width: 42px;
+                font-size: 25px;
+            }
+
+            .faq-answer-inner {
+                padding: 0 18px 24px;
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
@@ -292,63 +487,95 @@
 </div>
 </section>
 <!-- FAQ Section -->
-<section id="faq" class="py-stack-lg md:py-[96px] bg-surface px-margin-mobile md:px-margin-desktop">
-<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter">
-<!-- Left: Title & Contact Card -->
-<div class="lg:col-span-5 flex flex-col gap-8">
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Frequently asked questions</h2>
-<div class="bg-surface-container p-8 rounded-2xl border border-outline-variant/30 ambient-shadow mt-auto">
-<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Can't find your answer?</h3>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6">Our support team is available 24/7 to assist you with any inquiries.</p>
-<a href="#contact" class="w-full inline-flex justify-center bg-primary text-on-primary font-label-md text-label-md px-6 py-4 rounded-full hover:bg-on-surface transition-colors duration-200">
-    Contact us now
-</a>
-</div>
-</div>
-<!-- Right: Accordion -->
-<div class="lg:col-span-7 flex flex-col gap-4">
-<!-- Accordion Item -->
-<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden ambient-shadow">
-<div class="px-6 py-5 flex justify-between items-center cursor-pointer hover:bg-surface-container/50 transition-colors">
-<h4 class="font-label-md text-[16px] text-on-surface">What documents do I need to rent a car?</h4>
-<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
-</div>
-</div>
-<!-- Accordion Item (Expanded Example) -->
-<div class="bg-surface-container-lowest rounded-2xl border border-secondary/20 overflow-hidden ambient-shadow-lg ring-1 ring-secondary/10">
-<div class="px-6 py-5 flex justify-between items-center cursor-pointer bg-surface-container-low">
-<h4 class="font-label-md text-[16px] text-primary">How does the security deposit work?</h4>
-<span class="material-symbols-outlined text-primary">expand_less</span>
-</div>
-<div class="px-6 pb-6 pt-2 bg-surface-container-lowest">
-<p class="font-body-md text-body-md text-on-surface-variant">
-                            A pre-authorization is placed on your credit card at the time of pickup. The amount varies based on the vehicle category. This hold is released immediately upon return of the vehicle in its original condition, though it may take 3-5 business days to reflect on your statement.
-                        </p>
-</div>
-</div>
-<!-- Accordion Item -->
-<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden ambient-shadow">
-<div class="px-6 py-5 flex justify-between items-center cursor-pointer hover:bg-surface-container/50 transition-colors">
-<h4 class="font-label-md text-[16px] text-on-surface">What is your cancellation policy?</h4>
-<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
-</div>
-</div>
-<!-- Accordion Item -->
-<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden ambient-shadow">
-<div class="px-6 py-5 flex justify-between items-center cursor-pointer hover:bg-surface-container/50 transition-colors">
-<h4 class="font-label-md text-[16px] text-on-surface">Is insurance included in the rate?</h4>
-<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
-</div>
-</div>
-<!-- Accordion Item -->
-<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden ambient-shadow">
-<div class="px-6 py-5 flex justify-between items-center cursor-pointer hover:bg-surface-container/50 transition-colors">
-<h4 class="font-label-md text-[16px] text-on-surface">How does pickup and drop-off work?</h4>
-<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
-</div>
-</div>
-</div>
-</div>
+<section id="faq" class="home-faq-section">
+    <div class="home-faq-shell">
+
+        <div>
+            <h2 class="home-faq-title">Frequently<br>asked questions</h2>
+
+            <div class="home-faq-card">
+                <div class="home-faq-card-icon">
+                    <span class="material-symbols-outlined">support_agent</span>
+                </div>
+
+                <h3>Can't find your answer?</h3>
+
+                <a href="#contact">
+                    Contact us now
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="home-faq-list">
+
+            <div class="faq-item is-open">
+                <button type="button" class="faq-question">
+                    <span>What documents are required to rent a vehicle?</span>
+                    <span class="material-symbols-outlined faq-icon">expand_less</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        You’ll need a valid driver’s license, a government-issued ID, and payment details.
+                        Additional documents may be requested depending on the vehicle category.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button type="button" class="faq-question">
+                    <span>Is there a security deposit?</span>
+                    <span class="material-symbols-outlined faq-icon">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        A refundable security deposit may be collected during vehicle pickup or handover.
+                        The amount depends on the vehicle type and rental policy.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button type="button" class="faq-question">
+                    <span>Can I cancel or modify my booking?</span>
+                    <span class="material-symbols-outlined faq-icon">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Pending bookings can be edited or deleted before admin approval. After approval or payment,
+                        contact support so our team can help with the request.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button type="button" class="faq-question">
+                    <span>Are the vehicles insured?</span>
+                    <span class="material-symbols-outlined faq-icon">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Yes, our vehicles are insured and regularly inspected. Late returns, damage, or policy
+                        violations may result in additional charges after vehicle inspection.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button type="button" class="faq-question">
+                    <span>Do you offer airport or city pickup?</span>
+                    <span class="material-symbols-outlined faq-icon">expand_more</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        Pickup and drop-off arrangements can be coordinated with our support team. Availability may
+                        depend on location, vehicle type, and booking schedule.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
 <!-- Footer (JSON Component) -->
 <footer class="site-footer" id="contact">
@@ -411,4 +638,47 @@
 
 
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const faqItems = document.querySelectorAll(".faq-item");
+
+        function closeItem(item) {
+            const icon = item.querySelector(".faq-icon");
+
+            item.classList.remove("is-open");
+
+            if (icon) {
+                icon.textContent = "expand_more";
+            }
+        }
+
+        function openItem(item) {
+            const icon = item.querySelector(".faq-icon");
+
+            item.classList.add("is-open");
+
+            if (icon) {
+                icon.textContent = "expand_less";
+            }
+        }
+
+        faqItems.forEach(function (item) {
+            const question = item.querySelector(".faq-question");
+
+            if (!question) {
+                return;
+            }
+
+            question.addEventListener("click", function () {
+                const alreadyOpen = item.classList.contains("is-open");
+
+                faqItems.forEach(closeItem);
+
+                if (!alreadyOpen) {
+                    openItem(item);
+                }
+            });
+        });
+    });
+</script>
 </body></html>
