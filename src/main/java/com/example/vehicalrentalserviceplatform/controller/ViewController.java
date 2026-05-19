@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
 
-@Controller // Notice this is @Controller, NOT @RestController
+@Controller
 public class ViewController {
 
     private boolean isNotAuthorized(HttpSession session) {
@@ -20,19 +20,19 @@ public class ViewController {
     public String showInventory(HttpSession session) {
         if (isNotAuthorized(session))
             return "redirect:/admin-login";
-        return "inventory"; // This tells Spring to look for /templates/inventory.html
+        return "inventory";
     }
 
     @GetMapping("/catalog")
     public String showCatalog() {
-        return "catalog"; // Public page: anyone can browse vehicles
+        return "catalog";
     }
 
     @GetMapping("/vehicleForm")
     public String showVehicleForm(HttpSession session) {
         if(isNotAuthorized(session))
             return "redirect:/admin-login";
-        return "vehicleForm"; // Looks for /templates/vehicleForm.html
+        return "vehicleForm";
     }
 
 }

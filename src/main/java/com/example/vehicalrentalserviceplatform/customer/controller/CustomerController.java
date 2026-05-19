@@ -13,36 +13,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 import java.util.regex.Pattern; // ADDED: Import for Regex
 
-// Handles all customer page requests
 @Controller
 public class CustomerController {
 
-    // Spring automatically injects the service
     @Autowired
     private CustomerFileService customerFileService;
 
-    // ADDED: Define the standard Email Regex Pattern
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,}$";
 
-    // ADDED: Create a helper method to check if the email matches the regex
     private boolean isValidEmail(String email) {
         if (email == null) return false;
         return Pattern.compile(EMAIL_REGEX).matcher(email).matches();
     }
 
-    // ─── REGISTER ──────────────────────────────────────────
 
-    // Shows the registration page
     @GetMapping("/register")
     public String showRegisterPage(Model model) {
         model.addAttribute("customer", new RegularCustomer());
         return "register";
     }
 
-    // Handles registration form submission
     @PostMapping("/register")
     public String handleRegister(@ModelAttribute RegularCustomer customer, Model model) {
-        // ADDED: Validate email format before attempting to register
         if (!isValidEmail(customer.getEmail())) {
             model.addAttribute("error", "Invalid email format. Please enter a valid email address.");
             return "register";
@@ -58,15 +50,12 @@ public class CustomerController {
         }
     }
 
-    // ─── LOGIN ─────────────────────────────────────────────
 
-    // Shows the login page
     @GetMapping("/login")
     public String showLoginPage() {
         return "login";
     }
 
-    // Handles login form submission
     @PostMapping("/login")
     public String handleLogin(@RequestParam String username,
                               @RequestParam String password,
@@ -83,9 +72,7 @@ public class CustomerController {
         }
     }
 
-    // ─── PROFILE ───────────────────────────────────────────
 
-    // Shows the profile page
     @GetMapping("/profile")
     public String showProfilePage(HttpSession session, Model model) {
 
@@ -105,13 +92,11 @@ public class CustomerController {
         return "profile";
     }
 
-    // Handles profile update form submission
     @PostMapping("/profile/update")
     public String handleUpdate(@RequestParam String username,
                                @RequestParam String email,
                                @RequestParam String phone,
                                Model model) {
-        // ADDED: Validate email format before attempting to update
         if (!isValidEmail(email)) {
             User customer = customerFileService.findCustomer(username);
             model.addAttribute("customer", customer);
@@ -130,24 +115,20 @@ public class CustomerController {
         return "profile";
     }
 
-    // Handles password change form submission
     @PostMapping("/profile/password")
     public String handlePasswordChange(@RequestParam String username,
                                        @RequestParam String currentPassword,
                                        @RequestParam String newPassword,
                                        @RequestParam String confirmPassword,
                                        Model model) {
-        // Reload customer to show profile
         User customer = customerFileService.findCustomer(username);
         model.addAttribute("customer", customer);
 
-        // Check new password and confirm match
         if (!newPassword.equals(confirmPassword)) {
             model.addAttribute("passwordError", "New passwords do not match.");
             return "profile";
         }
 
-        // Check minimum length
         if (newPassword.length() < 6) {
             model.addAttribute("passwordError", "Password must be at least 6 characters.");
             return "profile";
@@ -164,10 +145,8 @@ public class CustomerController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        // This destroys the session and clears all logged-in user data
         session.invalidate();
 
-        // Now redirect them to the login page safely
         return "redirect:/login";
     }
 

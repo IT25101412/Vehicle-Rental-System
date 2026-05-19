@@ -4,7 +4,6 @@ public class Car extends Vehicle{
     private int numberOfSeats;
     private String carType; //whether a hatchback or a sedan
 
-    // Updated for Controller Compatibility - No Registration Number, ID at end
     public Car(String make, String model, String year, double rentalRate,
                String fuelType, double mileage, boolean isAvailable,
                int numberOfSeats, String vehicleImageFileName, String vehicleId) {
@@ -12,7 +11,6 @@ public class Car extends Vehicle{
         this.numberOfSeats = numberOfSeats;
     }
 
-    //Getters
 
     public String getCarType() {
         return carType;
@@ -21,7 +19,6 @@ public class Car extends Vehicle{
     public int getNumberOfSeats() {
         return numberOfSeats;
     }
-    //Setters
 
     public void setNumberOfSeats(int numberOfSeats) {
         this.numberOfSeats = numberOfSeats;

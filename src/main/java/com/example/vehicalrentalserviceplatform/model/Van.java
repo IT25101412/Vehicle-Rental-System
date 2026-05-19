@@ -4,7 +4,6 @@ public class Van extends Vehicle{
     private int numberOfSeats;
     private String driveTrain; //whether van is awd 2wd or 4wd
 
-    // Updated for Controller Compatibility - No Registration Number, ID at end
     public Van(String make, String model, String year, double rentalRate,
                String fuelType, double mileage, boolean isAvailable,
                int numberOfSeats, String driveTrain, String vehicleImageFileName, String vehicleId) {
@@ -12,7 +11,6 @@ public class Van extends Vehicle{
         this.numberOfSeats = numberOfSeats;
         setDriveTrain(driveTrain);
     }
-    //Getters
 
     public int getNumberOfSeats() {
         return numberOfSeats;
@@ -21,7 +19,7 @@ public class Van extends Vehicle{
     public String getDriveTrain() {
         return driveTrain;
     }
-    //Setters
+
 
     public void setNumberOfSeats(int numberOfSeats) {
         this.numberOfSeats = numberOfSeats;

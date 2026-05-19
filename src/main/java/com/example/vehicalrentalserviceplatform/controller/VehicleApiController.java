@@ -14,7 +14,6 @@ import java.util.UUID;
 public class VehicleApiController {
 
     private final VehicleService vehicleService;
-    // Static path for image storage
     private final String UPLOAD_DIR = "src/main/resources/static/images/";
 
     public VehicleApiController(VehicleService vehicleService) {
@@ -46,16 +45,13 @@ public class VehicleApiController {
             @RequestParam("image") MultipartFile imageFile) {
 
         try {
-            // 1. Ask the service to generate the next sequential ID
             String vehicleId = vehicleService.generateNextId(type);
 
-            // 2. Handle the Image Upload using the new vehicleId
             String fileName = vehicleId + "_" + imageFile.getOriginalFilename();
             Path path = Paths.get(UPLOAD_DIR + fileName);
             Files.createDirectories(path.getParent());
             Files.write(path, imageFile.getBytes());
 
-            // 3. Reconstruct the correct Subclass
             Vehicle v;
             if (type.equals("CAR")) {
                 v = new Car(make, model, year, rate, fuel, mileage, true, seats, fileName, vehicleId);
@@ -91,17 +87,13 @@ public class VehicleApiController {
             @RequestParam(value = "image", required = false) MultipartFile imageFile) {
 
         try {
-            // 1. Fetch the existing vehicle first
             Vehicle existingVehicle = vehicleService.getVehicleById(id);
             if (existingVehicle == null) {
                 return "Error: Vehicle not found!";
             }
 
-            // 2. Handle the Image Upload
-            // Default to keeping the old image filename
             String fileName = existingVehicle.getVehicleImageFileName();
 
-            // If the user uploaded a NEW image, overwrite the old filename and save the file
             if (imageFile != null && !imageFile.isEmpty()) {
                 fileName = id + "_" + imageFile.getOriginalFilename();
                 Path path = Paths.get(UPLOAD_DIR + fileName);
@@ -109,10 +101,8 @@ public class VehicleApiController {
                 Files.write(path, imageFile.getBytes());
             }
 
-            // Keep the exact same availability status it already had
             boolean isAvailable = existingVehicle.isAvailable();
 
-            // 3. Reconstruct the Subclass with the UPDATED info
             Vehicle v;
             if (type.equals("CAR")) {
                 v = new Car(make, model, year, rate, fuel, mileage, isAvailable, seats, fileName, id);
@@ -124,7 +114,6 @@ public class VehicleApiController {
                 v = new Van(make, model, year, rate, fuel, mileage, isAvailable, seats, driveTrain, fileName, id);
             }
 
-            // 4. Send to the service to replace the old record
             boolean success = vehicleService.updateVehicle(v);
 
             if (success) {

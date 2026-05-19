@@ -34,21 +34,17 @@ public class CheckoutPageController {
             HttpSession session,
             Model model) {
 
-        // 1. Security Check
         if (isNotLoggedIn(session)) {
             return "redirect:/login";
         }
 
-        // 2. Lock in the customer name
         String customerName = (String) session.getAttribute("loggedInUser");
         model.addAttribute("customerName", customerName);
 
         model.addAttribute("transactionId", transactionId);
 
-        // 3. THE DOUBLE LOOKUP
         if (transactionId != null && !transactionId.isEmpty()) {
 
-            // Step A: Find the specific booking
             Booking currentBooking = null;
             List<Booking> allBookings = bookingService.getAllBookings();
             for (Booking b : allBookings) {
@@ -59,10 +55,8 @@ public class CheckoutPageController {
             }
 
             if (currentBooking != null) {
-                // Pass the vehicle ID from the booking to the form
                 model.addAttribute("vehicleId", currentBooking.getVehicleId());
 
-                // Smart Feature: Calculate exact rental days using the booking dates!
                 long days = 1;
                 try {
                     LocalDate start = LocalDate.parse(currentBooking.getStartDate());
@@ -70,11 +64,9 @@ public class CheckoutPageController {
                     days = ChronoUnit.DAYS.between(start, end);
                     if (days < 1) days = 1; // Minimum 1 day charge
                 } catch (Exception ignored) {
-                    // If dates fail to parse, it defaults to 1
                 }
                 model.addAttribute("rentalDays", days);
 
-                // Step B: Find the vehicle using the ID from the booking
                 Vehicle vehicle = vehicleService.getVehicleById(currentBooking.getVehicleId());
                 if (vehicle != null) {
                     model.addAttribute("vehicleName", vehicle.getMake() + " " + vehicle.getModel());

@@ -3,7 +3,6 @@ package com.example.vehicalrentalserviceplatform.model;
 public class Motorcycle extends Vehicle{
     private String motorcycleType; // whether a standard or scooter
 
-    // Updated for Controller Compatibility - No Registration Number, ID at end
     public Motorcycle(String make, String model, String year, double rentalRate,
                       String fuelType, double mileage, boolean isAvailable,
                       String motorcycleType, String vehicleImageFileName, String vehicleId) {
@@ -11,12 +10,10 @@ public class Motorcycle extends Vehicle{
         setMotorcycleType(motorcycleType);
     }
 
-    //Getter
 
     public String getMotorcycleType() {
         return motorcycleType;
     }
-    //Setter
 
     public void setMotorcycleType(String motorcycleType) {
         if (motorcycleType.equalsIgnoreCase("Scooter")) {

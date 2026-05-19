@@ -2,7 +2,6 @@ package com.example.vehicalrentalserviceplatform.customer.model;
 
 import com.example.vehicalrentalserviceplatform.model.User;
 
-// Customer class — extends shared User (Inheritance)
 public class RegularCustomer extends User {
 
     private String email;

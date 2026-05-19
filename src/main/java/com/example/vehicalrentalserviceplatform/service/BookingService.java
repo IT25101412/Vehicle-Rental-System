@@ -29,11 +29,11 @@ public class BookingService {
 
 
                 if (!reqStart.isAfter(bookedReturn) && !reqReturn.isBefore(bookedStart)) {
-                    return false; // Car is taken during these dates
+                    return false;
                 }
             }
         }
-        return true; // No overlaps found, car is yours!
+        return true;
     }
 
     public boolean isVehicleAvailableForUpdate(String transactionId, String vehicleId, String requestedStartDate, String requestedReturnDate) {
@@ -51,7 +51,7 @@ public class BookingService {
                 LocalDate bookedReturn = LocalDate.parse(x.getReturnDate());
 
                 if (!reqStart.isAfter(bookedReturn) && !reqReturn.isBefore(bookedStart)) {
-                    return false; // Car is taken by SOMEONE ELSE during these dates
+                    return false;
                 }
             }
         }

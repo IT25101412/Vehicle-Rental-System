@@ -70,7 +70,7 @@ public class BookingFormController {
     }
 
     @PostMapping("/markAsPaid")
-    @ResponseBody // This tells Spring Boot not to look for an HTML file, just return a success string
+    @ResponseBody
     public String markAsPaid(@RequestParam("transactionId") String transactionId) {
         if (transactionId != null && !transactionId.isEmpty()) {
             bookingService.updateBookingStatus(transactionId, "Paid");

@@ -8,14 +8,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// Handles all reading and writing to customer.txt
 @Service
 public class CustomerFileService {
 
-    // Path to the data file
     private static final String FILE_PATH = "customer.txt";
 
-    // Creates the file if it doesn't exist yet
     private void initFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) {
@@ -27,7 +24,6 @@ public class CustomerFileService {
         }
     }
 
-    // Reads all lines from customer.txt
     private List<String> readAllLines() {
         initFile();
         List<String> lines = new ArrayList<>();
@@ -46,7 +42,6 @@ public class CustomerFileService {
         return lines;
     }
 
-    // Writes all lines back to customer.txt
     private void writeAllLines(List<String> lines) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, false))) {
             for (String line : lines) {
@@ -58,8 +53,6 @@ public class CustomerFileService {
         }
     }
 
-    // CREATE — registers a new customer
-    // Returns false if username already exists
     public boolean registerCustomer(User customer) {
         if (findCustomer(customer.getUsername()) != null) {
             return false;
@@ -79,7 +72,6 @@ public class CustomerFileService {
         }
     }
 
-    // READ — finds a customer by username or licenseId
     public User findCustomer(String query) {
         List<String> lines = readAllLines();
         for (String line : lines) {
@@ -94,7 +86,6 @@ public class CustomerFileService {
         return null;
     }
 
-    // UPDATE — updates email and phone for a customer
     public boolean updateCustomer(String username, String email, String phone) {
         List<String> lines = readAllLines();
         boolean found = false;
@@ -114,9 +105,7 @@ public class CustomerFileService {
         return found;
     }
 
-    // UPDATE — changes password after verifying current password
     public boolean changePassword(String username, String currentPassword, String newPassword) {
-        // Verify current password first
         User customer = findCustomer(username);
         if (customer == null) {
             return false;
@@ -124,7 +113,6 @@ public class CustomerFileService {
         if (!customer.validatePassword(currentPassword)) {
             return false;
         }
-        // Current password correct — update it
         List<String> lines = readAllLines();
         boolean found = false;
         for (int i = 0; i < lines.size(); i++) {
@@ -142,7 +130,6 @@ public class CustomerFileService {
         return found;
     }
 
-    // LOGIN — checks username and password match
     public boolean loginCustomer(String username, String password) {
         User customer = findCustomer(username);
         if (customer == null) {
@@ -151,7 +138,6 @@ public class CustomerFileService {
         return customer.validatePassword(password);
     }
 
-    // HELPER — converts a line from customer.txt into a customer object
     private User parseLineToCustomer(String line) {
         String[] fields = line.split(",");
         try {
