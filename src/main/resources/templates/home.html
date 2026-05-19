@@ -488,6 +488,327 @@
     font-size: clamp(44px, 4.4vw, 70px);
 }
 
+    /* ===== HOME VIDEO HERO ===== */
+
+.hero-video-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.25) 38%, rgba(0,0,0,0.82)),
+        radial-gradient(circle at center, rgba(0,0,0,0.05), rgba(0,0,0,0.45));
+}
+
+.home-hero-content {
+    justify-content: flex-end;
+    padding-bottom: 72px;
+}
+
+.home-hero-title {
+    font-size: clamp(64px, 11vw, 180px);
+    line-height: 0.82;
+    letter-spacing: -0.09em;
+    font-weight: 950;
+    opacity: 0.82;
+}
+
+.home-hero-subtitle {
+    margin-top: 18px;
+    font-size: clamp(36px, 5vw, 76px);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+    font-weight: 950;
+}
+
+.home-hero-badges {
+    margin-bottom: 22px;
+}
+
+.home-hero-action {
+    margin-top: 34px;
+}
+
+            /* ===== FINAL HOME HERO TEXT STYLE ===== */
+
+        .home-hero-content {
+            max-width: none;
+            justify-content: flex-start;
+            padding-top: 44px;
+            padding-bottom: 64px;
+            gap: 0;
+        }
+
+        .home-hero-title {
+            width: 100%;
+            margin: 0;
+            white-space: nowrap;
+            font-size: clamp(46px, 6.7vw, 128px);
+            line-height: 0.82;
+            letter-spacing: -0.09em;
+            font-weight: 950;
+            color: transparent;
+            background-image: linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.38) 0%,
+                rgba(255, 255, 255, 0.62) 42%,
+                rgba(255, 255, 255, 1) 100%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .home-hero-badges {
+            margin-top: 340px;
+        }
+
+        .home-hero-badges .dark-glass {
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .home-hero-subtitle {
+            margin-top: 24px;
+            font-size: clamp(28px, 3.2vw, 52px);
+            line-height: 1.05;
+            letter-spacing: -0.055em;
+            font-weight: 900;
+        }
+
+        .home-hero-action {
+            margin-top: auto;
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 980px) {
+            .home-hero-title {
+                white-space: normal;
+                font-size: clamp(46px, 12vw, 92px);
+                line-height: 0.9;
+            }
+
+            .home-hero-badges {
+                margin-top: 180px;
+            }
+        }
+
+        /* ===== FINAL HERO TITLE OVERRIDE ===== */
+
+.home-hero-title {
+    width: 100%;
+    margin: 0;
+    white-space: nowrap;
+
+    /* Change this to adjust size */
+    font-size: clamp(78px, 12.2vw, 230px) !important;
+
+    line-height: 0.78;
+    letter-spacing: -0.105em;
+    font-weight: 1000;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    color: transparent;
+    background-image: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(255, 255, 255, 0.55) 42%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    -webkit-text-stroke: 1.35px rgba(255, 255, 255, 0.50);
+}
+
+@media (max-width: 980px) {
+    .home-hero-title {
+        white-space: normal;
+        font-size: clamp(48px, 13vw, 96px) !important;
+        line-height: 0.86;
+    }
+}
+
+    /* ===== HOME HEADER OVER VIDEO ===== */
+
+body .catalog-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: transparent !important;
+    z-index: 50;
+}
+
+body .catalog-navbar {
+    min-height: 92px;
+}
+
+body .catalog-logo,
+body .catalog-logo-mark,
+body .catalog-nav-links a {
+    color: #ffffff !important;
+}
+
+body .catalog-nav-links a.active {
+    text-decoration-color: #ffffff;
+}
+
+body .catalog-header-btn {
+    background: rgba(255, 255, 255, 0.10) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+body .catalog-header-btn:hover {
+    background: rgba(255, 255, 255, 0.18) !important;
+}
+
+body .profile-nav-bubble {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+body .profile-nav-bubble:hover {
+    background: rgba(255, 255, 255, 0.22) !important;
+}
+
+    /* ===== FINAL HOME VIDEO HERO CONTROL PANEL ===== */
+
+.home-hero-content {
+    max-width: none;
+    justify-content: flex-start;
+    padding-top: 105px;
+    padding-bottom: 34px;
+    gap: 0;
+}
+
+/* BIG TOP TITLE */
+.home-hero-title {
+    width: 100%;
+    margin: 0;
+    white-space: nowrap;
+
+    /* TITLE SIZE */
+    font-size: clamp(80px, 12vw, 200px) !important;
+
+    line-height: 0.78;
+    letter-spacing: -0.105em;
+
+    /* TITLE THICKNESS */
+    font-weight: 1200;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    color: transparent;
+    background-image: linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.18) 0%,
+        rgba(255, 255, 255, 0.55) 42%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* IMPORTANT: removes those ugly inner connecting lines */
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+}
+
+/* BADGE POSITION */
+.home-hero-badges {
+    margin-top: 320px;
+}
+
+.home-hero-badges .dark-glass {
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* SUBTITLE */
+.home-hero-subtitle {
+    margin-top: 22px;
+    font-size: clamp(30px, 3.4vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.055em;
+    font-weight: 900;
+}
+
+/* BROWSE BUTTON POSITION */
+.home-hero-action {
+    margin-top: 18px;
+    margin-bottom: 0;
+}
+
+/* BROWSE BUTTON STYLE */
+.home-hero-action a {
+    min-height: 46px;
+    padding: 0 24px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 850;
+    background: rgba(255, 255, 255, 0.10) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: none;
+}
+
+.home-hero-action a:hover {
+    background: rgba(255, 255, 255, 0.18) !important;
+    transform: translateY(-1px);
+}
+
+/* VIDEO DARKNESS / READABILITY */
+.hero-video-overlay {
+    background:
+        linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.18) 35%, rgba(0,0,0,0.78)),
+        radial-gradient(circle at center, rgba(0,0,0,0.02), rgba(0,0,0,0.42));
+}
+
+/* VIDEO POSITION */
+.hero-video-bg {
+    object-fit: cover;
+    object-position: center center;
+}
+
+@media (max-width: 980px) {
+    .home-hero-title {
+        white-space: normal;
+        font-size: clamp(46px, 13vw, 96px) !important;
+        line-height: 0.86;
+    }
+
+    .home-hero-content {
+        padding-top: 120px;
+        padding-bottom: 40px;
+    }
+
+    .home-hero-badges {
+        margin-top: 180px;
+    }
+}
+
     </style>
 </head>
 <body class="bg-background text-on-background font-body-md antialiased selection:bg-secondary-fixed selection:text-on-secondary-fixed">
@@ -517,41 +838,44 @@
     </nav>
 </header>
 <!-- Hero Section -->
-<header class="relative min-h-[90vh] flex flex-col justify-center items-center overflow-hidden">
+<header class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden">
 <!-- Background Image -->
-<div class="absolute inset-0 w-full h-full z-0">
-<img alt="A stunning cinematic shot of a modern, sleek premium car parked in front of a contemporary glass skyscraper at dusk. The lighting is moody and dramatic, with warm city lights reflecting on the car's dark metallic surface and wet pavement. The overall aesthetic is high-end, professional, and sophisticated, perfectly fitting a premium car rental brand." class="object-cover w-full h-full" src="/images/home-hero.png">
-<div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80"></div>
-</div>
+    <div class="absolute inset-0 w-full h-full z-0">
+        <video class="hero-video-bg" autoplay muted loop playsinline preload="auto">
+            <source src="/videos/home-hero-video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-video-overlay"></div>
+    </div>
 <!-- Content -->
-<div class="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center flex flex-col items-center gap-stack-md mt-16 md:mt-0">
-<!-- Badges -->
-<div class="flex flex-wrap justify-center gap-4 mb-4">
-<div class="dark-glass text-white font-label-md text-label-md px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
-<span class="material-symbols-outlined text-secondary-fixed-dim" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
-                    4.8 Average Rating
-                </div>
-<div class="dark-glass text-white font-label-md text-label-md px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
-<span class="material-symbols-outlined text-secondary-fixed-dim" style="font-variation-settings: &quot;FILL&quot; 1;">support_agent</span>
-                    24/7 Support
-                </div>
-</div>
-<!-- Headline -->
-<h1 class="font-display-lg text-[48px] md:text-display-lg text-white uppercase tracking-tighter drop-shadow-lg max-w-4xl">
-                Drive With Confidence
-            </h1>
-<!-- Subtext -->
-<p class="font-body-lg text-body-lg text-surface-container-low max-w-2xl mx-auto drop-shadow-md">
-                Find the perfect vehicle for every journey. Experience premium mobility tailored to your standards.
-            </p>
-<!-- Actions -->
-<div class="mt-8 flex flex-col sm:flex-row gap-4">
-<a href="/catalog" class="bg-secondary text-white font-label-md text-label-md px-8 py-4 rounded-full hover:bg-secondary-container transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 flex items-center justify-center gap-2">
-    Browse Vehicles
-    <span class="material-symbols-outlined">arrow_forward</span>
-</a>
-</div>
-</div>
+    <div class="home-hero-content relative z-10 w-full min-h-[90vh] mx-auto px-margin-mobile md:px-margin-desktop text-center flex flex-col items-center">
+
+        <h1 class="home-hero-title uppercase drop-shadow-lg">
+            DRIVE CONFIDENT
+        </h1>
+
+        <div class="home-hero-badges flex flex-wrap justify-center gap-4">
+            <div class="dark-glass text-white font-label-md text-label-md px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
+                <span class="material-symbols-outlined text-secondary-fixed-dim" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                4.8 Average Rating
+            </div>
+
+            <div class="dark-glass text-white font-label-md text-label-md px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
+                <span class="material-symbols-outlined text-secondary-fixed-dim" style="font-variation-settings: &quot;FILL&quot; 1;">support_agent</span>
+                24/7 Support
+            </div>
+        </div>
+
+        <p class="home-hero-subtitle text-white max-w-4xl mx-auto drop-shadow-md">
+            Rent vehicles that match your journey
+        </p>
+
+        <div class="home-hero-action flex flex-col sm:flex-row gap-4">
+            <a href="/catalog" class="bg-secondary text-white font-label-md text-label-md px-8 py-4 rounded-full hover:bg-secondary-container transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 flex items-center justify-center gap-2">
+                Browse Vehicles
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+        </div>
+    </div>
 </header>
 <!-- About Section -->
 <section id="about" class="py-stack-lg md:py-[96px] bg-surface px-margin-mobile md:px-margin-desktop">
