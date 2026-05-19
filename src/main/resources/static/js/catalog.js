@@ -119,13 +119,71 @@ function setupFilterControls() {
         });
     });
 
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener("click", () => {
-            visibleCount += LOAD_MORE_STEP;
-            renderVehicles();
-        });
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener("click", () => {
+                visibleCount += LOAD_MORE_STEP;
+                renderVehicles();
+            });
+        }
+
+        applyCatalogUrlFilters();
     }
-}
+
+    function applyCatalogUrlFilters() {
+        const params = new URLSearchParams(window.location.search);
+
+        const requestedMode = String(params.get("mode") || "").toUpperCase();
+        const requestedUse = String(params.get("use") || "").toUpperCase();
+        const requestedType = String(params.get("type") || "").toUpperCase();
+
+        const validModes = ["TOP", "ALL", "TYPE", "USE"];
+        const validUses = ["FAMILY", "BUSINESS", "WEDDING", "ADVENTURE", "TRANSPORT", "DAILY"];
+        const validTypes = ["CAR", "SUV", "VAN", "MOTORCYCLE", "PREMIUM"];
+
+        if (validModes.includes(requestedMode)) {
+            viewMode = requestedMode;
+        }
+
+        if (viewMode === "USE" && validUses.includes(requestedUse)) {
+            activeUse = requestedUse;
+        }
+
+        if (viewMode === "TYPE" && validTypes.includes(requestedType)) {
+            activeType = requestedType;
+        }
+
+        visibleCount = 12;
+        syncFilterUi();
+    }
+
+    function syncFilterUi() {
+        const modeTabs = document.querySelectorAll(".filter-mode-tab");
+        const typeTabs = document.querySelectorAll("#typeFilterTabs .category-tab");
+        const useTabs = document.querySelectorAll("#useFilterTabs .category-tab");
+
+        const typeFilterTabs = document.getElementById("typeFilterTabs");
+        const useFilterTabs = document.getElementById("useFilterTabs");
+
+        modeTabs.forEach(tab => {
+            tab.classList.toggle("active", tab.dataset.mode === viewMode);
+        });
+
+        typeTabs.forEach(tab => {
+            tab.classList.toggle("active", tab.dataset.type === activeType);
+        });
+
+        useTabs.forEach(tab => {
+            tab.classList.toggle("active", tab.dataset.use === activeUse);
+        });
+
+        if (typeFilterTabs) {
+            typeFilterTabs.hidden = viewMode !== "TYPE";
+        }
+
+        if (useFilterTabs) {
+            useFilterTabs.hidden = viewMode !== "USE";
+        }
+    }
 
 async function loadCatalog() {
     const grid = document.getElementById("catalogGrid");
