@@ -14,7 +14,6 @@ public class BookingFormController {
     @Autowired
     private BookingService bookingService;
 
-    // 1. Replaces your old BookingController (Create)
     @PostMapping("/createBooking")
     public String createBooking(
             @RequestParam("customerUsername") String name,
@@ -32,7 +31,6 @@ public class BookingFormController {
         return "redirect:/reservationHistory";
     }
 
-    // 2. Replaces your old UpdateBookingController
     @PostMapping("/updateBooking")
     public String updateBooking(
             @RequestParam("transactionId") String transactionId,
@@ -51,13 +49,11 @@ public class BookingFormController {
         return "redirect:/reservationHistory";
     }
 
-    // 3. Replaces your old DeleteBookingController
     @PostMapping("/deleteBooking")
     public String deleteBooking(@RequestParam("transactionId") String targetID) {
 
         bookingService.deleteBooking(targetID);
 
-        // Redirect back to the history page after deleting
         return "redirect:/reservationHistory";
     }
 

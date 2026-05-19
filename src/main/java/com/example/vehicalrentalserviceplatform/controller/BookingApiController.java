@@ -15,16 +15,13 @@ public class BookingApiController {
     @Autowired
     private  BookingService bookingService;
 
-    // 3. Your API endpoint for fetching JSON data
     @GetMapping("/api/bookings")
     public List<Booking> getBookings(@RequestParam(value = "customer", required = false) String customer) {
 
-        // If the URL contains "?customer=Name", return only their bookings
         if (customer != null && !customer.isEmpty()) {
             return bookingService.getBookingsByCustomer(customer);
         }
 
-        // If no customer is specified, act like an Admin and return everything
         return bookingService.getAllBookings();
     }
 }

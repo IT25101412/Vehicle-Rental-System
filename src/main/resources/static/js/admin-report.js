@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="7" style="text-align:center; padding: 24px;">
+                        <td colspan="7" style="text-align:center; padding: 24px; color: var(--text-secondary);">
                             No invoices found. Complete a checkout to generate billing records.
                         </td>
                     </tr>
@@ -31,14 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const row = document.createElement("tr");
 
                 row.innerHTML = `
-                    <td>${invoice.invoiceId || invoice.id || "N/A"}</td>
-                    <td>${invoice.customerName || invoice.customer || "N/A"}</td>
-                    <td>${invoice.vehicleId || invoice.vehicle || "N/A"}</td>
+                    <td style="font-family: monospace; color: var(--text-secondary);">${invoice.invoiceId || invoice.id || "N/A"}</td>
+                    <td style="font-weight: 500;">${invoice.customerName || invoice.customer || "N/A"}</td>
+                    <td style="font-family: monospace; color: var(--text-secondary);">${invoice.vehicleId || invoice.vehicle || "N/A"}</td>
                     <td>${invoice.amount || invoice.totalAmount || "N/A"}</td>
-                    <td>${invoice.status || "N/A"}</td>
-                    <td>${invoice.paymentMethod || "N/A"}</td>
-                    <td>
-                        <button onclick="alert('Invoice details feature can be added later')">
+                    <td><span class="badge pending">${invoice.status || "N/A"}</span></td>
+                    <td style="color: var(--text-secondary);">${invoice.paymentMethod || "N/A"}</td>
+                    <td style="text-align: right;">
+                        <button class="btn btn-secondary" onclick="alert('Invoice details feature can be added later')">
                             View
                         </button>
                     </td>
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="7" style="text-align:center; padding: 24px; color: red;">
+                    <td colspan="7" style="text-align:center; padding: 24px; color: red; color: var(--accent-red);">
                         Failed to load invoices. Check the backend API.
                     </td>
                 </tr>

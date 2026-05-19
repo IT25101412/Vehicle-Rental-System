@@ -7,7 +7,7 @@
         <div class="sidebar-brand">DriveEase</div>
         <div class="sidebar-user">
             <div class="avatar">
-                <img alt="Admin Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArJWEnEE7LA6MoCtoczTgKLxIFhNZE2qFju-R-Uxwrbztb2aLHyohzBV4TH7x9wnFNZR75nzzL6kJ363XCBpVnAINj_tsqgGZT9L61iojCmfN7XNNvwN28NKBofkxv7onyvWtXum_SvJg_dfAYv6SikP-T1qeTtOQxlWoS5EtGBP3aV3c3I7hVTzhUCqsVE2i52Vcq-HF44ZxJrvY2q6Y71ghbohEPsHVGqMueVZgkTPZQqLjjfjSzbzNpJKG_aCOCptOrRauCi0E">
+                <img alt="Admin Profile" src="/images/manager.png">
             </div>
             <div class="user-info">
                 <div class="name">Admin</div>
@@ -37,7 +37,7 @@
             <span>Maintenance</span>
         </a>
 
-        <a class="nav-link" href="/checkout">
+        <a class="nav-link" href="/admin-report">
             <span class="material-symbols-outlined">payments</span>
             <span>Billing</span>
         </a>
@@ -46,6 +46,13 @@
             <span class="material-symbols-outlined">history</span>
             <span>Activity Logs</span>
         </a>
+
+        <div style="margin-top: auto; padding-top: 20px;">
+            <a href="/logout" class="nav-link" style="color: var(--accent-red); border-top: 1px solid var(--border-subtle);">
+                <span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+        </div>
     </nav>
 
     <script>
@@ -54,12 +61,9 @@
             const navLinks = document.querySelectorAll('.sidebar-nav .nav-link');
 
             navLinks.forEach(link => {
-                // Clear any leftover active classes
                 link.classList.remove('active');
-
                 const href = link.getAttribute('href');
 
-                // Highlight the link if the current URL matches or starts with the href
                 if (currentPath === href || (href !== '/' && currentPath.startsWith(href))) {
                     link.classList.add('active');
                 }

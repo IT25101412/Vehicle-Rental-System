@@ -1,46 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Payments & Billing Report</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments & Billing Report | DriveEase Admin</title>
+
+    <link rel="stylesheet" href="/css/admin.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <main style="padding: 40px; font-family: Arial, sans-serif;">
-        <h1>Payments & Billing Report</h1>
-        <p>This admin page will display invoice, billing, and payment records.</p>
 
-        <section style="margin-top: 30px;">
-            <h2>Invoice Records</h2>
-            <div id="invoice-summary">
+<div th:replace="~{fragments/admin-sidebar :: sidebar}"></div>
+
+<main class="main-content">
+
+    <div class="page-header">
+        <h2>Payments & Billing Report</h2>
+        <p>Review invoice details, billing information, and recent payment records.</p>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns: 1fr; margin-bottom: 2rem;">
+        <div class="stat-card" style="height: auto; min-height: 80px;">
+            <div class="header">
+                <span>Data Summary</span>
+                <span class="material-symbols-outlined" style="color: var(--accent-blue);">analytics</span>
+            </div>
+            <div id="invoice-summary" style="margin-top: 15px; font-size: 0.95rem; color: var(--text-primary); font-weight: 500;">
                 Loading invoice data...
             </div>
+        </div>
+    </div>
 
-            <table border="1" cellpadding="12" cellspacing="0" style="margin-top: 20px; width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr>
-                        <th>Invoice ID</th>
-                        <th>Customer</th>
-                        <th>Vehicle</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Payment Method</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="invoice-table-body">
-                    <tr>
-                        <td colspan="7">Loading...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+    <div class="table-card">
+        <div class="table-card-header">
+            <h3>Invoice Records</h3>
+        </div>
+        <table class="premium-table">
+            <thead>
+            <tr>
+                <th>Invoice ID</th>
+                <th>Customer</th>
+                <th>Vehicle</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Payment Method</th>
+                <th style="text-align: right;">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="invoice-table-body">
+            <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 3rem;">Loading invoice records...</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-        <p style="margin-top: 30px;">
-            <a href="/admin/dashboard">← Back to Admin Dashboard</a>
-        </p>
-    </main>
+</main>
 
-    <script src="/js/admin-report.js"></script>
+<script src="/js/admin-report.js"></script>
 </body>
 </html>

@@ -60,7 +60,6 @@ public class BookingPageController {
             return "redirect:/login";
         }
 
-        // FETCH THE BOOKING DATA FROM THE BACKEND
         if (transactionId != null) {
             Booking booking = bookingService.getBookingById(transactionId);
             if (booking != null) {

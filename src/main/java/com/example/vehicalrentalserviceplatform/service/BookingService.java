@@ -138,6 +138,7 @@ public class BookingService {
         }
 
         List<Booking> allBookings = getAllBookings();
+
         boolean isUpdated = false;
 
         for (Booking x : allBookings){
