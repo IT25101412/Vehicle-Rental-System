@@ -16,7 +16,57 @@ const LOAD_MORE_STEP = 9;
     Metadata will be filled properly after we finalize the 45 vehicles.
     For now, missing vehicles fall back to type/rate based rules.
 */
-const vehicleMeta = {};
+const vehicleMeta = {
+    "CAR-0001": { displayCategory: "CAR", useCategory: "DAILY", topChoice: true },
+    "CAR-0002": { displayCategory: "CAR", useCategory: "DAILY", topChoice: true },
+    "CAR-0003": { displayCategory: "CAR", useCategory: "BUSINESS", topChoice: true },
+    "CAR-0004": { displayCategory: "CAR", useCategory: "FAMILY", topChoice: false },
+    "CAR-0005": { displayCategory: "CAR", useCategory: "DAILY", topChoice: false },
+    "CAR-0006": { displayCategory: "CAR", useCategory: "BUSINESS", topChoice: false },
+    "CAR-0007": { displayCategory: "CAR", useCategory: "FAMILY", topChoice: false },
+    "CAR-0008": { displayCategory: "CAR", useCategory: "BUSINESS", topChoice: false },
+    "CAR-0009": { displayCategory: "CAR", useCategory: "WEDDING", topChoice: true },
+
+    "SUV-0001": { displayCategory: "SUV", useCategory: "FAMILY", topChoice: true },
+    "SUV-0002": { displayCategory: "SUV", useCategory: "FAMILY", topChoice: true },
+    "SUV-0003": { displayCategory: "SUV", useCategory: "ADVENTURE", topChoice: false },
+    "SUV-0004": { displayCategory: "SUV", useCategory: "ADVENTURE", topChoice: true },
+    "SUV-0005": { displayCategory: "SUV", useCategory: "ADVENTURE", topChoice: false },
+    "SUV-0006": { displayCategory: "SUV", useCategory: "BUSINESS", topChoice: false },
+    "SUV-0007": { displayCategory: "SUV", useCategory: "FAMILY", topChoice: false },
+    "SUV-0008": { displayCategory: "SUV", useCategory: "TRANSPORT", topChoice: true },
+    "SUV-0009": { displayCategory: "SUV", useCategory: "DAILY", topChoice: false },
+
+    "VAN-0001": { displayCategory: "VAN", useCategory: "TRANSPORT", topChoice: true },
+    "VAN-0002": { displayCategory: "VAN", useCategory: "TRANSPORT", topChoice: false },
+    "VAN-0003": { displayCategory: "VAN", useCategory: "TRANSPORT", topChoice: false },
+    "VAN-0004": { displayCategory: "VAN", useCategory: "FAMILY", topChoice: true },
+    "VAN-0005": { displayCategory: "VAN", useCategory: "FAMILY", topChoice: false },
+    "VAN-0006": { displayCategory: "VAN", useCategory: "FAMILY", topChoice: false },
+    "VAN-0007": { displayCategory: "VAN", useCategory: "BUSINESS", topChoice: true },
+    "VAN-0008": { displayCategory: "VAN", useCategory: "TRANSPORT", topChoice: false },
+    "VAN-0009": { displayCategory: "VAN", useCategory: "TRANSPORT", topChoice: false },
+
+    "MOT-0001": { displayCategory: "MOTORCYCLE", useCategory: "DAILY", topChoice: true },
+    "MOT-0002": { displayCategory: "MOTORCYCLE", useCategory: "DAILY", topChoice: false },
+    "MOT-0003": { displayCategory: "MOTORCYCLE", useCategory: "DAILY", topChoice: false },
+    "MOT-0004": { displayCategory: "MOTORCYCLE", useCategory: "ADVENTURE", topChoice: true },
+    "MOT-0005": { displayCategory: "MOTORCYCLE", useCategory: "DAILY", topChoice: false },
+    "MOT-0006": { displayCategory: "MOTORCYCLE", useCategory: "ADVENTURE", topChoice: true },
+    "MOT-0007": { displayCategory: "MOTORCYCLE", useCategory: "DAILY", topChoice: false },
+    "MOT-0008": { displayCategory: "MOTORCYCLE", useCategory: "ADVENTURE", topChoice: false },
+    "MOT-0009": { displayCategory: "MOTORCYCLE", useCategory: "WEDDING", topChoice: true },
+
+    "PRE-0001": { displayCategory: "PREMIUM", useCategory: "WEDDING", topChoice: true },
+    "PRE-0002": { displayCategory: "PREMIUM", useCategory: "BUSINESS", topChoice: true },
+    "PRE-0003": { displayCategory: "PREMIUM", useCategory: "BUSINESS", topChoice: false },
+    "PRE-0004": { displayCategory: "PREMIUM", useCategory: "WEDDING", topChoice: true },
+    "PRE-0005": { displayCategory: "PREMIUM", useCategory: "WEDDING", topChoice: true },
+    "PRE-0006": { displayCategory: "PREMIUM", useCategory: "BUSINESS", topChoice: false },
+    "PRE-0007": { displayCategory: "PREMIUM", useCategory: "BUSINESS", topChoice: true },
+    "PRE-0008": { displayCategory: "PREMIUM", useCategory: "WEDDING", topChoice: true },
+    "PRE-0009": { displayCategory: "PREMIUM", useCategory: "BUSINESS", topChoice: true }
+};
 
 function setupFilterControls() {
     const modeTabs = document.querySelectorAll(".filter-mode-tab");
@@ -278,6 +328,12 @@ function getVehicleMeta(vehicle) {
 }
 
 function getVehicleType(vehicle) {
+    const meta = getVehicleMeta(vehicle);
+
+    if (meta.displayCategory) {
+        return meta.displayCategory;
+    }
+
     return String(
         vehicle.type ||
         vehicle.vehicleType ||
