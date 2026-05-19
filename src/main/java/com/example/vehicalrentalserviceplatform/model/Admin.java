@@ -15,10 +15,13 @@ public class Admin extends User {
     }
 
     public String getMaskedPasswordHash() {
-        if (passwordHash == null || passwordHash.length() < 6) {
-            return "******";
+        if (passwordHash == null || passwordHash.isEmpty()) {
+            return "****";
         }
-        return passwordHash.substring(0, 3) + "******";
+        if (passwordHash.length() <= 4) {
+            return passwordHash + "****";
+        }
+        return passwordHash.substring(0, 4) + "******";
     }
 
     public String getPasswordHash() {

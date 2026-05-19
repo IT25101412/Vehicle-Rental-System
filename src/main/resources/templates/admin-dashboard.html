@@ -65,6 +65,7 @@
             <h3>Admins and Staff Accounts</h3>
             <a href="/admin/registration" style="color: var(--accent-blue); text-decoration: none; font-size: 0.9rem; font-weight: 600;">+ Add New User</a>
         </div>
+        <div style="overflow-x: auto;">
         <table class="premium-table">
             <thead>
             <tr>
@@ -73,12 +74,13 @@
                 <th>Username</th>
                 <th>Role</th>
                 <th>Employee Type</th>
+                <th>Password (Masked)</th>
                 <th style="text-align: right;">Action</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(admins)}">
-                <td colspan="6" style="text-align: center; color: var(--text-secondary); padding: 2rem;">No accounts found.</td>
+                <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 2rem;">No accounts found.</td>
             </tr>
             <tr th:each="admin : ${admins}">
                 <td style="font-family: monospace; color: var(--text-secondary);" th:text="${admin.userId}"></td>
@@ -88,6 +90,7 @@
                     <span class="badge" th:classappend="${admin.role == 'ADMIN' ? 'approved' : 'pending'}" th:text="${admin.role}"></span>
                 </td>
                 <td style="color: var(--text-secondary);" th:text="${admin.employeeType}"></td>
+                <td style="font-family: monospace; font-size: 0.85rem; color: var(--text-secondary); max-width: 110px;" th:text="${admin.maskedPasswordHash}">****</td>
                 <td style="text-align: right;">
                     <a class="btn btn-secondary" th:href="@{/admin/edit(userId=${admin.userId}, fullName=${admin.fullName}, username=${admin.username}, role=${admin.role}, employeeType=${admin.employeeType})}">Edit</a>
 
@@ -99,6 +102,7 @@
             </tr>
             </tbody>
         </table>
+        </div>
     </div>
 
     <div class="table-card">
