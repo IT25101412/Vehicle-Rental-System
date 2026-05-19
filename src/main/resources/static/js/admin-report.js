@@ -2,6 +2,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const summaryBox = document.getElementById("invoice-summary");
     const tableBody = document.getElementById("invoice-table-body");
 
+    const formatPaymentMethod = (method) => {
+            if (!method) return "N/A";
+
+            let typeString = typeof method === 'object' ? method.type : method;
+
+            if (!typeString) return "Unknown";
+
+            if (typeString.toLowerCase() === 'creditcard') return "Credit Card";
+            if (typeString.toLowerCase() === 'paypal') return "PayPal";
+            if (typeString.toLowerCase() === 'cash') return "Cash";
+
+            return typeString.charAt(0).toUpperCase() + typeString.slice(1);
+    };
+
     fetch("/api/invoices")
         .then(response => {
             if (!response.ok) {
@@ -36,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td style="font-family: monospace; color: var(--text-secondary);">${invoice.vehicleId || invoice.vehicle || "N/A"}</td>
                     <td>${invoice.amount || invoice.totalAmount || "N/A"}</td>
                     <td><span class="badge pending">${invoice.status || "N/A"}</span></td>
-                    <td style="color: var(--text-secondary);">${invoice.paymentMethod || "N/A"}</td>
+                    <td style="color: var(--text-secondary); font-weight: 500;">${formatPaymentMethod(invoice.paymentMethod)}</td>
                     <td style="text-align: right;">
                         <button class="btn btn-secondary" onclick="alert('Invoice details feature can be added later')">
                             View
