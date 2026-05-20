@@ -3,10 +3,13 @@ package com.example.vehicalrentalserviceplatform.maintenance;
 import java.io.*;
 import java.util.*;
 
+// FILE HANDLER LAYER: Handles all maintenance.txt read/write operations separately from the controller.
 public class MaintenanceFileHandler {
 
+    // DATA SOURCE: Text file used to persist maintenance records.
     private static final String FILE_PATH = "maintenance.txt";
 
+    // READ: Loads all saved records from maintenance.txt and converts each valid line into a MaintenanceRecord object.
     public static List<MaintenanceRecord> loadAllRecords() {
         List<MaintenanceRecord> records = new ArrayList<>();
         File file = new File(FILE_PATH);
@@ -34,6 +37,7 @@ public class MaintenanceFileHandler {
         return records;
     }
 
+    // WRITE: Rewrites the complete record list back to maintenance.txt after update or delete operations.
     public static void saveAllRecords(List<MaintenanceRecord> records) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, false))) {
             for (MaintenanceRecord record : records) {
@@ -45,6 +49,7 @@ public class MaintenanceFileHandler {
         }
     }
 
+    // CREATE: Appends one new MaintenanceRecord to the end of maintenance.txt.
     public static void addRecord(MaintenanceRecord record) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
             writer.write(record.toString());
@@ -54,6 +59,7 @@ public class MaintenanceFileHandler {
         }
     }
 
+    // UPDATE: Loads records, finds the matching record ID, changes its status, and saves the updated list.
     public static void updateStatus(String recordId, String newStatus) {
         List<MaintenanceRecord> records = loadAllRecords();
         for (MaintenanceRecord record : records) {
@@ -65,12 +71,14 @@ public class MaintenanceFileHandler {
         saveAllRecords(records);
     }
 
+    // DELETE: Removes the matching record from the loaded list and saves the remaining records.
     public static void deleteRecord(String recordId) {
         List<MaintenanceRecord> records = loadAllRecords();
         records.removeIf(record -> record.getRecordId().equals(recordId));
         saveAllRecords(records);
     }
 
+    // SEARCH: Finds one maintenance record by ID; used by the alert feature.
     public static MaintenanceRecord findRecordById(String recordId) {
         List<MaintenanceRecord> records = loadAllRecords();
         for (MaintenanceRecord record : records) {

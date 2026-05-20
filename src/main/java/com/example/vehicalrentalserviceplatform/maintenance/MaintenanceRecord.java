@@ -1,7 +1,9 @@
 package com.example.vehicalrentalserviceplatform.maintenance;
 
+// MODEL CLASS: Represents one maintenance/service record in the system.
 public class MaintenanceRecord {
 
+    // OOP: Encapsulation - record data is kept private and accessed through getters/setters.
     private String recordId;
     private String vehicleId;
     private String vehicleType;
@@ -10,6 +12,7 @@ public class MaintenanceRecord {
     private String status;
     private String notes;
 
+    // CONSTRUCTOR: Initializes a complete maintenance record object when loading or creating records.
     public MaintenanceRecord(String recordId, String vehicleId, String vehicleType,
                              String serviceType, String serviceDate, String status, String notes) {
         this.recordId = recordId;
@@ -20,6 +23,8 @@ public class MaintenanceRecord {
         this.status = status;
         this.notes = notes;
     }
+
+    // ACCESSORS: Getters return private values; setters allow controlled updates when needed.
 
     public String getRecordId() { return recordId; }
     public void setRecordId(String recordId) { this.recordId = recordId; }
@@ -42,12 +47,14 @@ public class MaintenanceRecord {
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
 
+    // FILE FORMAT: Converts this object into one comma-separated line for saving in maintenance.txt.
     @Override
     public String toString() {
         return recordId + "," + vehicleId + "," + vehicleType + "," + serviceType + ","
                 + serviceDate + "," + status + "," + notes;
     }
 
+    // OOP/BEHAVIOR: Generates a different maintenance alert based on the stored vehicle type.
     public String getMaintenanceAlert() {
         if (vehicleType.equalsIgnoreCase("Car")) {
             return "Car maintenance alert: Check engine oil, brake system, tyres, battery, and coolant level for Vehicle " + vehicleId + ".";
